@@ -4,9 +4,15 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require("express-session");
+var MongoStore = require("connect-mongo")(session);
+var settings = require("./settings");
+var flash = require("connect-flash");
+var methodOverride = require('method-override');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var index_route = require('./routes/index.js');//主路由
+var login_route = require('./routes/login.js');//登录路由
+var register_route = require('./routes/register.js');//注册路由
 
 var app = express();
 
@@ -21,9 +27,35 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(flash());
 
-app.use('/', routes);
-app.use('/users', users);
+//使用路由
+app.use("/", index_route);
+app.use("/login", login_route);
+app.use("/register", register_route);
+
+//session 设置
+app.use(session({
+  secret : settings.cookieSecret,
+  resave : false,
+  saveUninitialized : true
+}));
+
+//获取状态
+app.use(function(req,res,next){
+    console.log('%s', new Date());
+    console.log("app.usr local");
+
+    var error = req.flash('error');
+    res.locals.error = error.length?error:null;
+
+    var success = req.flash('success');
+    res.locals.success = success.length?success:null;
+
+    next();
+});
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
