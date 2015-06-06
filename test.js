@@ -6,12 +6,13 @@ var contents = querystring.stringify({
 	telephone: 13073687787,
 	captcha : 938541,
 	IDCardNo : 1956,
+	messageCaptcha : 199135,
 
 });
 var options = {
 	host: 'localhost',
 	port: '3000',
-	path: '/register/setInfo',
+	path: '/register/vertifyMsg',
 	//path : '/register',
 	method: 'POST',
 	headers: {

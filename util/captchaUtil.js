@@ -19,7 +19,6 @@ util.getMsgCap = function getMsgCap(mob){
 	}).on('error', function(e) {
 	  console.log("Got error: " + e.message);
 	});
-	console.log(num);
 	return num;
 }
 

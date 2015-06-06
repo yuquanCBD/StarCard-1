@@ -7,7 +7,6 @@ var capUtil = require('../util/captchaUtil.js');
 router.get('/', function(req, res, next){
 	var cap = capUtil.getRandomNum(100000,999999);
 	req.session.cap = cap;
-	console.log(req.session.cap);
 	res.json({captcha : cap}); 
 });
 
@@ -15,16 +14,19 @@ router.get('/', function(req, res, next){
 router.post('/getMsgCap', checkCap);
 router.post('/getMsgCap', checkTel);
 router.post('/getMsgCap', getMsg);
-
+//验证短信验证码
+router.post('/vertifyMsg', vertifyM);
 //设置昵称 密码 身份证后四位
 router.post('/setInfo', checkInfo);
 router.post('/setInfo', setUserInfo)
 
+//验证验证码
 function checkCap(req, res, next){
 	if(req.session.cap != req.body.captcha)
 		return res.json({error:'验证码错误'});
 	next();
 }
+//看提供手机号是否已经注册
 function checkTel(req, res, next){
 	User.getUserByTel(req.body.telephone, function(err, user){
 		if(err){
@@ -35,12 +37,12 @@ function checkTel(req, res, next){
 		next();
 	});
 }
+//向手机短信服务端发请求生成短信验证码
 function getMsg(req, res, next){
 	console.log('get');
 	var tel = req.body.telephone;
 	console.log(tel);
 	var msg = capUtil.getMsgCap(tel);
-	console.log(msg);
 	req.session.msg = msg;
 	req.session.when = new Date();
 	req.session.tel = tel;
@@ -84,6 +86,12 @@ function setUserInfo(req, res, next){
 			return res.json({error:'注册失败'});
 		}
 		res.json({sucess:'success'});
-	})
+	});
 }
+function vertifyM(req, res, next){
+	if(req.session.msg != req.body.messageCaptcha)	
+		return res.json({error:'短信验证码错误'});
+	res.json({success:'sucess'});
+}
+
 module.exports = router;
