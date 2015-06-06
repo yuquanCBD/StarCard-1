@@ -10,7 +10,8 @@ function User(user){
 	this.gender = user.gender;
 }
 
-User.prototype.get= function(username, callback){
+
+User.get = function get(username, callback){
 	mysql.getConnection(function(err, conn){
 		if (err) {
 			console.log("POOL: ==> " + err);
@@ -36,7 +37,7 @@ User.prototype.get= function(username, callback){
 	});
 };
 
-User.prototype.save = function(callback){
+User.prototype.save = function save(callback){
 
 		var user = {
 			username : this.username,
@@ -52,9 +53,7 @@ User.prototype.save = function(callback){
 			callback(err);
 		};
 
-		var sql = 'insert into user(username, password, telephone, create_time, IDCardNo) 
-					values("'+ user.username +'","'+ user.password + '","'+ user.telephone+ '","'+ 
-						user.create_time +'","'+ user.IDCardNo +'")';
+		var sql = 'insert into user(username, password, telephone, create_time, IDCardNo) values("'+ user.username +'","'+ user.password + '","'+ user.telephone+ '","'+ user.create_time +'","'+ user.IDCardNo +'")';
 		console.log('SaveSQL: '+ sql);
 		conn.query(sql, function(err, res){
 			if(err){
@@ -69,7 +68,7 @@ User.prototype.save = function(callback){
 	});
 };
 
-User.prototype.getUserByTel = function(tel, callback){
+User.getUserByTel = function getUserByTel(tel, callback){
 		mysql.getConnection(function(err, conn){
 		if (err) {
 			console.log("POOL: ==> " + err);
@@ -90,6 +89,27 @@ User.prototype.getUserByTel = function(tel, callback){
 				callback(err,user);
 			}else
 				callback(err, null);
+        	conn.release();
+		});
+	});
+};
+
+User.updatePwd = function updatePwd(tel, password, callback){
+	mysql.getConnection(function(err, conn){
+		if (err) {
+			console.log("POOL: ==> " + err);
+			callback(err);
+		};
+
+		var sql = 'UPDATE user set password = "' + password +'" WHERE telephone = "' + tel + '"';
+		console.log('UPDATESQL: '+ sql);
+		conn.query(sql, function(err, res){
+			if(err){
+				console.log(err);
+				callback(err);
+			}else
+				callback(null);
+
         	conn.release();
 		});
 	});
