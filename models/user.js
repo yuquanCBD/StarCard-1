@@ -37,16 +37,7 @@ User.get = function get(username, callback){
 	});
 };
 
-User.prototype.save = function save(callback){
-
-		var user = {
-			username : this.username,
-			password : this.password,
-			telephone : this.telephone,
-			create_time : new Date(),
-			IDCardNo : this.IDCardNo,
-		};
-
+User.save = function save(user,callback){
 		mysql.getConnection(function(err, conn){
 		if (err) {
 			console.log("POOL ==> " + err);
@@ -63,7 +54,7 @@ User.prototype.save = function save(callback){
 			console.log("User save ==> ");
         	console.log(res);
         	conn.release();
-        	callback(err,user);
+        	callback(err,res);
 		});
 	});
 };
@@ -82,9 +73,9 @@ User.getUserByTel = function getUserByTel(tel, callback){
 				console.log(err);
 				callback(err);
 			}
-			
+			console.log('查询输出');
 			console.log(rows);
-			if (rows) {
+			if (rows.length > 0 ) {
 				var user = new User(rows[0]);
 				callback(err,user);
 			}else
@@ -114,6 +105,24 @@ User.updatePwd = function updatePwd(tel, password, callback){
 		});
 	});
 };
+User.checkUserByName = function checkUserByName(username, callback){
+	mysql.getConnection(function(err, conn){
+		if(err){
+			console.log("POOL: ==> " + err);
+			callback(err);
+		};
+		var sql = 'select * from user where username = "'+ username +'"';
+		console.log('SelectSQL: '+ sql);
+		conn.query(sql, function(err, rows){
+			if(err){
+				callback(err, null);
+			}
+			console.log('*****查询用户名是否重复*****');
+			console.log(rows);
+			callback(err, rows);
+		});
+	});
+}
 
 
 module.exports = User;

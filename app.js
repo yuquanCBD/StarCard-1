@@ -29,18 +29,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 
-//使用路由
-app.use("/", index_route);
-app.use("/login", login_route);
-app.use("/register", register_route);
-
 //session 设置
 app.use(session({
   secret : settings.cookieSecret,
   resave : false,
   saveUninitialized : true
 }));
-
 //获取状态
 app.use(function(req,res,next){
     console.log('%s', new Date());
@@ -54,6 +48,14 @@ app.use(function(req,res,next){
 
     next();
 });
+//使用路由
+app.use("/", index_route);
+app.use("/login", login_route);
+app.use("/register", register_route);
+
+
+
+
 
 
 

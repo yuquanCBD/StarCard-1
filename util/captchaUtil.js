@@ -1,8 +1,9 @@
+var http = require('http');
 function util(){
 
 }
 
-util.prototype.getRandomNum = function(Min,Max)
+util.getRandomNum = function getRandomNum(Min,Max)
 {   
 	var Range = Max - Min;   
 	var Rand = Math.random();  
@@ -10,14 +11,15 @@ util.prototype.getRandomNum = function(Min,Max)
 	return(Min + Math.round(Rand * Range));   
 }  
 
-util.prototype.getMsgCap = function GenerateCaptcha(mob){
+util.getMsgCap = function getMsgCap(mob){
 	var num = this.getRandomNum(100000, 999999);
-	var url = 'http://utf8.sms.webchinese.cn/?Uid='+uid+'&Key='+key+'&smsMob='+ mob +'&smsText='+num;
+	var url = 'http://utf8.sms.webchinese.cn/?Uid='+'秦殇007'+'&Key='+'4aaa53ecb1ca403d9a07'+'&smsMob='+ mob +'&smsText='+num;
 	http.get(url, function(res) {
 	  console.log("Got response: " + res.statusCode);
 	}).on('error', function(e) {
 	  console.log("Got error: " + e.message);
 	});
+	console.log(num);
 	return num;
 }
 

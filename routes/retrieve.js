@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var crypto = require('crypto');
-var User = require('./models/user');
-var capUtil = require('./util/captchaUtil');
+var User = require('../models/user');
+var capUtil = require('../util/captchaUtil');
 
 //找回密码界面
 router.get('/', function(req, res , next){
