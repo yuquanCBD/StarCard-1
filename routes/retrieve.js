@@ -40,7 +40,7 @@ router.post('/verifyMsg', function(req, res, next){
 	var now = new Date();
 	if(!req.session.when || (now.getTime() - req.session.when.getTime()) > 30000)
 		return res.json({error: '验证码过期'});
-	if(req.session.msg != req.session.msg)
+	if(req.body.msg != req.session.msg)
 		return res.json({error: '验证码错误'});
 
 	res.json({success: '验证码校验成功'});
@@ -55,7 +55,7 @@ router.post('/newPwd', function(req, res, next){
 	if(req.body.pwd1 || req.body.pwd1 != req.body.pwd2)
 		return res.json({error: '输入密码不一致'});
 
-	var pwd = md5.update(req.body.newPwd2).digest('base64');
+	var pwd = md5.update(req.body.pw1).digest('base64');
 
 
 	User.updatePwd(req.session.tel, pwd, function(err){
