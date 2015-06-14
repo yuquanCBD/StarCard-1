@@ -10,7 +10,7 @@ router.get('/', function(req, res, next){
 console.log("Request handler 'start' was called."); 
  
   var body = '<html>'+ 
-    '<head>'+ 
+     '<head>'+ 
     '<meta http-equiv="Content-Type" content="text/html; '+ 
     'charset=UTF-8" />'+ 
     '</head>'+ 
@@ -40,48 +40,58 @@ console.log("Request handler 'start' was called.");
 
 
 router.post('/', function(req, res, next){
-	var cardInfo = {
-		cardid : uuid.v1(),
-		title : req.body.title,
-		describe : req.body.describe,
-		price : req.body.price,
-		logistic : req.body.logistic,
-		category : req.body.category,
-		brand : req.body.brand,
-		freight : req.body.freight,
-		exchange : req.body.exchange,
-		owner : req.body.owner,
-		amount : req.body.amount
-	};
+
 
 	//存储卡片照片，依据cardid在public/imgs/card目录下创建同名目录，图片存储在此目录中
 	//TODO
 	var form = new multiparty.Form();
 	form.parse(req, function(err, fields, files){
-		var filePath = path.join(__dirname, 'public/imgs/card/');
+		console.log(fields);
+
+		var cardInfo = {
+			cardid : uuid.v1(),
+			describe : fields.describe,
+			title : fields.title,
+			price : fields.price,
+			logistic : fields.logistic,
+			category : fields.category,
+			brand : fields.brand,
+			freight : fields.freight,
+			exchange : fields.exchange,
+			owner : fields.owner,
+			amount : fields.amount
+		};
+
+
+		var filePath = path.join(__dirname, '../public/imgs/card/');
 		fs.mkdir(filePath + cardInfo.cardid, function(err){
 			if(err)
 				console.log(err);
 			else{
-
 				for (var i in files.imgs) {
 			      	var file = files.imgs[i];
-			        fs.renameSync(file.path, filePath + cardInfo.cardid + '/' + file.originalFilename);
+			      	var types = file.originalFilename.split('.'); //将文件名以.分隔，取得数组最后一项作为文件后缀名。
+			        fs.renameSync(file.path, filePath + cardInfo.cardid + '/' + i + '.' +String(types[types.length-1]));
 		     	 }
 			}
 		});
 
 
+		var newCard = new Card(cardInfo);
+			newCard.save(function(err){
+				if(err){
+					console.log('发帖信息存储失败, error: ' + err);
+					res.json({error: '发帖失败'});
+				}else
+					res.json({success: "发帖成功"});
+		});
+
 	});
 
-	var newCard = new Card(cardInfo);
-	newCard.save(function(err){
-		if(err){
-			console.log('发帖信息存储失败, error: ' + err);
-			res.json({error: '发帖失败'});
-		}else
-			res.json({success: "发帖成功"});
-	});
+});
+
+router.get('/userScore', function(req, res, next){
+	
 });
 
 module.exports = router;

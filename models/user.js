@@ -18,7 +18,7 @@ User.get = function get(username, callback){
 			callback(err);
 		};
 
-		var sql = 'SELECT username, password FROM user WHERE username = "' + username +'"';
+		var sql = 'SELECT username, password, score FROM user WHERE username = "' + username +'"';
 		console.log('SelectSQL: '+ sql);
 		conn.query(sql, function(err, rows){
 			if(err){
@@ -123,6 +123,7 @@ User.checkUserByName = function checkUserByName(username, callback){
 		});
 	});
 }
+
 
 
 module.exports = User;

@@ -8,7 +8,7 @@ function Card(card){
 	this.logistic = card.logistic;
 	this.category = card.category;
 	this.brand = card.brand;
-	this.feight = card.feight;
+	this.freight = card.freight;
 	this.exchange = card.exchange;
 	this.owner = card.owner;
 	this.amount = card.amount;
@@ -19,15 +19,30 @@ Card.get = function(){
 };
 
 Card.prototype.save = function(callback){
+	var card = {
+		cardid : this.cardid,
+		title : this.title, 
+		describe : this.describe,
+		price : this.price,
+		logistic : this.logistic,
+		category : this.category,
+		brand : this.brand,
+		freight : this.freight,
+		exchange : this.exchange,
+		owner : this.owner,
+		amount : this.amount
+	};
+
+
 	mysql.getConnection(function(err, conn){
 		if (err) {
 			console.log("POOL ==> " + err);
 			callback(err);
 		};
 
-		var sql = 'insert into card(cardid, title, describe, price, logistic, category, brand, feight, exchange, owner, amount) values("'+
-		 this.cardid +'","'+ this.title + '","'+ this.describe + '","'+ this.price +'","'+ this.logistic +'","'+ 
-		 this.category+'","'+ this.brand +'","'+ this.feight +'","'+ this.exchange +'","'+ this.owner +'","'+ this.amount +'")';
+		var sql = 'insert into card(cardid, title, describes, price, logistic, category, brand, freight, exchange, owner, amount) values("'+
+		 card.cardid +'","'+ card.title + '","'+ card.describe + '",'+ card.price +',"'+ card.logistic +'","'+ 
+		 card.category+'","'+ card.brand +'",'+ card.freight +','+ card.exchange +',"'+ card.owner +'",'+ card.amount +')';
 
 		console.log('SaveSQL: '+ sql);
 		conn.query(sql, function(err, res){
