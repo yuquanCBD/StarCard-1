@@ -10,9 +10,11 @@ var settings = require("./settings");
 var flash = require("connect-flash");
 var methodOverride = require('method-override');
 
-var index_route = require('./routes/index.js');//主路由
-var login_route = require('./routes/login.js');//登录路由
-var register_route = require('./routes/register.js');//注册路由
+var index_route = require('./routes/index');            //主路由
+var login_route = require('./routes/login');            //登录路由
+var register_route = require('./routes/register');      //注册路由
+var retrieve_route = require('./routes/retrieve');      //找回密码路由
+var publish_route = require('./routes/publish');        //发帖路由
 
 var app = express();
 
@@ -53,9 +55,11 @@ app.use(function(req,res,next){
 
 
 //使用路由
-app.use("/", index_route);
-app.use("/login", login_route);
-app.use("/register", register_route);
+app.use('/', index_route);
+app.use('/login', login_route);
+app.use('/register', register_route);
+app.use('/retrieve', retrieve_route);
+app.use('publish', publish_route);
 
 
 // catch 404 and forward to error handler
