@@ -4,12 +4,15 @@ var crypto = require('crypto');
 var User = require('../models/user.js');
 var capUtil = require('../util/captchaUtil.js');
 var uuid = require('node-uuid');
+var multiparty = require('multiparty');
+var path = require('path');
+var fs = require('fs');
 //注册生成验证码
-router.get('/', function(req, res, next){
-	var cap = capUtil.getRandomNum(100000,999999);
-	req.session.cap = cap;
-	res.json({captcha : cap}); 
-});
+// router.get('/', function(req, res, next){
+// 	var cap = capUtil.getRandomNum(100000,999999);
+// 	req.session.cap = cap;
+// 	res.json({captcha : cap}); 
+// });
 
 //获取短信验证码
 router.post('/getMsgCap', checkCap);
@@ -17,10 +20,42 @@ router.post('/getMsgCap', checkTel);
 router.post('/getMsgCap', getMsg);
 //验证短信验证码
 router.post('/vertifyMsg', vertifyM);
-//设置昵称 密码 身份证后四位
-router.post('/setInfo', checkInfo);
-router.post('/setInfo', setUserInfo)
+//设置昵称 密码 身份证后四位 存储身份证照片imgs
+// router.get('/',function(req, res, next){
+// 	console.log('请求设置信息');
+// 	var body = '<html>'+ 
+//      '<head>'+ 
+//     '<meta http-equiv="Content-Type" content="text/html; '+ 
+//     'charset=UTF-8" />'+ 
+//     '</head>'+ 
+//     '<body>'+ 
+//     '<form action="/register/setInfo" enctype="multipart/form-data" '+ 
+//     'method="post">'+ 
+//     '<input type="text" name="username" value="wanggaige" /><br>'+
+//     '<input type="text" name="password" value="12345" /><br>'+
+//     '<input type="text" name="telephone" value="13073687787" /><br>'+
+//     '<input type="text" name="IDCardNo" value="1956" /><br>'+
+//     '<input type="file" name="imgs" multiple="multiple"><br>'+ 
+//     '<input type="submit" value="Upload file" />'+ 
+//     '</form>'+ 
+//     '</body>'+ 
+//     '</html>'; 
+//     res.writeHead(200, {"Content-Type": "text/html"}); 
+//     res.write(body); 
+//     res.end(); 
+// });
 
+//设置昵称 密码 身份证后四位 存储身份证照片imgs
+router.post('/setInfo',function(req, res, next){
+	var form = new multiparty.Form();
+	form.parse(req, function(err, fields, files){
+		if(err){
+			console.log(err);
+			return;
+		}
+		checkInfo(fields, files, res, req);
+	});
+});
 //验证验证码
 function checkCap(req, res, next){
 	if(req.session.cap != req.body.captcha)
@@ -52,42 +87,64 @@ function getMsg(req, res, next){
 }
 //检查验证码时间
 //检查用户名是否已经存在
-function checkInfo(req, res, next){
+function checkInfo(fields, files, res, req){
+	console.log('输出用户昵称:');
+	console.log(fields.username[0]);
+	console.log(fields.telephone[0]);
 	var when = new Date();
-	console.log(when);
 	if((when.getTime() - req.session.when.getTime()) > 60000){
 		return res.json({error:'输入验证码超时'});
 	}
-	var username = req.body.username;
+	var username = fields.username[0];
 	User.checkUserByName(username, function(err, rows){
 		if(err){
 			return res.json({error:'数据库查询失败'});
 		}
 		if(rows.length > 0){
 			return res.json({error:'用户名已经存在'});
+		} 
+		else{
+			setUserInfo(fields, files, res, req);//存储信息
 		}
-		next();
-	});
+	});	
 	
 }
-function setUserInfo(req, res, next){
+function setUserInfo(fields, files, res, req){
 	var md5 = crypto.createHash('md5');
-	var password = md5.update(req.body.password).digest('base64');
-	console.log(password);
+	var password = md5.update(fields.password[0]).digest('base64');
+	var uId = uuid.v1();
 	var userInfo ={
-		userid : uuid.v1(),
-		username : req.body.username,
+		userid : uId,
+		username : fields.username[0],
 		password : password,
 		telephone : req.session.tel,
-		telephone : req.body.telephone,
-		IDCardNo : req.body.IDCardNo,
-		create_time : new Date(),
+		//telephone : fields.telephone[0],
+		IDCardNo : fields.IDCardNo[0]
 	};
 	User.save(userInfo,function(err, user){
 		if(err){
 			return res.json({error:'注册失败'});
 		}
-		res.json({sucess:'success'});
+		saveImg(uId, files, res);//存储图片
+	});
+}
+function saveImg(id, files, res){
+	var filePath = path.join(__dirname, '../public/imgs/user/');
+	fs.mkdir(filePath+id, function(err){
+		if(err){
+			console.log(err);
+		}
+		else{
+			for (var i in files.imgs ) {
+				var file = files.imgs[i];
+				if(file.originalFilename.length == 0)
+					break;
+				var types = file.originalFilename.split('.'); //将文件名以.分隔，取得数组最后一项作为文件后缀名。
+			    fs.renameSync(file.path, filePath + id + '/' + i + '.' +String(types[types.length-1]));
+			};
+			console.log('注册成功');
+			res.json({sucess:'success'});
+		}
 	});
 }
 function vertifyM(req, res, next){

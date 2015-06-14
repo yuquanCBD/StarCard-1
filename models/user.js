@@ -44,7 +44,7 @@ User.save = function save(user,callback){
 			callback(err);
 		};
 
-		var sql = 'insert into user(userid, username, password, telephone, create_time, IDCardNo) values("'+ user.userid+'","'+  user.username +'","'+ user.password + '","'+ user.telephone+ '","'+ user.create_time +'","'+ user.IDCardNo +'")';
+		var sql = 'insert into user(userid, username, password, telephone, IDCardNo) values("'+ user.userid+'","'+  user.username +'","'+ user.password + '","'+ user.telephone+ '","'+ user.IDCardNo +'")';
 		console.log('SaveSQL: '+ sql);
 		conn.query(sql, function(err, res){
 			if(err){
