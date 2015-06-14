@@ -59,7 +59,7 @@ app.use('/', index_route);
 app.use('/login', login_route);
 app.use('/register', register_route);
 app.use('/retrieve', retrieve_route);
-app.use('publish', publish_route);
+app.use('/publish', publish_route);
 
 
 // catch 404 and forward to error handler

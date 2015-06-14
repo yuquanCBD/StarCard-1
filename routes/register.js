@@ -3,6 +3,7 @@ var router = express.Router();
 var crypto = require('crypto');
 var User = require('../models/user.js');
 var capUtil = require('../util/captchaUtil.js');
+var uuid = require('node-uuid');
 //注册生成验证码
 router.get('/', function(req, res, next){
 	var cap = capUtil.getRandomNum(100000,999999);
@@ -74,6 +75,7 @@ function setUserInfo(req, res, next){
 	var password = md5.update(req.body.password).digest('base64');
 	console.log(password);
 	var userInfo ={
+		userid : uuid.v1(),
 		username : req.body.username,
 		password : password,
 		telephone : req.session.tel,

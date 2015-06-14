@@ -1,7 +1,42 @@
+var express = require('express');
 var router = express.Router();
 var multiparty = require('multiparty');
 var uuid = require('node-uuid');
 var Card = require('../models/card');
+var path = require('path');
+var fs = require('fs');
+
+router.get('/', function(req, res, next){
+console.log("Request handler 'start' was called."); 
+ 
+  var body = '<html>'+ 
+    '<head>'+ 
+    '<meta http-equiv="Content-Type" content="text/html; '+ 
+    'charset=UTF-8" />'+ 
+    '</head>'+ 
+    '<body>'+ 
+    '<form action="/publish" enctype="multipart/form-data" '+ 
+    'method="post">'+ 
+    '<input type="text" name="title" value="card1" />'+
+    '<input type="text" name="describe" value="card1" />'+
+    '<input type="text" name="price" value="1.0" />'+
+    '<input type="text" name="logistic" value="顺丰" />'+
+    '<input type="text" name="category" value="1" />'+
+    '<input type="text" name="brand" value="1" />'+
+    '<input type="text" name="freight" value="1" />'+
+    '<input type="text" name="exchange" value="1" />'+
+    '<input type="text" name="owner" value="userid001" />'+
+    '<input type="text" name="amount" value="1" />'+
+    '<input type="file" name="imgs" multiple="multiple">'+ 
+    '<input type="submit" value="Upload file" />'+ 
+    '</form>'+ 
+    '</body>'+ 
+    '</html>'; 
+ 
+    res.writeHead(200, {"Content-Type": "text/html"}); 
+    res.write(body); 
+    res.end(); 
+});
 
 
 router.post('/', function(req, res, next){
@@ -19,8 +54,25 @@ router.post('/', function(req, res, next){
 		amount : req.body.amount
 	};
 
-	//存储卡片照片，依据cardid在public/card/imgs目录下创建同名目录，图片存储在此目录中
+	//存储卡片照片，依据cardid在public/imgs/card目录下创建同名目录，图片存储在此目录中
 	//TODO
+	var form = new multiparty.Form();
+	form.parse(req, function(err, fields, files){
+		var filePath = path.join(__dirname, 'public/imgs/card/');
+		fs.mkdir(filePath + cardInfo.cardid, function(err){
+			if(err)
+				console.log(err);
+			else{
+
+				for (var i in files.imgs) {
+			      	var file = files.imgs[i];
+			        fs.renameSync(file.path, filePath + cardInfo.cardid + '/' + file.originalFilename);
+		     	 }
+			}
+		});
+
+
+	});
 
 	var newCard = new Card(cardInfo);
 	newCard.save(function(err){

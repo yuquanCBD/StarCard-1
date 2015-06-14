@@ -26,8 +26,8 @@ Card.prototype.save = function(callback){
 		};
 
 		var sql = 'insert into card(cardid, title, describe, price, logistic, category, brand, feight, exchange, owner, amount) values("'+
-		 card.cardid +'","'+ card.title + '","'+ card.describe + '","'+ card.price +'","'+ card.logistic +'","'+ 
-		 card.category+'","'+ card.brand +'","'+ card.feight +'","'+ card.exchange +'","'+ card.owner +'","'+ card.amount +'")';
+		 this.cardid +'","'+ this.title + '","'+ this.describe + '","'+ this.price +'","'+ this.logistic +'","'+ 
+		 this.category+'","'+ this.brand +'","'+ this.feight +'","'+ this.exchange +'","'+ this.owner +'","'+ this.amount +'")';
 
 		console.log('SaveSQL: '+ sql);
 		conn.query(sql, function(err, res){
