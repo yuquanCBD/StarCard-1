@@ -83,7 +83,7 @@ function getMsg(req, res, next){
 	req.session.when = new Date();
 	req.session.tel = tel;
 	console.log('成功');
-	res.json({sucess:'success'});
+	res.json({success:'success'});
 }
 //检查验证码时间
 //检查用户名是否已经存在
@@ -143,7 +143,7 @@ function saveImg(id, files, res){
 			    fs.renameSync(file.path, filePath + id + '/' + i + '.' +String(types[types.length-1]));
 			};
 			console.log('注册成功');
-			res.json({sucess:'success'});
+			res.json({success:'success'});
 		}
 	});
 }
