@@ -8,11 +8,11 @@ var multiparty = require('multiparty');
 var path = require('path');
 var fs = require('fs');
 //注册生成验证码
-// router.get('/', function(req, res, next){
-// 	var cap = capUtil.getRandomNum(100000,999999);
-// 	req.session.cap = cap;
-// 	res.json({captcha : cap}); 
-// });
+router.get('/', function(req, res, next){
+	var cap = capUtil.getRandomNum(100000,999999);
+	req.session.cap = cap;
+	res.json({captcha : cap}); 
+});
 
 //获取短信验证码
 router.post('/getMsgCap', checkCap);
