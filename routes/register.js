@@ -83,7 +83,7 @@ function getMsg(req, res, next){
 	req.session.when = new Date();
 	req.session.tel = tel;
 	console.log('成功');
-	res.json({sucess:'sucess'});
+	res.json({sucess:'success'});
 }
 //检查验证码时间
 //检查用户名是否已经存在
@@ -150,7 +150,7 @@ function saveImg(id, files, res){
 function vertifyM(req, res, next){
 	if(req.session.msg != req.body.messageCaptcha)	
 		return res.json({error:'短信验证码错误'});
-	res.json({success:'sucess'});
+	res.json({success:'success'});
 }
 
 module.exports = router;
