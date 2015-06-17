@@ -1,4 +1,10 @@
 var express = require('express');
+var uuid = require('node-uuid');
+var User = require('../models/user.js');
+var multiparty = require('multiparty');
+var path = require('path');
+var fs = require('fs');
+
 var router = express.Router();
 
 var options = {
@@ -45,8 +51,66 @@ router.get('/starcardAdd',function(req, res, next){
   res.render('StarCardAdd.html');
 });
 router.post('/starcardAdd',function(req, res, next){
-  res.json({title:req.body.title,price:req.body.price,amount:req.body.amount,category:req.body.category,brand:req.body.brand,logistic:req.body.logistic,freight:req.body.freight,exchange:req.body.exchange,describes:req.body.describes});
+  //var sql = 'insert into card(userid, username, password, telephone, IDCardNo) values("'+ user.userid+'","'+  user.username +'","'+ user.password + '","'+ user.telephone+ '","'+ user.IDCardNo +'")';
+  //res.json({title:req.body.title,price:req.body.price,amount:req.body.amount,category:req.body.category,brand:req.body.brand,logistic:req.body.logistic,freight:req.body.freight,exchange:req.body.exchange,describes:req.body.describes});
+  //console.log('***********************',req.body.title);
+  //res.json({sucess:'yes'});
+  var form = new multiparty.Form();
+  form.parse(req, function(err, fields, files){
+    if(err){
+      console.log(err);
+      res.json({error:'数据解析错误'});
+      return;
+    };
+    addInfo(fields, files, res);
+  })
 });
+function addInfo(fields, files, res){
+  var uId = uuid.v1();
+  var title = fields.title[0];
+  var price = fields.price[0];
+  var amount = fields.amount[0];
+  var category = fields.category[0];
+  var brand = fields.brand[0];
+  var logistic = fields.logistic[0];
+  var freight = fields.freight[0];
+  var exchange = fields.exchange[0];
+  var describes = fields.describes[0];
+  var owner = 0;
+  var sql = 'insert into card(cardid, title, describes, price, logistic, category, brand, freight, exchange, owner, amount) values';
+  sql = sql + '("'+uId+'","'+title+'","'+describes+'","'+price+'","'+logistic+'","'+category+'","'+brand+'","'+freight+'","'+exchange+'","'+owner+'","'+amount+'")';
+  console.log(sql);
+  //res.json({err:'err'});
+
+  User.add(sql, function(err, user){
+    if(err){
+      return res.json({error:'卡信息添加失败'});
+    }
+    saveImg(uId, files, res);
+  });
+};
+function saveImg(id, files, res){
+  var filePath = path.join(__dirname, '../public/imgs/card/');
+  fs.mkdir(filePath+id, function(err){
+    if(err){
+      console.log(err);
+      return res.json({error:'存储图片失败'});
+    }
+    else{
+      for (var i  in files.imgs) {
+        if(i > 2) break; //最多三张
+        var file = files.imgs[i];
+        if(file.originalFilename.length == 0){
+          break;
+        }
+        var types = file.originalFilename.split('.');
+        fs.renameSync(file.path, filePath+id+'/'+i+'.'+String(types[types.length-1]));
+      };
+      console.log('卡片添加成功');
+      res.json({success:'success'});
+    }
+  })
+}
 router.get('/index', function(req, res ,next){
 });
 

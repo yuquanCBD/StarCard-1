@@ -10,7 +10,6 @@ function User(user){
 	this.gender = user.gender;
 }
 
-
 User.get = function get(username, callback){
 	mysql.getConnection(function(err, conn){
 		if (err) {
@@ -35,6 +34,23 @@ User.get = function get(username, callback){
         	conn.release();
 		});
 	});
+};
+User.add = function add(sql, callback){
+	mysql.getConnection(function(err, conn){
+		if(err){
+			console.log("POOL ==>" + err);
+			callback(err);
+		};
+
+		conn.query(sql, function(err, res){
+			if(err){
+				console.log(err);
+				callback(err);
+			}
+			conn.release();
+			callback(err, res);
+		})
+	})
 };
 
 User.save = function save(user,callback){

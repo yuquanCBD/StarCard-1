@@ -136,6 +136,7 @@ function saveImg(id, files, res){
 		}
 		else{
 			for (var i in files.imgs ) {
+				if(i>2) break;
 				var file = files.imgs[i];
 				if(file.originalFilename.length == 0)
 					break;
