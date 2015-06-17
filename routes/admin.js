@@ -29,7 +29,7 @@ router.post('/login', function(req, res, next){
   var username = req.body.username;
   var password = req.body.password;
   console.log('username: '+username+', password: '+password);
-   res.sendFile('index.html', options, function (err) {
+  res.sendFile('index.html', options, function (err) {
     if (err) {
       console.log(err);
       res.status(err.status).end();
@@ -38,8 +38,15 @@ router.post('/login', function(req, res, next){
       console.log('Sent:', 'index.html');
     }
   });
+  //res.render('index.html');
+  //res.json({error:'失败'});
 });
-
+router.get('/starcardAdd',function(req, res, next){
+  res.render('StarCardAdd.html');
+});
+router.post('/starcardAdd',function(req, res, next){
+  res.json({title:req.body.title,price:req.body.price,amount:req.body.amount,category:req.body.category,brand:req.body.brand,logistic:req.body.logistic,freight:req.body.freight,exchange:req.body.exchange,describes:req.body.describes});
+});
 router.get('/index', function(req, res ,next){
 });
 
