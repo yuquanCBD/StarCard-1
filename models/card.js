@@ -57,7 +57,23 @@ Card.prototype.save = function(callback){
 		});
 	});
 };
+Card.add = function(sql, callback){
+	mysql.getConnection(function(err, conn){
+		if(err){
+			console.log("POOL ==>" + err);
+			callback(err);
+		};
 
+		conn.query(sql, function(err, res){
+			if(err){
+				console.log(err);
+				callback(err);
+			}
+			conn.release();
+			callback(err, res);
+		})
+	})
+};
 Card.query = function(callback){
 	mysql.getConnection(function(err, conn){
 		if (err) 
@@ -96,7 +112,7 @@ Card.delete = function(cardid, callback){
 		if (err) 
 			callback(err);
 
-		var sql = 'DELETE FROM card WHERE cardid = "'+card.cardid+'"';
+		var sql = 'DELETE FROM card WHERE cardid = "'+cardid+'"';
 		console.log('deleteSQL: '+ sql);
 		conn.query(sql, function(err, res){
 			if (err) 

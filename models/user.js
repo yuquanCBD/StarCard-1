@@ -35,24 +35,6 @@ User.get = function get(username, callback){
 		});
 	});
 };
-User.add = function add(sql, callback){
-	mysql.getConnection(function(err, conn){
-		if(err){
-			console.log("POOL ==>" + err);
-			callback(err);
-		};
-
-		conn.query(sql, function(err, res){
-			if(err){
-				console.log(err);
-				callback(err);
-			}
-			conn.release();
-			callback(err, res);
-		})
-	})
-};
-
 User.save = function save(user,callback){
 		mysql.getConnection(function(err, conn){
 		if (err) {

@@ -890,6 +890,7 @@
 											<th class="hidden-480">exchange</th>
 											<th class="hidden-480">owner</th>
 											<th class="hidden-480">amount</th>
+											<th class="hidden-480">delete</th>
 										</tr>
 
 									</thead>
@@ -1045,7 +1046,7 @@
 									</tbody>
 
 								</table>
-
+								
 							</div>
 
 						</div>
@@ -1078,11 +1079,11 @@
 
 	<div id='sss' class="footer">
 
-		<!-- <div id='sssss' class="footer-inner">
+		<div id='sssss' class="footer-inner">
 
 			2013 &copy; Metronic by keenthemes.
 
-		</div> -->
+		</div>
 
 		<div class="footer-tools">
 
@@ -1163,11 +1164,10 @@
 
 
 		jQuery(document).ready(function() {     
-
 			function createTR(obj){
 				var tr = '<tr class="odd gradeX">'+
 					'<td><input type="checkbox" class="checkboxes" value="1" name="checks"/></td>'+
-					'<a href="#"><td>'+obj.title+'</td></a>'+
+					'<td><a href="#">'+obj.title+'</a></td>'+
 					'<td class="hidden-480">'+obj.describes+'</td>'+
 					'<td>'+obj.price+'</td>'+
 					'<td>'+obj.logistic+'</td>'+
@@ -1177,34 +1177,64 @@
 					'<td>'+obj.exchange+'</td>'+
 					'<td>'+obj.owner+'</td>'+
 					'<td>'+obj.amount+'</td>'+
+					//'<td><a href="#" cardId="'+obj.cardId+'" onclick="beSure()">delete</a></td>'+
+					'<td><button cardId="'+obj.cardid+'" class="deleteButton">delete</button></td>'+
 					'</tr>';
 				return tr;
 			};
-		 	$.ajax({
-		   		type : 'POST',
-		   		url : 'query',
-		   		data : {pageIndex : 0, pageSize : 20},
-		   		dataType : 'json',
-		   		cache : false,
-		   		success : function(data){
-		   			var eva = eval(data);
-		   			console.log(eva.length);
-		   			console.log(eva);
-		   			for (var i = 0; i < eva.length; i++) {
-		  				var tr = createTR(eva[i]);
-		   				console.log(tr);
-		   				$('tbody').append(tr);
-		   			};
-		   			App.init();
+			function PostAjax(url, obj){
+				console.log(url);
+				console.log(obj);
+				$.ajax({
+			   		type : 'POST',
+			   		url : url,
+			   		data : obj,
+			   		dataType : 'json',
+			   		cache : false,
+			   		success : function(data){
+			   			console.log('success');
+			   			location.reload();
+			   		},
+			   		error : function(){
+			   			alert.log('删除信息失败');
+			   		}
+		   		}); 
+			};
+			function query(){
+				$.ajax({
+			   		type : 'POST',
+			   		url : 'query',
+			   		data : {pageIndex : 0, pageSize : 20},
+			   		dataType : 'json',
+			   		cache : false,
+			   		success : function(data){
+			   			var eva = eval(data);
+			   			console.log(eva.length);
+			   			console.log(eva);
+			   			$('tbody').empty();
+			   			for (var i = 0; i < eva.length; i++) {
+			  				var tr = createTR(eva[i]);
+			   				console.log(tr);
+			   				$('tbody').append(tr);
 
-		   			TableManaged.init();
-		   		},
-		   		error : function(){
-		   			alert('查询信息失败');
-		   		}
-		   });     
+			   			};
+			   			$("button.deleteButton").click(function(e){
+			   				if(confirm('是否需要删除?')){
+			   					var cid = $(e.target).attr('cardId');
+			   					console.log(cid);
+			   					PostAjax('delete',{cardid:cid});
+			   				}
+			   			});
+			   			App.init();
 
-		   
+			   			TableManaged.init();
+			   		},
+			   		error : function(){
+			   			alert('查询信息失败');
+			   		}
+		   		});    
+			}
+		 	query();
 		 	$("#detailBtn").click(function(){
 		 		alert(13);
 				$('checks').each(function(){
@@ -1212,7 +1242,6 @@
 						alert($(this).val());
 				});
 			});
-
 
 		});
 
