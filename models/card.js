@@ -73,4 +73,47 @@ Card.query = function(offset, size, callback){
 	});
 };
 
+Card.update = function(card, callback){
+	mysql.getConnection(function(err, conn){
+		if (err) 
+			callback(err);
+
+		var sql = 'UPDATE card SET title="'+ card.title +'", describes="'+card.describes+'", price='+card.price+', logistic="'+card.logistic
+		+'", category='+card.category+', brand="'+card.brand+'", freight='+card.freight+', exchange='+card.exchange
+		+',amount='+card.amount+' WHERE cardid = "'+card.cardid+'"';
+		console.log('updateSQL: '+ sql);
+		conn.query(sql, function(err, res){
+			if (err) 
+				callback(err);
+			console.log("update result: "+res);
+			callback(err, res);
+		});
+	});
+};
+
+Card.delete = function(cardid, callback){
+	mysql.getConnection(function(err, conn){
+		if (err) 
+			callback(err);
+
+		var sql = 'DELETE FROM card WHERE cardid = "'+card.cardid+'"';
+		console.log('deleteSQL: '+ sql);
+		conn.query(sql, function(err, res){
+			if (err) 
+				callback(err);
+			console.log("delete result: "+res);
+			callback(err, res);
+		});
+	});
+}
+
 module.exports = Card;
+
+
+
+
+
+
+
+
+

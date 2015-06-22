@@ -83,14 +83,7 @@ function addInfo(fields, files, res){
   console.log(sql);
   //res.json({err:'err'});
 
-router.get('/query', function(req, res ,next){
-  res.render('card_manage/table_managed.html');
-  User.add(sql, function(err, user){
-    if(err){
-      return res.json({error:'卡信息添加失败'});
-    }
-    saveImg(uId, files, res);
-  });
+
 };
 function saveImg(id, files, res){
   var filePath = path.join(__dirname, '../public/imgs/card/');
@@ -114,7 +107,14 @@ function saveImg(id, files, res){
     }
   })
 }
-router.get('/index', function(req, res ,next){
+
+router.get('/query', function(req, res ,next){
+  res.render('card_manage/table_managed.html');
+  User.add(sql, function(err, user){
+    if(err){
+      return res.json({error:'卡信息添加失败'});
+    }
+    saveImg(uId, files, res);
 });
 
 router.post('/query', function(req, res, next){
@@ -128,7 +128,39 @@ router.post('/query', function(req, res, next){
     });         
 });
 
+router.get('/update', function(req, res, next){
 
+});
+
+router.post('/update', function(req, res, next){
+  var card = {
+    cardid    : req.body.cardid,
+    title     : req.body.title,
+    describes : req.body.describes,
+    price     : req.body.price,
+    logistic  : req.body.logistic,
+    category  : req.body.category,
+    brand     : req.body.brand,
+    freight   : req.body.freight,
+    exchange  : req.body.exchange,
+    amount    : req.body.amount,
+    owner     : req.body.owner
+  };
+
+  Card.update(card, function(err, res){
+    if (err)
+      return res.json({error : '数据库更新出错'});
+    return res.json(success : res);
+  })
+});
+
+router.post('delete', function(req, res, next){
+    Card.delete(req.body.cardid, function(err, res){
+        if (err)
+           return res.json({error : '数据库更新出错'});
+        return res.json(success : res);
+    });
+});
 
 
 module.exports = router;
