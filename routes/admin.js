@@ -18,17 +18,6 @@ var options = {
 };
 
 router.get('/login', function(req, res, next){
-
-  // var fileName = 'login.html';
-  // res.sendFile(fileName, options, function (err) {
-  //   if (err) {
-  //     console.log(err);
-  //     res.status(err.status).end();
-  //   }
-  //   else {
-  //     console.log('Sent:', fileName);
-  //   }
-  // });
   res.render('login.html');
 });
 
@@ -45,17 +34,11 @@ router.post('/login', function(req, res, next){
       console.log('Sent:', 'index.html');
     }
   });
-  //res.render('index.html');
-  //res.json({error:'失败'});
 });
 router.get('/starcardAdd',function(req, res, next){
   res.render('StarCardAdd.html');
 });
 router.post('/starcardAdd',function(req, res, next){
-  //var sql = 'insert into card(userid, username, password, telephone, IDCardNo) values("'+ user.userid+'","'+  user.username +'","'+ user.password + '","'+ user.telephone+ '","'+ user.IDCardNo +'")';
-  //res.json({title:req.body.title,price:req.body.price,amount:req.body.amount,category:req.body.category,brand:req.body.brand,logistic:req.body.logistic,freight:req.body.freight,exchange:req.body.exchange,describes:req.body.describes});
-  //console.log('***********************',req.body.title);
-  //res.json({sucess:'yes'});
   var form = new multiparty.Form();
   form.parse(req, function(err, fields, files){
     if(err){
@@ -66,6 +49,7 @@ router.post('/starcardAdd',function(req, res, next){
     addInfo(fields, files, res);
   })
 });
+
 function addInfo(fields, files, res){
   var uId = uuid.v1();
   var title = fields.title[0];
@@ -110,11 +94,6 @@ function saveImg(id, files, res){
 
 router.get('/query', function(req, res ,next){
   res.render('card_manage/table_managed.html');
-  User.add(sql, function(err, user){
-    if(err){
-      return res.json({error:'卡信息添加失败'});
-    }
-    saveImg(uId, files, res);
 });
 
 router.post('/query', function(req, res, next){
@@ -150,17 +129,18 @@ router.post('/update', function(req, res, next){
   Card.update(card, function(err, res){
     if (err)
       return res.json({error : '数据库更新出错'});
-    return res.json(success : res);
+    return res.json({success : res});
   })
 });
 
-router.post('delete', function(req, res, next){
+router.post('/delete', function(req, res, next){
     Card.delete(req.body.cardid, function(err, res){
         if (err)
            return res.json({error : '数据库更新出错'});
-        return res.json(success : res);
+        return res.json({success : res});
     });
 });
 
 
 module.exports = router;
+
