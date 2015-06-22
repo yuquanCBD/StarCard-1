@@ -136,6 +136,7 @@ function saveImg(id, files, res){
 		}
 		else{
 			for (var i in files.imgs ) {
+				if(i>2) break;
 				var file = files.imgs[i];
 				if(file.originalFilename.length == 0)
 					break;
@@ -148,7 +149,6 @@ function saveImg(id, files, res){
 	});
 }
 function vertifyM(req, res, next){
-	//测试先不验证短信验证码
 	// if(req.session.msg != req.body.messageCaptcha)	
 	// 	return res.json({error:'短信验证码错误'});
 	res.json({success:'success'});
