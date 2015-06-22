@@ -131,10 +131,7 @@ router.get('/picture', function(req, res, next){
   var filePath = path.join(__dirname, '../public/imgs/card/'+req.query.cardid);
     console.log(req.query.cardid);
     var files = fs.readdirSync(filePath);
-    for(i in files){
-      res.sendFile(filePath+'/'+files[i].originalFilename);
-    }
-   // res.sendFile(path.join(__dirname, '../public/imgs/card/22c3d280-125f-11e5-9069-7f2aef595e14/0.jpg'));
+     res.render('card_manage/picture', { title: 'My Little Star',imgs:files, filePath: filePath});
 });
 
 router.post('/update', function(req, res, next){
