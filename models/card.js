@@ -58,12 +58,12 @@ Card.prototype.save = function(callback){
 	});
 };
 
-Card.query = function(offset, size, callback){
+Card.query = function(callback){
 	mysql.getConnection(function(err, conn){
 		if (err) 
 			callback(err);
 
-		var sql = 'SELECT title, describes, price, logistic, category, brand, freight, exchange, owner, amount FROM card LIMIT ' + offset + ',' + size;
+		var sql = 'SELECT title, describes, price, logistic, category, brand, freight, exchange, owner, amount FROM card ';
 		console.log('querySQL: '+ sql);
 		conn.query(sql, function(err, rows){
 			if (err) 
