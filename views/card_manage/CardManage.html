@@ -843,7 +843,7 @@
 
 										<ul class="dropdown-menu pull-right">
 
-											<li><a href="#"><i class="icon-pencil"></i> Edit</a></li>
+											<li><a href="#" id="detailBtn"><i class="icon-pencil"></i> Edit</a></li>
 
 											<li><a href="#"><i class="icon-trash"></i> Delete</a></li>
 
@@ -1163,10 +1163,11 @@
 
 
 		jQuery(document).ready(function() {     
+
 			function createTR(obj){
 				var tr = '<tr class="odd gradeX">'+
-					'<td><input type="checkbox" class="checkboxes" value="1" /></td>'+
-					'<td>'+obj.title+'</td>'+
+					'<td><input type="checkbox" class="checkboxes" value="1" name="checks"/></td>'+
+					'<a href="#"><td>'+obj.title+'</td></a>'+
 					'<td class="hidden-480">'+obj.describes+'</td>'+
 					'<td>'+obj.price+'</td>'+
 					'<td>'+obj.logistic+'</td>'+
@@ -1184,6 +1185,7 @@
 		   		url : 'query',
 		   		data : {pageIndex : 0, pageSize : 20},
 		   		dataType : 'json',
+		   		cache : false,
 		   		success : function(data){
 		   			var eva = eval(data);
 		   			console.log(eva.length);
@@ -1203,6 +1205,13 @@
 		   });     
 
 		   
+		 	$("#detailBtn").click(function(){
+		 		alert(13);
+				$('checks').each(function(){
+					if(this.checked)
+						alert($(this).val());
+				});
+			});
 
 
 		});

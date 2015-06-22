@@ -63,7 +63,7 @@ Card.query = function(callback){
 		if (err) 
 			callback(err);
 
-		var sql = 'SELECT title, describes, price, logistic, category, brand, freight, exchange, owner, amount FROM card ';
+		var sql = 'SELECT cardid, title, describes, price, logistic, category, brand, freight, exchange, owner, amount FROM card ';
 		console.log('querySQL: '+ sql);
 		conn.query(sql, function(err, rows){
 			if (err) 

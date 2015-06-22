@@ -111,27 +111,28 @@ router.post('/query', function(req, res, next){
 });
 
 router.get('/update', function(req, res, next){
-   var cardInfo = {
-    cardid    : 'cardid',
-    title     : 'title',
-    describes : 'describes',
-    price     : 1.0,
-    logistic  : 'logistic',
-    category  : 1,
-    brand     : 'brand',
-    freight   : 2.0,
-    exchange  : 0,
-    amount    : 1,
-    owner     : 'louzh'
-  };
-    res.render('card_manage/detail.html',{card : cardInfo});
+  //  var cardInfo = {
+  //   cardid    : 'cardid',
+  //   title     : 'title',
+  //   describes : 'describes',
+  //   price     : 1.0,
+  //   logistic  : 'logistic',
+  //   category  : 1,
+  //   brand     : 'brand',
+  //   freight   : 2.0,
+  //   exchange  : 0,
+  //   amount    : 1,
+  //   owner     : 'louzh'
+  // };
+
+    res.render('card_manage/detail.html',{card : req.body.card});
 });
 
 router.get('/picture', function(req, res, next){
   var filePath = path.join(__dirname, '../public/imgs/card/'+req.query.cardid);
     console.log(req.query.cardid);
     var files = fs.readdirSync(filePath);
-     res.render('card_manage/picture', { title: 'My Little Star',imgs:files, filePath: filePath});
+     res.render('card_manage/picture', { title: 'My Little Star',imgs:files, filePath: '../imgs/card/'+req.query.cardid});
 });
 
 router.post('/update', function(req, res, next){
