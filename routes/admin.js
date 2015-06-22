@@ -36,7 +36,7 @@ router.post('/login', function(req, res, next){
   });
 });
 router.get('/starcardAdd',function(req, res, next){
-  res.render('StarCardAdd.html');
+  res.render('card_manage/StarCardAdd.html');
 });
 router.post('/starcardAdd',function(req, res, next){
   var form = new multiparty.Form();
@@ -93,7 +93,7 @@ function saveImg(id, files, res){
 }
 
 router.get('/query', function(req, res ,next){
-  res.render('card_manage/table_managed.html');
+  res.render('card_manage/CardManage.html');
 });
 
 router.post('/query', function(req, res, next){
@@ -128,7 +128,7 @@ router.post('/update', function(req, res, next){
 
   Card.update(card, function(err, res){
     if (err)
-      return res.json({error : '数据库更新出错'});
+      return res.json({error : err});
     return res.json({success : res});
   })
 });
@@ -136,9 +136,17 @@ router.post('/update', function(req, res, next){
 router.post('/delete', function(req, res, next){
     Card.delete(req.body.cardid, function(err, res){
         if (err)
-           return res.json({error : '数据库更新出错'});
+           return res.json({error : err});
         return res.json({success : res});
     });
+});
+
+router.post('/detail', function(req, res, next){
+  Card.queryByID(req.body.cardid, function(err, card){
+        if (err)
+           return res.json({error : err});
+        return res.json({card : card});
+  });
 });
 
 

@@ -105,7 +105,24 @@ Card.delete = function(cardid, callback){
 			callback(err, res);
 		});
 	});
-}
+};
+
+Card.queryByID = function(cardid, callback){
+		mysql.getConnection(function(err, conn){
+		if (err) 
+			callback(err);
+
+		var sql = 'SELECT cardid, title, describes, price, logistic, category, brand, freight, exchange, owner, amount FROM card WHERE cardid = "' +cardid+ '"';
+		console.log('querySQL: '+ sql);
+		conn.query(sql, function(err, rows){
+			if (err) 
+				callback(err);
+			callback(err, rows[0]);
+		});
+	});
+};
+
+
 
 module.exports = Card;
 
