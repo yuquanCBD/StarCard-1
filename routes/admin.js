@@ -102,10 +102,7 @@ router.get('/query', function(req, res ,next){
 });
 
 router.post('/query', function(req, res, next){
-  //console.log('sucess');
-    var size = req.body.pageSize;
-    var offset = req.body.pageIndex * size;
-    Card.query(offset, size, function(err, cards){
+    Card.query(function(err, cards){
         if (err)
             return res.json({error: err});
         console.log(cards);
@@ -114,7 +111,30 @@ router.post('/query', function(req, res, next){
 });
 
 router.get('/update', function(req, res, next){
+   var cardInfo = {
+    cardid    : 'cardid',
+    title     : 'title',
+    describes : 'describes',
+    price     : 1.0,
+    logistic  : 'logistic',
+    category  : 1,
+    brand     : 'brand',
+    freight   : 2.0,
+    exchange  : 0,
+    amount    : 1,
+    owner     : 'louzh'
+  };
+    res.render('card_manage/detail.html',{card : cardInfo});
+});
 
+router.get('/picture', function(req, res, next){
+  var filePath = path.join(__dirname, '../public/imgs/card/'+req.query.cardid);
+    console.log(req.query.cardid);
+    var files = fs.readdirSync(filePath);
+    for(i in files){
+      res.sendFile(filePath+'/'+files[i].originalFilename);
+    }
+   // res.sendFile(path.join(__dirname, '../public/imgs/card/22c3d280-125f-11e5-9069-7f2aef595e14/0.jpg'));
 });
 
 router.post('/update', function(req, res, next){
@@ -131,6 +151,8 @@ router.post('/update', function(req, res, next){
     amount    : req.body.amount,
     owner     : req.body.owner
   };
+
+
 
   Card.update(card, function(err, res){
     if (err)

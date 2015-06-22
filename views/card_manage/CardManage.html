@@ -829,7 +829,7 @@
 
 								<div class="actions">
 
-									<a href="#" class="btn blue"><i class="icon-pencil"></i> Add</a>
+									<a href="/admin/starcardAdd" class="btn blue"><i class="icon-pencil"></i> Add</a>
 
 									<div class="btn-group">
 
@@ -1162,30 +1162,23 @@
 		// </tr>
 
 
-		jQuery(document).ready(function() {    
-			var html = '<div id="sssss" class="footer-inner">2013 &copy; Metronic by keenthemes.</div>';
-			var trTest1 = '<tr class="odd gradeX">'+
-			'<td><input type="checkbox" class="checkboxes" value="1" /></td>'+
-			'<td>test</td>'+
-			'<td class="hidden-480"><a href="mailto:userwow@gmail.com">good@gmail.com</a></td>'+
-			'<td><span class="label label-success">Approved</span></td>'+
-			'<td>shuxer</td><td>shuxer</td><td>shuxer</td><td>shuxer</td><td>shuxer</td><td>'+'shuxer</td><td>shuxer</td></tr>';
-			//function createTR(){};
-			$('#sss').prepend(html);
-			$('tbody').append(trTest1);
-			//alert($('#sssss').text())
-			// $.ajax({
-		 //   		type : 'POST',
-		 //   		url : 'query',
-		 //   		data : {pageIndex : 0, pageSize : 20},
-		 //   		dataType : 'json',
-		 //   		success : function(data){
-		 //   			alert('成功');
-		 //   		},
-		 //   		error: function (XMLHttpRequest, textStatus, errorThrown) { 
-   //                  alert('失败'); 
-   //              } 
-		 //   }); 
+		jQuery(document).ready(function() {     
+			function createTR(obj){
+				var tr = '<tr class="odd gradeX">'+
+					'<td><input type="checkbox" class="checkboxes" value="1" /></td>'+
+					'<td>'+obj.title+'</td>'+
+					'<td class="hidden-480">'+obj.describes+'</td>'+
+					'<td>'+obj.price+'</td>'+
+					'<td>'+obj.logistic+'</td>'+
+					'<td>'+obj.category+'</td>'+
+					'<td>'+obj.brand+'</td>'+
+					'<td>'+obj.freight+'</td>'+
+					'<td>'+obj.exchange+'</td>'+
+					'<td>'+obj.owner+'</td>'+
+					'<td>'+obj.amount+'</td>'+
+					'</tr>';
+				return tr;
+			};
 		 	$.ajax({
 		   		type : 'POST',
 		   		url : 'query',
@@ -1193,17 +1186,23 @@
 		   		dataType : 'json',
 		   		success : function(data){
 		   			var eva = eval(data);
-		   			alert(eva.length);
 		   			console.log(eva.length);
+		   			console.log(eva);
+		   			for (var i = 0; i < eva.length; i++) {
+		  				var tr = createTR(eva[i]);
+		   				console.log(tr);
+		   				$('tbody').append(tr);
+		   			};
+		   			App.init();
+
+		   			TableManaged.init();
 		   		},
 		   		error : function(){
-		   			alert('sss');
+		   			alert('查询信息失败');
 		   		}
 		   });     
 
-		   App.init();
-
-		   TableManaged.init();
+		   
 
 
 		});
