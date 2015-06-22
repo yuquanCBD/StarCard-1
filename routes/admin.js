@@ -102,6 +102,7 @@ router.get('/query', function(req, res ,next){
 });
 
 router.post('/query', function(req, res, next){
+  //console.log('sucess');
     var size = req.body.pageSize;
     var offset = req.body.pageIndex * size;
     Card.query(offset, size, function(err, cards){
