@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var Card = require('../models/card');
 
 var options = {
 	root: __dirname + '/../views/',
@@ -40,8 +41,22 @@ router.post('/login', function(req, res, next){
   });
 });
 
-router.get('/index', function(req, res ,next){
+router.get('/query', function(req, res ,next){
+  res.render('card_manage/table_managed.html');
 });
+
+router.post('/query', function(req, res, next){
+    var size = req.body.pageSize;
+    var offset = req.body.pageIndex * size;
+    Card.query(offset, size, function(err, cards){
+        if (err)
+            return res.json({error: err});
+        console.log(cards);
+        return res.json(cards);    
+    });         
+});
+
+
 
 
 module.exports = router;

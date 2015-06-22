@@ -58,9 +58,19 @@ Card.prototype.save = function(callback){
 	});
 };
 
-function GenerateCardID(){
+Card.query = function(offset, size, callback){
+	mysql.getConnection(function(err, conn){
+		if (err) 
+			callback(err);
 
-	return ;
-}
+		var sql = 'SELECT title, describes, price, logistic, category, brand, freight, exchange, owner, amount FROM card LIMIT ' + offset + ',' + size;
+		console.log('querySQL: '+ sql);
+		conn.query(sql, function(err, rows){
+			if (err) 
+				callback(err);
+			callback(err, rows);
+		});
+	});
+};
 
 module.exports = Card;
