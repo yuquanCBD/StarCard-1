@@ -66,7 +66,7 @@ function addInfo(fields, files, res){
   sql = sql + '("'+uId+'","'+title+'","'+describes+'","'+price+'","'+logistic+'","'+category+'","'+brand+'","'+freight+'","'+exchange+'","'+owner+'","'+amount+'")';
   console.log(sql);
   //res.json({err:'err'});
-  User.add(sql, function(err, user){
+  Card.add(sql, function(err, user){
     if(err){
       return res.json({error:'卡信息添加失败'});
     }
@@ -160,10 +160,10 @@ router.post('/update', function(req, res, next){
 });
 
 router.post('/delete', function(req, res, next){
-    Card.delete(req.body.cardid, function(err, res){
+    Card.delete(req.body.cardid, function(err, r){
         if (err)
            return res.json({error : err});
-        return res.json({success : res});
+        return res.json({sucess:r});
     });
 });
 
