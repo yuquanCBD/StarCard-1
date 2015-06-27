@@ -94,9 +94,9 @@ Card.update = function(card, callback){
 		if (err) 
 			callback(err);
 
-		var sql = 'UPDATE card SET title="'+ card.title +'", describes="'+card.describes+'", price='+card.price+', logistic="'+card.logistic
-		+'", category='+card.category+', brand="'+card.brand+'", freight='+card.freight+', exchange='+card.exchange
-		+',amount='+card.amount+' WHERE cardid = "'+card.cardid+'"';
+		var sql = 'UPDATE card SET title="'+ card.title +'", describes="'+card.describes+'", price="'+card.price+'", logistic="'+card.logistic
+		+'", category="'+card.category+'", brand="'+card.brand+'", freight="'+card.freight+'", exchange="'+card.exchange
+		+'",amount="'+card.amount+'" WHERE cardid = "'+card.cardid+'"';
 		console.log('updateSQL: '+ sql);
 		conn.query(sql, function(err, res){
 			if (err) 

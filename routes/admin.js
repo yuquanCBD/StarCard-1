@@ -20,18 +20,21 @@ var options = {
 router.get('/login', function(req, res, next){
   res.render('login.html');
 });
-
+router.get('/test', function(req, res, next){
+  res.render('test.html',{title:'测试程序'});
+});
 router.post('/login', function(req, res, next){
   var username = req.body.username;
   var password = req.body.password;
   console.log('username: '+username+', password: '+password);
-  res.sendFile('index.html', options, function (err) {
+  res.sendFile('card_manage/CardManage.html', options, function (err) {
     if (err) {
       console.log(err);
       res.status(err.status).end();
     }
     else {
       console.log('Sent:', 'index.html');
+      //return res.render('card_manage/CardManage.html');
     }
   });
 });
@@ -92,7 +95,7 @@ function saveImg(id, files, res){
         fs.renameSync(file.path, filePath+id+'/'+i+'.'+String(types[types.length-1]));
       };
       console.log('卡片添加成功');
-      res.json({success:'success'});
+      return res.render('card_manage/CardManage.html');
     }
   })
 }
@@ -110,33 +113,8 @@ router.post('/query', function(req, res, next){
     });         
 });
 
-router.get('/update', function(req, res, next){
-  //  var cardInfo = {
-  //   cardid    : 'cardid',
-  //   title     : 'title',
-  //   describes : 'describes',
-  //   price     : 1.0,
-  //   logistic  : 'logistic',
-  //   category  : 1,
-  //   brand     : 'brand',
-  //   freight   : 2.0,
-  //   exchange  : 0,
-  //   amount    : 1,
-  //   owner     : 'louzh'
-  // };
-
-    res.render('card_manage/detail.html',{card : req.body.card});
-});
-
-router.get('/picture', function(req, res, next){
-  var filePath = path.join(__dirname, '../public/imgs/card/'+req.query.cardid);
-    console.log(req.query.cardid);
-    var files = fs.readdirSync(filePath);
-     res.render('card_manage/picture', { title: 'My Little Star',imgs:files, filePath: '../imgs/card/'+req.query.cardid});
-});
-
 router.post('/update', function(req, res, next){
-  var card = {
+   var cardInfo = {
     cardid    : req.body.cardid,
     title     : req.body.title,
     describes : req.body.describes,
@@ -146,18 +124,50 @@ router.post('/update', function(req, res, next){
     brand     : req.body.brand,
     freight   : req.body.freight,
     exchange  : req.body.exchange,
-    amount    : req.body.amount,
-    owner     : req.body.owner
-  };
+    amount    : req.body.amount
+    };
+    console.log(cardInfo);
+    Card.update(cardInfo,function(err,r){
+      if(err){
+        console.log(err);
+        return res.json({error:err});
+      }
+      return res.render('card_manage/CardManage.html');
+    });
 
-
-
-  Card.update(card, function(err, res){
-    if (err)
-      return res.json({error : err});
-    return res.json({success : res});
-  })
+    //
 });
+
+router.get('/picture', function(req, res, next){
+  var filePath = path.join(__dirname, '../public/imgs/card/'+req.query.cardid);
+    console.log(req.query.cardid);
+    var files = fs.readdirSync(filePath);
+     res.render('card_manage/picture', { title: 'My Little Star',imgs:files, filePath: '../imgs/card/'+req.query.cardid});
+});
+
+// router.post('/update', function(req, res, next){
+//   var card = {
+//     cardid    : req.body.cardid,
+//     title     : req.body.title,
+//     describes : req.body.describes,
+//     price     : req.body.price,
+//     logistic  : req.body.logistic,
+//     category  : req.body.category,
+//     brand     : req.body.brand,
+//     freight   : req.body.freight,
+//     exchange  : req.body.exchange,
+//     amount    : req.body.amount,
+//     owner     : req.body.owner
+//   };
+
+
+
+//   Card.update(card, function(err, res){
+//     if (err)
+//       return res.json({error : err});
+//     return res.json({success : res});
+//   })
+// });
 
 router.post('/delete', function(req, res, next){
     Card.delete(req.body.cardid, function(err, r){
