@@ -17,6 +17,7 @@ var register_route = require('./routes/register');      //注册路由
 var retrieve_route = require('./routes/retrieve');      //找回密码路由
 var publish_route = require('./routes/publish');        //发帖路由
 var admin_route = require('./routes/admin');
+var wiki_route = require('./routes/wiki');              //百科路由
 
 var app = express();
 
@@ -63,6 +64,7 @@ app.use('/register', register_route);
 app.use('/retrieve', retrieve_route);
 app.use('/publish', publish_route);
 app.use('/admin', admin_route);
+app.use('/wiki', wiki_route);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
