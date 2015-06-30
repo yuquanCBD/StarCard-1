@@ -79,7 +79,7 @@ Card.query = function(callback){
 		if (err) 
 			callback(err);
 
-		var sql = 'SELECT cardid, title, describes, price, logistic, category, brand, freight, exchange, owner, amount FROM card ';
+		var sql = 'SELECT cardid, title, describes, price, logistic, category, brand, freight, exchange, owner, amount,pictures FROM card ';
 		console.log('querySQL: '+ sql);
 		conn.query(sql, function(err, rows){
 			if (err) 
@@ -89,14 +89,10 @@ Card.query = function(callback){
 	});
 };
 
-Card.update = function(card, callback){
+Card.update = function(sql, callback){
 	mysql.getConnection(function(err, conn){
 		if (err) 
 			callback(err);
-
-		var sql = 'UPDATE card SET title="'+ card.title +'", describes="'+card.describes+'", price="'+card.price+'", logistic="'+card.logistic
-		+'", category="'+card.category+'", brand="'+card.brand+'", freight="'+card.freight+'", exchange="'+card.exchange
-		+'",amount="'+card.amount+'" WHERE cardid = "'+card.cardid+'"';
 		console.log('updateSQL: '+ sql);
 		conn.query(sql, function(err, res){
 			if (err) 
