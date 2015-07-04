@@ -196,7 +196,7 @@ function updateInfo(fields, files, res){
     });
         
   }
-}
+};
 router.post('/update', function(req, res, next){
    var form = new multiparty.Form();
    form.parse(req, function(err, fields, files){

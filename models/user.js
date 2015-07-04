@@ -120,6 +120,26 @@ User.checkUserByName = function checkUserByName(username, callback){
 			callback(err, rows);
 		});
 	});
+};
+User.query = function getScore(sql, callback){
+	mysql.getConnection(function(err, conn){
+		if(err){
+			console.log("POOL: ==> " + err);
+			callback(err);
+		}
+		else{
+			console.log('querySQL:',sql);
+			conn.query(sql, function(err, rows){
+				if(err){
+					callback(err, null);
+				}
+				else{
+					console.log(rows);
+					callback(err, rows);
+				}
+			});//conn.query
+		};
+	});//mysql.getConnection
 }
 
 
