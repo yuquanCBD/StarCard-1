@@ -124,7 +124,7 @@ Card.queryByID = function(cardid, callback){
 		if (err) 
 			callback(err);
 
-		var sql = 'SELECT cardid, title, describes, price, logistic, category, brand, freight, exchange, owner, amount FROM card WHERE cardid = "' +cardid+ '"';
+		var sql = 'SELECT cardid, title, pictures, describes, price, logistic, category, brand, freight, exchange, owner, amount, time, longitude, latitude  FROM card WHERE cardid = "' +cardid+ '"';
 		console.log('querySQL: '+ sql);
 		conn.query(sql, function(err, rows){
 			if (err) 
@@ -136,10 +136,96 @@ Card.queryByID = function(cardid, callback){
 
 
 //首页模块所需接口
-Card.queryByTypeBrand = function(category, brand, offset, capacity, callback){
-	
+Card.searchByCond = function(cond, category, brand, offset, capacity, order, longitude, latitude, callback){
+	mysql.getConnection(function(err, conn){
+		if (err) 
+			callback(err);
+
+        var flag1 = false;
+        var flag2 = false;
+
+		var sql = 'SELECT cardid, title, pictures, describes, price, logistic, category, brand, freight, exchange, owner, amount, time, longitude, latitude FROM card ';
+        if (cond) {
+            sql += ' WHERE (title = "'+ cond +'" OR brand = "'+cond+'") ';
+            flag1 = true;
+        }
+        if (brand) {
+            if (flag1)
+                sql += 'AND brand = "' + brand + '" ';
+            else
+                sql += 'WHERE brand = "' + brand + '" ';
+            flag2 = true;
+        }
+        if (category) {
+            if (flag1 && !flag2) 
+                sql += 'AND category = "' + category + '" ';
+            else if (flag1 && flag2)
+                sql += 'AND category = "' + category + '" ';
+            else if (!flag1 && flag2)
+                sql += 'AND category = "' + category + '" ';
+            else 
+                sql += 'WHERE category = "' + category + '" ';
+        }
+
+        if(order == 1)
+        	sql += ' order by time ';
+
+        offset = parseInt(offset) * parseInt(capacity);
+        sql += 'LIMIT ' + offset + ', ' + capacity;  //分页查询
+
+
+		console.log('querySQL: '+ sql);
+		conn.query(sql, function(err, rows){
+			if (order == 3) {//根据经纬度排序
+				rows.sort(function(a, b){
+					var d1 = GetDistance(latitude, longitude, a.latitude, a.longitude);
+					var d2 = GetDistance(latitude, longitude, b.latitude, b.longitude);
+					return d1 > d2 ? 1 : -1;
+				});
+			}
+
+			for (var i in rows) {
+				rows[i].dis = GetDistance(latitude, longitude, rows[i].latitude, rows[i].longitude);
+			}
+			console.log(rows)
+			callback(err, rows);
+		});
+	});
 };
 
+
+function rad(d){
+	return d * Math.PI / 180.0;
+}
+//
+function GetDistance( lat1,  lng1,  lat2,  lng2){
+	if( ( Math.abs( lat1 ) > 90  ) ||(  Math.abs( lat2 ) > 90 ) || ( Math.abs( lng1 ) > 180  ) ||(  Math.abs( lng2 ) > 180 ) )
+		return;
+	var radLat1 = rad(lat1);
+	var radLat2 = rad(lat2);
+	var a = radLat1 - radLat2;
+	var  b = rad(lng1) - rad(lng2);
+	var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2) +
+	Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
+	s = s *6378.137 ;// EARTH_RADIUS;
+	s = Math.round(s * 10000) / 10000;
+	return s;
+}
+
+
+Card.searchCardsByOwner = function(owner, callback){
+    mysql.getConnection(function(err, conn){
+        if (err) 
+            callback(err);
+
+		var sql = 'SELECT cardid, title, pictures, describes, price, logistic, category, brand, freight, exchange, owner, amount, time, longitude, latitude FROM card WHERE owner = "' +owner+'"';
+
+        console.log('searchCardsByOwner_SQL: '+ sql);
+        conn.query(sql, function(err, rows){
+            callback(err, rows);
+        });
+    });
+};
 
 module.exports = Card;
 
