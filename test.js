@@ -1,16 +1,16 @@
 var http = require('http');
 var querystring = require('querystring');
-// var contents = querystring.stringify({
-// 	cond: '',
-// 	brand: '名牌2',
-// 	category: '',
-// 	offset : 0,
-// 	capacity : 20
-// });
-
 var contents = querystring.stringify({
-	wikiid : 1
+	cond: '',
+	brand: '',
+	category: '',
+	offset : 0,
+	capacity : 20
 });
+
+// var contents = querystring.stringify({
+// 	wikiid : 1
+// });
 var wikijson = JSON.stringify({
 		wikiname : '马拉多纳122312',
 		english_name : 'maladuona',
@@ -31,9 +31,9 @@ var wikijson = JSON.stringify({
 // 	wiki : wikijson
 // });
 var options = {
-	host: 'localhost',
+	host: '115.28.60.156',
 	port: '3000',
-	path: '/wiki/queryDetail',
+	path: '/wiki/queryList',
 	//path : '/register',
 	method: 'POST',
 	headers: {

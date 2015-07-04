@@ -139,6 +139,11 @@ Card.queryByID = function(cardid, callback){
 };
 
 
+//首页模块所需接口
+Card.queryByTypeBrand = function(category, brand, offset, capacity, callback){
+	
+};
+
 
 module.exports = Card;
 
