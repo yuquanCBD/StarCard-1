@@ -3,7 +3,7 @@ var router = express.Router();
 var multiparty = require('multiparty');
 var uuid = require('node-uuid');
 var Card = require('../models/card');
-var User = require('../models/User');
+var User = require('../models/user');
 var path = require('path');
 var fs = require('fs');
 var exec = require('child_process').exec;
@@ -17,7 +17,7 @@ console.log("Request handler 'start' was called.");
     'charset=UTF-8" />'+ 
     '</head>'+ 
     '<body>'+ 
-    '<form action="/publish/update" enctype="multipart/form-data" '+ 
+    '<form action="/publish" enctype="multipart/form-data" '+ 
     //'<form action="/publish/delete"'+ 
     'method="post">'+ 
     '卡片名称<input type="text" name="title" value="card1" /></br>'+
