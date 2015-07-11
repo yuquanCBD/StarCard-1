@@ -11,6 +11,7 @@ var flash = require("connect-flash");
 var methodOverride = require('method-override');
 
 
+
 var index_route = require('./routes/index');            //主路由
 var login_route = require('./routes/login');            //登录路由
 var register_route = require('./routes/register');      //注册路由
@@ -18,7 +19,9 @@ var retrieve_route = require('./routes/retrieve');      //找回密码路由
 var publish_route = require('./routes/publish');        //发帖路由
 var admin_route = require('./routes/admin');
 var wiki_route = require('./routes/wiki');              //百科路由
-var home_route = require('./routes/home')               //首页路由
+var home_route = require('./routes/home');               //首页路由
+var mycard_route = require('./routes/mycard');           //我的卡圈路由
+var test_route = require('./routes/test');               //测试路由
 
 var app = express();
 
@@ -67,6 +70,8 @@ app.use('/publish', publish_route);
 app.use('/admin', admin_route);
 app.use('/wiki', wiki_route);
 app.use('/home', home_route);
+app.use('/mycard', mycard_route);
+app.use('/test', test_route);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -82,10 +87,7 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
+    res.json({'error' : err.message,});
   });
 }
 
@@ -93,10 +95,7 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
+  res.json({'error' : err.message,});
 });
 
 
