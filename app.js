@@ -22,6 +22,7 @@ var wiki_route = require('./routes/wiki');              //百科路由
 var home_route = require('./routes/home');               //首页路由
 var mycard_route = require('./routes/mycard');           //我的卡圈路由
 var comment_route = require('./routes/comment');          //卡片评论路由
+var exchange_route = require('./routes/exchange');           //交换卡片路由
 var test_route = require('./routes/test');               //测试路由
 
 var app = express();
@@ -73,6 +74,7 @@ app.use('/wiki', wiki_route);
 app.use('/home', home_route);
 app.use('/mycard', mycard_route);
 app.use('/comment',comment_route);
+app.use('/exchange',exchange_route);
 app.use('/test', test_route);
 
 // catch 404 and forward to error handler
