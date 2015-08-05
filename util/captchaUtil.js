@@ -14,7 +14,11 @@ util.getRandomNum = function getRandomNum(Min,Max)
 util.getMsgCap = function getMsgCap(mob){
 	var num = this.getRandomNum(100000, 999999);
 	var content = utf8.encode('您的验证码是：' + num + '。请不要把验证码泄露给其他人。');
-	var url = 'http://121.199.16.178/webservice/sms.php?method=Submit&account=cf_shzywh&password=cfshzywh&mobile=' + 
+
+	var account = 'cf_shzywh';
+	var password = 'cfshzywh';
+
+	var url = 'http://121.199.16.178/webservice/sms.php?method=Submit&account='+account+'&password='+password+'&mobile=' + 
 				mob + '&content=' + content;
 	console.log(url);
 
