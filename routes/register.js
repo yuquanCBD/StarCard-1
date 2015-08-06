@@ -58,7 +58,8 @@ function getMsg(req, res, next){
 	console.log(tel);
 	var msg = capUtil.getMsgCap(tel);
 	req.session.msg = msg;
-	req.session.when = new Date();
+	var time = new Date();
+	req.session.when = time.getTime();
 	req.session.tel = tel;
 	console.log('成功');
 	res.json({success:'success'});
@@ -68,9 +69,9 @@ function getMsg(req, res, next){
 function checkInfo(fields, files, res, req){
 	console.log('输出用户昵称:');
 	console.log(fields.username[0]);
-	console.log(fields.telephone[0]);
+
 	var when = new Date();
-	if((when.getTime() - req.session.when.getTime()) > 60000){
+	if((when.getTime() - req.session.when > 60000){
 		return res.json({error:'输入验证码超时'});
 	}
 	var username = fields.username[0];
@@ -97,7 +98,7 @@ function setUserInfo(fields, files, res, req){
 		password : password,
 		telephone : req.session.tel,
 		//telephone : fields.telephone[0],
-		IDCardNo : fields.IDCardNo[0]
+		IDCardNo : fields.idCardNo[0]
 	};
 	User.save(userInfo,function(err, user){
 		if(err){
