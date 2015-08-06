@@ -26,12 +26,16 @@ var exchange_route = require('./routes/exchange');           //交换卡片路�
 var test_route = require('./routes/test');               //测试路由
 var order_route = require('./routes/order');
 
+var io = require('./my_server')
+
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.engine('.html', require('ejs').renderFile);  
 app.set('view engine', 'html');  
+
+
 
 
 // uncomment after placing your favicon in /public
@@ -50,6 +54,15 @@ app.use(session({
   saveUninitialized : true
 }));
 
+
+app.get('/chat', function (req, res) {
+    setInterval(function() {
+        console.log('-----------------------emit message---------------', io.socket_id);
+        io.emit('message+' + io.socket_id, 'hello')
+    }, 5000);
+
+  res.sendfile(__dirname + '/client/index.html');
+});
 
 //获取状态
 app.use(function(req,res,next){

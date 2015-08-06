@@ -4,6 +4,7 @@ var fs = require('fs');
 
 
 function User(user){
+	this.userid = user.userid;
 	this.username = user.username;
 	this.password = user.password;
 	this.telephone = user.telephone;
@@ -20,7 +21,7 @@ User.get = function get(username, callback){
 			callback(err);
 		};
 
-		var sql = 'SELECT username, password, score FROM user WHERE username = "' + username +'"';
+		var sql = 'SELECT userid, username, password, score FROM user WHERE username = "' + username +'"';
 		console.log('SelectSQL: '+ sql);
 		conn.query(sql, function(err, rows){
 			if(err){

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>socket.io</title>
+<link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+<h1>socket.io</h1>
+<p>Welcome to socket.io</p>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+
+var socket = io.connect('http://localhost:3000/');
+var userid;
+socket.on('login', function (data) {
+	console.log('message+' + data.userid, socket.id);
+	userid = data.userid
+	socket.emit('message', { my : data});
+
+	socket.on('message+' + socket.id, function (data) {
+		console.log(data);
+	});
+});
+
+
+
+</script>
+</body>
+</html>
+

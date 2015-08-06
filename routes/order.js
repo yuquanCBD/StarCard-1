@@ -2,6 +2,7 @@ var express		= require('express');
 var router 		= express.Router();
 var Address 	= require('../models/address')
 var Order 		= require('../models/order')
+var io			= require('../my_server')
 
 //获取常用收货地址列表
 router.get('/queryAddrList', function(req, res, next){
@@ -56,6 +57,9 @@ router.post('/checkOrder', function(req, res, next){
 	Order.checkOrder(cardid, cardnum, seller, buyer, card_price, logistic_price, addrid, function(err, orderid){
 		if(err)
 			return res.json({error : err});
+
+		io.emit('order-' + seller, '您的卡片已有买家购买');//发送消息给卖家
+
 		return res.json({orderid : orderid});
 	});
 });

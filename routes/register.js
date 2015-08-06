@@ -7,6 +7,7 @@ var uuid = require('node-uuid');
 var multiparty = require('multiparty');
 var path = require('path');
 var fs = require('fs');
+
 //注册生成验证码
 router.get('/', function(req, res, next){
 	var cap = capUtil.getRandomNum(100000,999999);
@@ -20,30 +21,7 @@ router.post('/getMsgCap', checkTel);
 router.post('/getMsgCap', getMsg);
 //验证短信验证码
 router.post('/vertifyMsg', vertifyM);
-//设置昵称 密码 身份证后四位 存储身份证照片imgs
-// router.get('/',function(req, res, next){
-// 	console.log('请求设置信息');
-// 	var body = '<html>'+ 
-//      '<head>'+ 
-//     '<meta http-equiv="Content-Type" content="text/html; '+ 
-//     'charset=UTF-8" />'+ 
-//     '</head>'+ 
-//     '<body>'+ 
-//     '<form action="/register/setInfo" enctype="multipart/form-data" '+ 
-//     'method="post">'+ 
-//     '<input type="text" name="username" value="wanggaige" /><br>'+
-//     '<input type="text" name="password" value="12345" /><br>'+
-//     '<input type="text" name="telephone" value="13073687787" /><br>'+
-//     '<input type="text" name="IDCardNo" value="1956" /><br>'+
-//     '<input type="file" name="imgs" multiple="multiple"><br>'+ 
-//     '<input type="submit" value="Upload file" />'+ 
-//     '</form>'+ 
-//     '</body>'+ 
-//     '</html>'; 
-//     res.writeHead(200, {"Content-Type": "text/html"}); 
-//     res.write(body); 
-//     res.end(); 
-// });
+
 
 //设置昵称 密码 身份证后四位 存储身份证照片imgs
 router.post('/setInfo',function(req, res, next){
@@ -149,9 +127,9 @@ function saveImg(id, files, res){
 	});
 }
 function vertifyM(req, res, next){
-	// if(req.session.msg != req.body.messageCaptcha)	
-	// 	return res.json({error:'短信验证码错误'});
-	res.json({success:'success'});
+	if(req.session.msg != req.body.messageCaptcha)	
+		return res.json({error:'短信验证码错误'});
+	res.json({success:'验证成功！'});
 }
 
 module.exports = router;
