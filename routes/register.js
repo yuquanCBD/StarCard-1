@@ -71,7 +71,7 @@ function checkInfo(fields, files, res, req){
 	console.log(fields.username[0]);
 
 	var when = new Date();
-	if((when.getTime() - req.session.when > 60000){
+	if(when.getTime() - req.session.when > 60000){
 		return res.json({error:'输入验证码超时'});
 	}
 	var username = fields.username[0];
