@@ -51,6 +51,7 @@ Wiki.queryByCond = function(cond, brand, category, offset, capacity,callback){
         console.log('queryByCond_SQL: '+ sql);
         conn.query(sql, function(err, rows){
             callback(err, rows);
+            conn.release();
         });
     });
 };
@@ -67,6 +68,7 @@ Wiki.queryDetail = function(wikiid, callback){
         console.log('queryDetail_SQL: '+ sql);
         conn.query(sql, function(err, rows){
             callback(err, rows[0]);
+            conn.release();
         });
     });
 };
@@ -107,6 +109,7 @@ Wiki.modify = function(wiki, callback){
         console.log('queryDetail_SQL: '+ sql);
         conn.query(sql, function(err, result){
             callback(err, result);
+            conn.release();
         });
     });
 };
