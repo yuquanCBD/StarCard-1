@@ -24,6 +24,7 @@ Order.checkOrder = function(cardid, cardnum, seller, buyer, card_price, logistic
 			console.log('UPDATE_card_SQL: '+ sql2);
 			conn.query(sql2, function(err, results){
 				callback(err, orderid);
+				conn.release();
 			});
         });
 
@@ -43,6 +44,7 @@ Order.payOrder = function(orderid, alipay_id, callback){
 			if(err)
 				return callback(err);
 			callback(err, results);
+			conn.release();
         });
 
 	});
@@ -63,6 +65,7 @@ Order.deliverOrder = function(orderid, logistic, logistic_no, callback){
 			if(err)
 				return callback(err);
 			callback(err, results);
+			conn.release();
         });
 
 	});
@@ -81,6 +84,7 @@ Order.receiveOrder = function(orderid, callback){
 			if(err)
 				return callback(err);
 			callback(err, results);
+			conn.release();
         });
 
 	});
@@ -102,6 +106,7 @@ Order.prolongOrder = function(orderid, callback){
 			if(err)
 				return callback(err);
 			callback(err, results);
+			conn.release();
         });
 
 	});
@@ -120,6 +125,7 @@ Order.cancleOrder = function(orderid, callback){
 			if(err)
 				return callback(err);
 			callback(err, results);
+			conn.release();
         });
 	});
 };
@@ -136,6 +142,7 @@ Order.queryOrderList = function(userid, tag, callback){
 			if(err)
 				return callback(err);
 			callback(err, rows);
+			conn.release();
         });
 	});
 };

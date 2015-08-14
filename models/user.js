@@ -10,7 +10,7 @@ function User(user){
 	this.telephone = user.telephone;
 	this.email = user.email;
 	this.create_time = user.create_time;
-	ths.IDCardNo = user.IDCardNo;
+	this.IDCardNo = user.IDCardNo;
 	this.gender = user.gender;
 }
 

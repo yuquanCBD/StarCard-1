@@ -12,6 +12,7 @@ Comment.execSql = function(sql, callback){
 		if(err){
 			console.log("POOL ==>" + err);
 			callback(err);
+			conn.release();
 		};
 
 		conn.query(sql, function(err, res){

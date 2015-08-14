@@ -85,6 +85,7 @@ Card.query = function(callback){
 			if (err) 
 				callback(err);
 			callback(err, rows);
+			conn.release();
 		});
 	});
 };
@@ -99,6 +100,7 @@ Card.update = function(sql, callback){
 				callback(err);
 			console.log("update result: "+res);
 			callback(err, res);
+			conn.release();
 		});
 	});
 };
@@ -115,6 +117,7 @@ Card.delete = function(cardid, callback){
 				callback(err);
 			console.log("delete result: "+res);
 			callback(err, res);
+			conn.release();
 		});
 	});
 };
@@ -130,6 +133,7 @@ Card.queryByID = function(cardid, callback){
 			if (err) 
 				callback(err);
 			callback(err, rows[0]);
+			conn.release();
 		});
 	});
 };
@@ -189,6 +193,7 @@ Card.searchByCond = function(cond, category, brand, offset, capacity, order, lon
 			}
 			console.log(rows)
 			callback(err, rows);
+			conn.release();
 		});
 	});
 };
@@ -223,6 +228,7 @@ Card.searchCardsByOwner = function(owner, callback){
         console.log('searchCardsByOwner_SQL: '+ sql);
         conn.query(sql, function(err, rows){
             callback(err, rows);
+            conn.release();
         });
     });
 };

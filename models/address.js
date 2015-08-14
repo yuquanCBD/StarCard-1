@@ -13,6 +13,7 @@ Address.list = function(userid, callback){
 
 		conn.query(sql, function(err, results){
             callback(err, results);
+            conn.release();
         });
 	});
 };
@@ -35,6 +36,7 @@ Address.add = function(userid, province, city, district, postcode, address, tele
 			conn.query(sql2, function(err, results){
 				callback(err, results);
 			});
+			conn.release();
         });
 	});
 };
@@ -51,6 +53,7 @@ Address.del = function(userid, addrid, callback){
 
 		conn.query(sql, cond, function(err, results){
             callback(err, results);
+            conn.release();
         });
 	});};
 

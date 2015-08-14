@@ -18,7 +18,7 @@ router.post('/', function(req, res, next){
 			return res.json({error: '用户名或密码错误'});
 		}
 		req.session.user = user;
-		res.json({success: '登录成功'});
+		return res.json({userid: user.userid});
 	});
 });
 
