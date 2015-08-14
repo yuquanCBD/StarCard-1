@@ -1,3 +1,6 @@
+/*
+ * web部分
+*/
 var express = require('express');
 var uuid = require('node-uuid');
 var User = require('../models/user.js');
@@ -19,7 +22,7 @@ var options = {
 };
 
 router.get('/login', function(req, res, next){
-  res.render('login.html');
+  res.render('card_manage/login.html');
 });
 router.get('/test', function(req, res, next){
   res.render('test.html',{title:'测试程序'});
@@ -34,7 +37,7 @@ router.post('/login', function(req, res, next){
       res.status(err.status).end();
     }
     else {
-      console.log('Sent:', 'index.html');
+      console.log('Sent:', 'card_manage/index.html');
       //return res.render('card_manage/CardManage.html');
     }
   });
@@ -244,6 +247,8 @@ router.post('/detail', function(req, res, next){
   });
 });
 
-
+router.get("/userAdd",function(req, res, next){
+  res.render("card_manage/userAdd.html");
+});
 module.exports = router;
 

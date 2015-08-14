@@ -121,11 +121,12 @@ User.checkUserByName = function checkUserByName(username, callback){
 			}
 			console.log('*****查询用户名是否重复*****');
 			console.log(rows);
+			conn.release();
 			callback(err, rows);
 		});
 	});
 };
-User.query = function getScore(sql, callback){
+User.query = function(sql, callback){
 	mysql.getConnection(function(err, conn){
 		if(err){
 			console.log("POOL: ==> " + err);
@@ -139,13 +140,30 @@ User.query = function getScore(sql, callback){
 				}
 				else{
 					console.log(rows);
+					conn.release();
 					callback(err, rows);
 				}
 			});//conn.query
 		};
 	});//mysql.getConnection
 }
+User.exec = function(sql, callback){
+	mysql.getConnection(function(err, conn){
+		if(err){
+			console.log("POOL ==>" + err);
+			callback(err);
+		};
 
+		conn.query(sql, function(err, res){
+			if(err){
+				console.log(err);
+				callback(err);
+			}
+			conn.release();
+			callback(err, res);
+		})
+	})
+};
 /*
 ----------------------------------------我的卡圈 start --------------------------------------------
 */

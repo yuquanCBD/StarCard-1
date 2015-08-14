@@ -17,14 +17,15 @@ var login_route = require('./routes/login');            //登录路由
 var register_route = require('./routes/register');      //注册路由
 var retrieve_route = require('./routes/retrieve');      //找回密码路由
 var publish_route = require('./routes/publish');        //发帖路由
-var admin_route = require('./routes/admin');
+var admin_route = require('./routes/admin');            //web登录以及卡管理
 var wiki_route = require('./routes/wiki');              //百科路由
 var home_route = require('./routes/home');               //首页路由
 var mycard_route = require('./routes/mycard');           //我的卡圈路由
 var comment_route = require('./routes/comment');          //卡片评论路由
 var exchange_route = require('./routes/exchange');           //交换卡片路由
 var test_route = require('./routes/test');               //测试路由
-var order_route = require('./routes/order');
+var order_route = require('./routes/order');  
+var webUser_route = require('./routes/webUser');        //web用户以及管理员管理
 
 var io = require('./my_server')
 
@@ -91,6 +92,7 @@ app.use('/comment',comment_route);
 app.use('/exchange',exchange_route);
 app.use('/test', test_route);
 app.use('/order', order_route);
+app.use('/webUser',webUser_route);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

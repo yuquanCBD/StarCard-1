@@ -149,6 +149,42 @@
 					</ul>
 
 				</li>
+				<li class="">
+
+					<a href="javascript:;">
+
+						<i class="icon-table"></i> 
+
+						<span class="title">人员管理</span>
+
+						<!-- <span class="selected"></span> -->
+
+						<span class="arrow open"></span>
+
+					</a>
+
+					<ul class="sub-menu">
+						<li>
+
+							<a href="/webUser/query">人员查询、删除、修改</a>
+
+						</li>
+
+						<li class="">
+
+							<a href="/webUser/add">人员增加</a>
+
+						</li>
+						<li class="">
+
+							<a href="/admin/login">管理员管理</a>
+
+						</li>
+
+
+					</ul>
+
+				</li>
 
 
 				
@@ -702,7 +738,7 @@
 			   			location.reload();
 			   		},
 			   		error : function(){
-			   			alert.log('删除信息失败');
+			   			console.log('删除信息失败');
 			   		}
 		   		}); 
 			};
@@ -794,6 +830,7 @@
 			   					var strs = pictures.split(',');
 			   					console.log('strs: ',strs[0]);
 			   					//<img src="../0.jpg" height="100" width="100">
+			   					$('#cardImg').empty();
 			   					if(strs[0] != ''){
 			   						for(var i=0;i<strs.length;i++){
 			   						$('#cardImg').append('<img src="../'+strs[i]+'" height="100" width="100">');
