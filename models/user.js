@@ -24,13 +24,11 @@ User.get = function get(username, callback){
 		var sql = 'SELECT userid, username, password, score FROM user WHERE username = "' + username +'"';
 		console.log('SelectSQL: '+ sql);
 		conn.query(sql, function(err, rows){
-			if(err){
-				console.log(err);
+			if(err)
 				callback(err);
-			}
-			
+						
 			console.log(rows);
-			if (rows) {
+			if (rows.length != 0) {
 				var user = new User(rows[0]);
 				callback(err,user);
 			}else
