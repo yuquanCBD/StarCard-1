@@ -1,3 +1,6 @@
+/*
+ * web部分
+*/
 var express = require('express');
 var uuid = require('node-uuid');
 var User = require('../models/user.js');
@@ -5,7 +8,6 @@ var multiparty = require('multiparty');
 var path = require('path');
 var fs = require('fs');
 var exec = require('child_process').exec;
-
 var router = express.Router();
 var Card = require('../models/card');
 
@@ -19,7 +21,7 @@ var options = {
 };
 
 router.get('/login', function(req, res, next){
-  res.render('login.html');
+  res.render('card_manage/login.html');
 });
 router.get('/test', function(req, res, next){
   res.render('test.html',{title:'测试程序'});
@@ -28,16 +30,31 @@ router.post('/login', function(req, res, next){
   var username = req.body.username;
   var password = req.body.password;
   console.log('username: '+username+', password: '+password);
-  res.sendFile('card_manage/index.html', options, function (err) {
-    if (err) {
-      console.log(err);
-      res.status(err.status).end();
+  var sql = 'select * from manager where username="'+username+'" and password="'+password+'"';
+  User.exec(sql, function(err, rows){
+    if(err){
+      console.log("login error========>",err);
+      return res.render("card_manage/login_error.html");
     }
-    else {
-      console.log('Sent:', 'index.html');
-      //return res.render('card_manage/CardManage.html');
+    if(rows.length <= 0){
+      console.log("========== login_error.html ==========");
+      return res.render("card_manage/login_error.html");
     }
-  });
+    else{
+      return res.render("card_manage/index.html");
+    }
+
+  })
+  // res.sendFile('card_manage/index.html', options, function (err) {
+  //   if (err) {
+  //     console.log(err);
+  //     res.status(err.status).end();
+  //   }
+  //   else {
+  //     console.log('Sent:', 'card_manage/index.html');
+  //     //return res.render('card_manage/CardManage.html');
+  //   }
+  // });
 });
 router.get('/starcardAdd',function(req, res, next){
   res.render('card_manage/StarCardAdd.html');
@@ -244,6 +261,8 @@ router.post('/detail', function(req, res, next){
   });
 });
 
-
+router.get("/userAdd",function(req, res, next){
+  res.render("card_manage/userAdd.html");
+});
 module.exports = router;
 
