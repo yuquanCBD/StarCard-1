@@ -8,7 +8,6 @@ var multiparty = require('multiparty');
 var path = require('path');
 var fs = require('fs');
 var exec = require('child_process').exec;
-
 var router = express.Router();
 var Card = require('../models/card');
 
@@ -31,16 +30,31 @@ router.post('/login', function(req, res, next){
   var username = req.body.username;
   var password = req.body.password;
   console.log('username: '+username+', password: '+password);
-  res.sendFile('card_manage/index.html', options, function (err) {
-    if (err) {
-      console.log(err);
-      res.status(err.status).end();
+  var sql = 'select * from manager where username="'+username+'" and password="'+password+'"';
+  User.exec(sql, function(err, rows){
+    if(err){
+      console.log("login error========>",err);
+      return res.render("card_manage/login_error.html");
     }
-    else {
-      console.log('Sent:', 'card_manage/index.html');
-      //return res.render('card_manage/CardManage.html');
+    if(rows.length <= 0){
+      console.log("========== login_error.html ==========");
+      return res.render("card_manage/login_error.html");
     }
-  });
+    else{
+      return res.render("card_manage/index.html");
+    }
+
+  })
+  // res.sendFile('card_manage/index.html', options, function (err) {
+  //   if (err) {
+  //     console.log(err);
+  //     res.status(err.status).end();
+  //   }
+  //   else {
+  //     console.log('Sent:', 'card_manage/index.html');
+  //     //return res.render('card_manage/CardManage.html');
+  //   }
+  // });
 });
 router.get('/starcardAdd',function(req, res, next){
   res.render('card_manage/StarCardAdd.html');
