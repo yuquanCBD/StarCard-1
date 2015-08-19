@@ -278,15 +278,16 @@
 										<tr>
 											<th>Number</th>
 											<th class="hidden-480">title</th>
-											<th class="hidden-480">describes</th>
+											<!-- <th class="hidden-480">describes</th> -->
 											<th class="hidden-480">price</th>
 											<th class="hidden-480">logistic</th>
 											<th class="hidden-480">category</th>
 											<th class="hidden-480">brand</th>
 											<th class="hidden-100">freight</th>
 											<th class="hidden-100">exchange</th>
-											<th class="hidden-100">owner</th>
+											<!-- <th class="hidden-100">owner</th> -->
 											<th class="hidden-100">amount</th>
+											<th class="hidden-100">details</th>
 											<th class="hidden-480">delete</th>
 											<th class="hidden-480">update</th>
 										</tr>
@@ -574,7 +575,251 @@
 
 				</div>
 
-				<!-- END PAGE CONTENT-->         
+				<!-- END PAGE CONTENT-->   
+				<!-- 查看详情 -->
+
+				<div id='detail' class="row-fluid" hidden=true>
+
+					<div class="span12">
+
+						<!-- BEGIN SAMPLE FORM PORTLET-->   
+
+						<div class="portlet box blue tabbable">
+
+							<div class="portlet-title">
+
+								<div class="caption">
+
+									<i class="icon-reorder"></i>
+
+									<span class="hidden-480">查看详情</span>
+
+								</div>
+
+							</div>
+
+							<div class="portlet-body form">
+
+								<div class="tabbable portlet-tabs">
+
+									<ul class="nav nav-tabs">
+
+										<li><a href="">表单</a></li>
+									</ul>
+
+									<div class="tab-content">
+
+										<div class="tab-pane active" id="portlet_tab1">
+
+											<!-- BEGIN FORM-->
+
+											<form id='formDetailD' action="/admin/update" enctype="multipart/form-data" method="post" class="form-horizontal">
+
+												<div class="control-group">
+
+													<label class="control-label" >卡片id</label>
+
+													<div class="controls">
+
+														<input id='cardidD' type="text" class="m-wrap large" name="cardid" />
+
+														<!-- <span class="help-inline">Some hint here</span> -->
+
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label" >卡片名称</label>
+
+													<div class="controls">
+
+														<input id='titleD' type="text" class="m-wrap meduium" name="title" />
+
+														<!-- <span class="help-inline">Some hint here</span> -->
+
+													</div>
+
+												</div>
+
+												<div class="control-group">
+
+													<label class="control-label">价格</label>
+
+													<div class="controls">
+
+														<input id='priceD' type="text"  class="m-wrap medium" name="price" />
+														<span class="help-inline">单位/元</span>
+														<!-- <span class="help-inline">Some hint here</span> -->
+
+													</div>
+
+												</div>
+
+												<div id='amountFlagD' class="control-group">
+
+													<label class="control-label">卡片数量</label>
+
+													<div class="controls">
+
+														<input id='amountD' type="text" class="m-wrap medium" name="amount" />
+
+														<span class="help-inline">单位/个</span>
+
+													</div>
+
+												</div>
+
+												<div class="control-group">
+
+													<label class="control-label">卡片类别</label>
+
+													<div class="controls">
+
+														<select id='categoryD' class="small m-wrap"  name="category">
+
+															<option value="足球卡">足球卡</option>
+
+															<option value="篮球卡">篮球卡</option>
+
+															<option value="其他卡">其他卡</option>
+
+															<!-- <option value="Category 4">Category 4</option> -->
+
+														</select>
+
+													</div>
+
+												</div>
+
+												
+												<div class="control-group">
+
+													<label class="control-label">品牌</label>
+
+													<div class="controls">
+
+														<select id='brandD' class="small m-wrap" name="brand">
+
+															<option value="Topps">Topps</option>
+
+															<option value="Panini">Panini</option>
+
+															<option value="Futera">Futera</option>
+
+															<option value="其他品牌">其他品牌</option>
+
+														</select>
+
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label">物流</label>
+
+													<div class="controls">
+
+														<select id='logisticD' class="small m-wrap" name="logistic">
+
+															<option value="顺丰">顺丰</option>
+
+															<option value="圆通">圆通</option>
+
+															<option value="中通">中通</option>
+
+															<option value="天天">天天</option>
+
+														</select>
+
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label">物流价格</label>
+
+													<div class="controls">
+
+														<input id='freightD' type="text"  class="m-wrap medium" name="freight" />
+
+														<span class="help-inline">单位/元</span>
+
+													</div>
+
+												</div>
+
+												<div id='exchangeD' class="control-group">
+
+													<label class="control-label">是否支持换卡</label>
+
+													<div class="controls">
+
+														<label class="radio">
+
+														<input type="radio" name="exchange" value="1" />
+
+														支持
+
+														</label>
+
+														<label class="radio">
+
+														<input type="radio" name="exchange" value="0"/>
+
+														不支持
+
+														</label> 
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label">卡片描述</label>
+
+													<div class="controls">
+
+														<textarea id='describesD' name="describes" class="large m-wrap" rows="3" placeholder=""></textarea>
+
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label">卡片图片</label>
+
+													<div id="cardImgD" class="controls">
+													</div>
+
+												</div>
+												<button id="detailBack" type="button" style="margin-left:25%" class="btn blue">返回</button>
+												<!-- <div class="form-actions">
+
+													<button id="updateSubmit" type="submit" class="btn blue"><i class="icon-ok"></i> 修改</button>
+													
+
+												</div> -->
+
+											</form>
+
+											<!-- END FORM-->  
+
+										</div>
+
+									</div>
+
+								</div>
+
+							</div>
+
+						</div>
+
+						<!-- END SAMPLE FORM PORTLET-->
+
+					</div>
+
+				</div>
+				<!-- 查看详情 -->      
 
 				<!-- ************************************************************** -->
 			</div>
@@ -677,24 +922,26 @@
 		// </tr>
 
 
-		jQuery(document).ready(function() {     
+		jQuery(document).ready(function() { 
+			// 描述信息 和 拥有者可以在用户详情中查看    
 			function createTR(obj,index){
 				var tr = '<tr class="odd gradeX">'+
 					//'<td><input type="checkbox" class="checkboxes" value="1" name="checks"/></td>'+
 					'<td>'+index+'</td>'+
 					'<td>'+obj.title+'</td>'+
-					'<td class="hidden-480">'+obj.describes+'</td>'+
+					//'<td class="hidden-480">'+obj.describes+'</td>'+
 					'<td>'+obj.price+'</td>'+
 					'<td>'+obj.logistic+'</td>'+
 					'<td>'+obj.category+'</td>'+
 					'<td>'+obj.brand+'</td>'+
 					'<td>'+obj.freight+'</td>'+
 					'<td>'+obj.exchange+'</td>'+
-					'<td>'+obj.owner+'</td>'+
+					//'<td>'+obj.owner+'</td>'+
 					'<td>'+obj.amount+'</td>'+
 					//'<td><a href="#" cardId="'+obj.cardId+'" onclick="beSure()">delete</a></td>'+
+					'<td><button cardId="'+obj.cardid+'" owner="'+obj.owner+'" pictures="'+obj.pictures+'" describes="'+obj.describes+'" class="detailsButton">details</button></td>'+
 					'<td><button cardId="'+obj.cardid+'" class="deleteButton">delete</button></td>'+
-					'<td><button cardId="'+obj.cardid+'" pictures="'+obj.pictures+'" class="updateButton">修改</button></td>'+
+					'<td><button cardId="'+obj.cardid+'" owner="'+obj.owner+'" pictures="'+obj.pictures+'" describes="'+obj.describes+'" class="updateButton">update</button></td>'+
 					//'<td><button cardId="'+obj.cardid+'"class="updateButton">修改</button></td>'+
 					//'<td><a href="StarCardAdd.html?hsjsh">ceshi</a></td>'
 					//'<td><button cardId="'+obj.cardid+'" class="updateButton">修改</button></td>'+
@@ -702,10 +949,10 @@
 					'</tr>';
 				return tr;
 			};
-			function createChange(exchange){
+			function createChange(exchange,id){
 				var text;
 				if(exchange == 1){
-					text = '<div id="exchange" class="control-group">'+
+					text = '<div id="'+id+'" class="control-group">'+
 						'<label class="control-label">是否支持换卡</label>'+
 						'<div class="controls">'+
 						'<div style="margin-left:20px"><label class="radio"><input type="radio" name="exchange" checked value="1" />支持'+
@@ -714,7 +961,7 @@
 						'不支持</label></div> </div></div>';
 				}
 				else{
-					text = '<div id="exchange" class="control-group">'+
+					text = '<div id="'+id+'" class="control-group">'+
 						'<label class="control-label">是否支持换卡</label>'+
 						'<div class="controls">'+
 						'<div style="margin-left:20px"><label class="radio"><input type="radio" name="exchange"  value="1" />支持'+
@@ -742,6 +989,23 @@
 			   		}
 		   		}); 
 			};
+			function detailAjax(url, obj){
+				$.ajax({
+			   		type : 'POST',
+			   		url : url,
+			   		data : obj,
+			   		dataType : 'json',
+			   		cache : false,
+			   		success : function(data){
+			   			var evaData = eval(data);
+			   			console.log("detail的数据:",evaData,'   ,   ',evaData["card"]);
+			   			alert(evaData["card"]["cardid"]);
+			   		},
+			   		error : function(){
+			   			console.log('删除信息失败');
+			   		}
+		   		});
+			}
 			function updateAjax(url, obj){
 				console.log(url);
 				console.log(obj);
@@ -753,6 +1017,11 @@
 			   		cache : false,
 		   		});
 			}
+			$("button#detailBack").click(function(e){
+				$('div#detail').attr('hidden',true);
+				$('div#update').attr('hidden',true);
+				$('div#query').attr('hidden',false);
+			})
 			function query(){
 				$.ajax({
 			   		type : 'POST',
@@ -769,6 +1038,72 @@
 			  				var tr = createTR(eva[i],i+1);
 			   				$('tbody').append(tr);
 			   			};
+			   			$("button.detailsButton").click(function(e){
+			   				var cardid = $(e.target).attr("cardId");
+			   				var describes = $(e.target).attr("describes");
+			   				var pictures = $(e.target).attr('pictures');
+			   				var owner = $(e.target).attr("owner");
+		   					var tr = $(e.target).parent().parent();
+		   					var tds = $(tr).find('td');
+		   					var title = $(tds[1]).text();
+		   					//var describes = $(tds[2]).text();
+		   					var price = $(tds[2]).text();
+		   					var logistic = $(tds[3]).text();
+		   					var category = $(tds[4]).text();
+		   					var brand = $(tds[5]).text();
+		   					var freight = $(tds[6]).text();
+		   					var exchange = $(tds[7]).text();
+		   					//var owner = $(tds[]).text();
+		   					var amount = $(tds[8]).text();
+			   				//detailAjax('detail',{cardid:cardid});
+			   				$('div#detail').attr('hidden',false);
+			   				$('div#update').attr('hidden',true);
+		   					$('div#query').attr('hidden',true);
+		   					$('input#cardidD').attr({value:cardid,disabled:true});
+		   					$('input#titleD').attr({value:title,disabled:true});
+		   					$('input#priceD').attr({value:price,disabled:true});
+		   					$('input#amountD').attr({value:amount,disabled:true});
+		   					$('input#freightD').attr({value:freight,disabled:true});
+		   					$('#describesD').attr({value:describes,disabled:true});
+		   					$('#exchangeD').remove();
+			   				$('#amountFlagD').after(createChange(exchange,"exchangeD"));
+			   				$('#exchangeD').find('input').attr("disabled",true);
+			   				var options = $('#categoryD').find('option');
+		   					for (var i = 0; i < options.length; i++) {
+		   						if($(options[i]).text() == category){
+		   							$(options[i]).attr('selected',1);
+		   						}
+		   					};
+		   					$('#categoryD').attr('disabled',true);
+		   					var options = $('#brandD').find('option');
+		   					for (var i = 0; i < options.length; i++) {
+		   						if($(options[i]).text() == brand){
+		   							$(options[i]).attr('selected',1);
+		   						}
+		   					};
+		   					$('#brandD').attr('disabled',true);
+		   					var options = $('#logisticD').find('option');
+		   					for (var i = 0; i < options.length; i++) {
+		   						if($(options[i]).text() == logistic){
+		   							$(options[i]).attr('selected',1);
+		   						}
+		   					};
+		   					$('#logisticD').attr('disabled',true);
+		   					var strs = pictures.split(',');
+		   					console.log('strs: ',strs[0]);
+		   					//<img src="../0.jpg" height="100" width="100">
+		   					$('#cardImgD').empty();
+		   					if(strs[0] != ''){
+		   						for(var i=0;i<strs.length;i++){
+		   						$('#cardImgD').append('<img src="../'+strs[i]+'" height="100" width="100">');
+		   						};
+		   					}
+		   					else{
+		   						$('#cardImgD').append('<span class="help-inline">没有图片</span>');
+		   					}
+
+
+			   			});
 			   			$("button.deleteButton").click(function(e){
 			   				if(confirm('是否需要删除?')){
 			   					var cid = $(e.target).attr('cardId');
@@ -778,28 +1113,28 @@
 			   			});
 			   			$("button.updateButton").click(function(e){
 			   				if(confirm('是否需要修改卡信息?')){
-			   					//console.log($(e.target).parent());
-			   					//var tr = $(e.target).parent();
-			   					//console.log(this.parent());
-			   					var cardid = $(e.target).attr('cardId');
-			   					var pictures = $(e.target).attr('pictures');
+			   					var cardid = $(e.target).attr("cardId");
+				   				var describes = $(e.target).attr("describes");
+				   				var pictures = $(e.target).attr('pictures');
+				   				var owner = $(e.target).attr("owner");
 			   					var tr = $(e.target).parent().parent();
 			   					var tds = $(tr).find('td');
-			   					//console.log($(tds[1]).text());
 			   					var title = $(tds[1]).text();
-			   					var describes = $(tds[2]).text();
-			   					var price = $(tds[3]).text();
-			   					var logistic = $(tds[4]).text();
-			   					var category = $(tds[5]).text();
-			   					var brand = $(tds[6]).text();
-			   					var freight = $(tds[7]).text();
-			   					var exchange = $(tds[8]).text();
-			   					var owner = $(tds[9]).text();
-			   					var amount = $(tds[10]).text();
+			   					//var describes = $(tds[2]).text();
+			   					var price = $(tds[2]).text();
+			   					var logistic = $(tds[3]).text();
+			   					var category = $(tds[4]).text();
+			   					var brand = $(tds[5]).text();
+			   					var freight = $(tds[6]).text();
+			   					var exchange = $(tds[7]).text();
+			   					//var owner = $(tds[]).text();
+			   					var amount = $(tds[8]).text();
+
 			   					//var	 = $(tds[8]).text();
 			   					console.log(owner,' , ',amount);
-			   					$('div#update').attr('hidden',false);
 			   					$('div#query').attr('hidden',true);
+			   					$('div#detail').attr('hidden',true);
+			   					$('div#update').attr('hidden',false);
 			   					$('input#cardid').attr('value',cardid);
 			   					$('input#title').attr('value',title);
 			   					$('input#price').attr('value',price);
@@ -807,7 +1142,7 @@
 			   					$('input#freight').attr('value',freight);
 			   					$('#describes').attr('value',describes);
 			   					$('#exchange').remove();
-			   					$('#amountFlag').after(createChange(exchange));
+			   					$('#amountFlag').after(createChange(exchange,"exchange"));
 
 			   					var options = $('#category').find('option');
 			   					for (var i = 0; i < options.length; i++) {

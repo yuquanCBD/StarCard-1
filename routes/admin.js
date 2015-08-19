@@ -41,6 +41,7 @@ router.post('/login', function(req, res, next){
       return res.render("card_manage/login_error.html");
     }
     else{
+      console.log("rows[0]==========>",rows[0].username);
       return res.render("card_manage/index.html");
     }
 
@@ -254,6 +255,7 @@ router.post('/delete', function(req, res, next){
 });
 
 router.post('/detail', function(req, res, next){
+  console.log("detail==============");
   Card.queryByID(req.body.cardid, function(err, card){
         if (err)
            return res.json({error : err});

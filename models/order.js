@@ -146,6 +146,18 @@ Order.queryOrderList = function(userid, tag, callback){
         });
 	});
 };
+Order.exec = function(sql, callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			return callback(err);
+		conn.query(sql, function(err, rows){
+			if(err)
+				return callback(err);
+			callback(err,rows);
+			conn.release();
+		});
+	});
+} //exec
 
 
 module.exports = Order;
