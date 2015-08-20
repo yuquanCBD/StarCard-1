@@ -42,5 +42,25 @@ router.post('/query', function(req, res, next){
 	})
   //res.render('order_manage/orderManage.html',{title:'订单查询'});
 });
+router.post('/delete',function(req, res, next){
+	console.log('*****************delete***************');
+	var sql = 'delete from orders where orderid="'+req.body.orderid+'"';
+	Order.exec(sql, function(err, r){
+		if(err){
+			return res.json({error:"数据库错误"});
+		}
+		return res.json({success:r});
+	})
+});
+router.post('/addr',function(req, res, next){
+	var addr_id = req.body.addr_id;
+	var sql = 'select * from address where addr_id="'+addr_id+'"';
+	Order.exec(sql, function(err, rows){
+		if(err){
+			return res.json({error:err});
+		}
+		return res.json({addr:rows});
+	})
+})
 
 module.exports = router;
