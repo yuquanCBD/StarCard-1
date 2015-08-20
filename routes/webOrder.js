@@ -61,6 +61,21 @@ router.post('/addr',function(req, res, next){
 		}
 		return res.json({addr:rows});
 	})
+});
+router.post('/update', function(req, res, next){
+	var orderid = req.body.orderid;
+	var message = req.body.message;
+	var status = req.body.status;
+	var card_price = req.body.card_price;
+	var logistic_price = req.body.logistic_price;
+	var card_num = req.body.card_num;
+	var sql = 'update orders set message="'+message+'", status="'+status+'", card_num="'+card_num+'", card_price="'+card_price+'", logistic_price="'+logistic_price+'" where orderid="'+orderid+'"';
+	Order.exec(sql, function(err, r){
+		if(err){
+			return res.json({error:"数据库发生错误"});
+		}
+		return res.render('order_manage/orderManage.html',{title:"订单查询"});
+	})
 })
 
 module.exports = router;

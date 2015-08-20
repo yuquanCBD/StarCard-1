@@ -381,7 +381,7 @@
 
 											<!-- BEGIN FORM-->
 
-											<form id='formUpdate' action="/webOrder/update" enctype="" method="post" class="form-horizontal">
+											<form id='formUpdate' action="/webOrder/update" method="post" class="form-horizontal">
 
 												<div disable class="control-group">
 
@@ -969,6 +969,7 @@
 				   				var logistic_price = $(tds[6]).text();
 				   				var ordertype = $(tds[7]).text();
 				   				$('input#orderid').attr("value",orderid);
+				   				$('input#orderid').attr("disabled",true);
 				   				$('input#card_price').attr("value",card_price);
 				   				$('input#logistic_price').attr("value",logistic_price);
 				   				$('input#card_num').attr("value",card_num);
@@ -988,13 +989,13 @@
 			   					};
 			   					$('#updateSubmit').click(function(e){
 			   						if(confirm('是否确认修改信息?')){
+			   							$('input#orderid').removeAttr('disabled');
 			   							return true;
 			   						}
 			   						else{
 			   							//console.log('点击');
 			   							$('div#update').attr('hidden',true);
 			   							$('div#query').attr('hidden',false);
-
 			   							return false;
 			   						}
 			   						
