@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Card = require('../models/card')
+var User = require('../models/user')
 
 //根据卡片类别和品牌, 排序条件(1, 默认; 2.最近发布；3.离我最近)返回卡片列表
 router.get('/showList', function(req, res, next) {
@@ -13,8 +14,9 @@ router.get('/showList', function(req, res, next) {
     var longitude = req.query.longitude;
     var latitude = req.query.latitude;
     Card.searchByCond(cond, category, brand, offset, capacity, order, longitude, latitude, function(err, rows){
-        if(err)
+        if(err){
             return res.json({error: err});
+        }
         return res.json(rows)
     });
 });
@@ -38,6 +40,16 @@ router.post('/showCardsOfOwner', function(req, res, next){
         if (err)
             return res.json({error : err});
         return res.json(rows);
+    });
+});
+
+//userid、返回用户名字、购买和售出的卡片
+router.post('/showTradeInfo', function(req, res, next){
+    var userid = req.body.userid;
+    User.queryTradeByUserid(userid, function(err, in_num, out_num, username){
+        if (err) 
+            return res.json({error : err});
+        return res.json({in_num : in_num, out_num : out_num, username : username})
     });
 });
 

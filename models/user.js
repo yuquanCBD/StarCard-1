@@ -135,6 +135,7 @@ User.query = function(sql, callback){
 			conn.query(sql, function(err, rows){
 				if(err){
 					callback(err, null);
+					conn.release();
 				}
 				else{
 					console.log(rows);
@@ -153,10 +154,6 @@ User.exec = function(sql, callback){
 		};
 
 		conn.query(sql, function(err, res){
-			if(err){
-				console.log(err);
-				callback(err);
-			}
 			conn.release();
 			callback(err, res);
 		})
@@ -173,8 +170,6 @@ User.queryScore = function(userid, callback){
 		var sql = 'select score from user where userid = "'+ userid +'"';
 		console.log('SelectSQL: '+ sql);
 		conn.query(sql, function(err, rows){
-			if(err)
-				return callback(err);
 			callback(err,rows[0])
 		});
 	});
@@ -185,14 +180,14 @@ User.queryScore = function(userid, callback){
 User.queryCollect = function(userid, callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
-			return callback(err);
+			callback(err);
+
+
 		var sql = 'SELECT a.cardid, a.title, a.pictures, a.describes, a.price, a.logistic, a.category, a.brand, '+
 				'a.freight, a.exchange, a.owner, a.amount, a.time, a.longitude, a.latitude FROM card a '+
 				'LEFT JOIN collect b ON a.cardid = b.cardid where b.userid = "'+ userid +'"';
 		console.log('SelectSQL: '+ sql);
 		conn.query(sql, function(err, rows){
-			if(err)
-				return callback(err);
 			callback(err,rows)
 		});
 	});
@@ -205,6 +200,7 @@ User.queryMyCard = function(userid, type, callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
 			return callback(err);
+		
 
 		var sql = '';
 		if(type == 0)
@@ -217,9 +213,8 @@ User.queryMyCard = function(userid, type, callback){
 				'status = 1 AND owner = "'+ userid +'"';
 		console.log('SelectSQL: '+ sql);
 		conn.query(sql, function(err, rows){
-			if(err)
-				return callback(err);
 			callback(err,rows)
+			conn.release();
 		});
 	});
 };
@@ -228,8 +223,10 @@ User.queryMyCard = function(userid, type, callback){
 //更新用户资料
 User.updateUserInfo = function(userid, username, tel, gender, province, city, district, address, postcode, IDCardNo, files, callback){
 	mysql.getConnection(function(err, conn){
-		if(err)
-			return callback(err);
+		if(err){
+			conn.release()
+			callback(err);
+		}
 		var sql0 = 'SELECT IDCardNo FROM user WHERE userid = "' + userid + '"';
 		var sql1 = 'UPDATE user SET username  = "'+username+'", telephone = "'+tel+'", gender ='+gender+'  WHERE userid = "'+userid+'"';
 		var sql2 = 'UPDATE address SET province  = "'+province+'", city = "'+city+'", district = "'+district+'",'+
@@ -272,7 +269,8 @@ User.updateUserInfo = function(userid, username, tel, gender, province, city, di
 					}
 					var sql = 'UPDATE user SET portrait = "' + tmpPath + '" WHERE userid = "' + userid + '"';
 					console.log("SQL:", sql);
-					conn.query(sql, function(err, res){});
+					conn.query(sql, function(err, res){conn.release()});
+
 					callback(err)
 				});
 			});
@@ -282,10 +280,56 @@ User.updateUserInfo = function(userid, username, tel, gender, province, city, di
 };
 
 
+
+
 /*
 ----------------------------------------我的卡圈 end --------------------------------------------
 */
 
+//userid、返回用户名字、购买和售出的卡片
+User.queryTradeByUserid = function(userid, callback){
+	mysql.getConnection(function(err, conn){
+
+		var in_num, out_num, username;
+
+		if(err){
+			conn.release()
+			callback(err);
+		}
+		var sql = 'SELECT COUNT(*) AS in_num FROM orders GROUP BY buyer HAVING buyer = "' + userid + '"'; //查询买入卡片数量
+		console.log("SQL:", sql);
+
+		conn.query(sql, function(err, rows){
+			if(err){
+				conn.release()
+				callback(err);
+			}
+			in_num = rows[0].in_num;
+			var sql = 'SELECT COUNT(*) AS out_num FROM orders GROUP BY seller HAVING seller = "' + userid + '"'; //查询卖出卡片数量
+			console.log("SQL:", sql);
+
+			conn.query(sql, function(err, rows){
+				if(err){
+					conn.release()
+					callback(err);
+				}
+				out_num = rows[0].out_num;
+
+				var sql = 'SELECT username FROM user WHERE userid = "' + userid + '"'; // 查询用户名称
+				console.log("SQL:", sql);
+
+				conn.query(sql, function(err, rows){
+					if(err){
+						conn.release()
+						callback(err);
+					}
+					username = rows[0].username;
+					callback(err, in_num, out_num, username);
+				});
+			});
+		});
+	});
+};
 
 
 module.exports = User;
