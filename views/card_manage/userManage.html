@@ -619,28 +619,6 @@
 					'</tr>';
 				return tr;
 			};
-			function createChange(exchange){
-				var text;
-				if(exchange == 1){
-					text = '<div id="exchange" class="control-group">'+
-						'<label class="control-label">是否支持换卡</label>'+
-						'<div class="controls">'+
-						'<div style="margin-left:20px"><label class="radio"><input type="radio" name="exchange" checked value="1" />支持'+
-						'</label></div>'+
-						'<div style="margin-left:20px"><label class="radio"><input type="radio" name="exchange" value="0"/>'+
-						'不支持</label></div> </div></div>';
-				}
-				else{
-					text = '<div id="exchange" class="control-group">'+
-						'<label class="control-label">是否支持换卡</label>'+
-						'<div class="controls">'+
-						'<div style="margin-left:20px"><label class="radio"><input type="radio" name="exchange"  value="1" />支持'+
-						'</label></div>'+
-						'<div style="margin-left:20px"><label class="radio"><input type="radio" name="exchange" value="0" checked />'+
-						'不支持</label></div> </div></div>';
-				}
-				return text;
-			}
 			function PostAjax(url, obj){
 				$.ajax({
 			   		type : 'POST',

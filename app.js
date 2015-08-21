@@ -27,6 +27,7 @@ var order_route = require('./routes/order');            //订单路由
 
 var webUser_route = require('./routes/webUser');        //web用户以及管理员管理
 var admin_route = require('./routes/admin');            //web登录以及卡管理
+var webOrder_route = require('./routes/webOrder');      //web登录以及订单管理
 
 var message_route = require('./routes/message');        //消息路由
 
@@ -93,6 +94,7 @@ app.use('/test', test_route);
 app.use('/order', order_route);
 app.use('/webUser',webUser_route);
 app.use('/message', message_route);
+app.use('/webOrder', webOrder_route);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
