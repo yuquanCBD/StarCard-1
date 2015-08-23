@@ -26,8 +26,9 @@ var test_route = require('./routes/test');              //测试路由
 var order_route = require('./routes/order');            //订单路由
 
 var webUser_route = require('./routes/webUser');        //web用户以及管理员管理
-var admin_route = require('./routes/admin');            //web登录以及卡管理
-var webOrder_route = require('./routes/webOrder');      //web登录以及订单管理
+var admin_route = require('./routes/admin');            //web卡片管理
+var webOrder_route = require('./routes/webOrder');      //web订单管理
+var webWiki_route = require('./routes/webWiki');        //wiki信息管理
 
 var io = require('./my_server');
 var app = express();
@@ -92,6 +93,7 @@ app.use('/test', test_route);
 app.use('/order', order_route);
 app.use('/webUser',webUser_route);
 app.use('/webOrder', webOrder_route);
+app.use('/webWiki', webWiki_route);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

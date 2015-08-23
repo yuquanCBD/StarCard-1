@@ -41,6 +41,8 @@ router.post('/login', function(req, res, next){
       return res.render("card_manage/login_error.html");
     }
     else{
+      req.session.username = username;
+      req.session.password = password;
       console.log("rows[0]==========>",rows[0].username);
       return res.render("card_manage/index.html");
     }
