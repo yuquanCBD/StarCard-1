@@ -20,6 +20,6 @@ router.get('/markRead', function(req, res, next){
 			return res.json({error : err});
 		return res.json({success : '标记已读成功'});
 	});
-})
+});
 
 module.exports = router;

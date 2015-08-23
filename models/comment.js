@@ -15,13 +15,24 @@ Comment.execSql = function(sql, callback){
 			conn.release();
 		};
 
-		conn.query(sql, function(err, res){
+		conn.query(sql, function(err, result){
 			if(err){
 				console.log(err);
 				callback(err);
 			}
-			conn.release();
+			var comment_id = result.insertId
+
 			callback(err, res);
+
+			//查询评论卡片的卖家
+			var sql = 'SELECT owner From card a left join card_comment b on a.cardid = b.cardid where b.commentid = ?';
+			conn.query(sql, [comment_id], function(err, rows){
+				conn.release();
+				var seller = rows[0].owner;
+				//生成买家的一条消息 
+				Message.insertNewMsg(owner, comment_id, 1, function(err, results){}); // 生成对卖家的一条信息
+			});
+
 		})
 	})
 };

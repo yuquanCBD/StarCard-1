@@ -92,7 +92,7 @@ Wiki.modify = function(wiki, callback){
         if (wiki.serial_number)
             sql += 'serial_number = '+ wiki.serial_number +', ';
         if (wiki.rarity)
-            sql += 'rarity = '+wiki.rarity +', ';
+            sql += 'rarity = "'+wiki.rarity +'", ';
         if (wiki.describes)
             sql += 'describes = "'+wiki.describes+'", ';
         if (wiki.price)

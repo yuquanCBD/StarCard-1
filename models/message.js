@@ -31,4 +31,20 @@ Message.markRead = function(msg_id, callback){
 	});
 };
 
+//msg :1. 评论消息 2. 订单消息 3. 系统消息
+Message.insertNewMsg = function(userid, event_id, msg_type, callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			callback(err);
+
+		var sql = 'INSERT INTO message (userid, event_id, msg_type) VALUES(?, ?, ?)';//设置消息已读
+		console.log('sql: ', sql);
+
+		conn.query(sql, [userid, event_id, msg_type],function(err, results){
+			callback(err, results);
+			conn.release();
+		});
+	});
+};
+
 module.exports = Message;
