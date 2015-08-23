@@ -1,5 +1,6 @@
 var mysql = require('./mysql');
 var uuid = require('node-uuid');
+var Message = require('./message')
 
 
 function Order(){};
@@ -25,6 +26,8 @@ Order.checkOrder = function(cardid, cardnum, seller, buyer, card_price, logistic
 			conn.query(sql2, function(err, results){
 				callback(err, orderid);
 				conn.release();
+				//生成卖家的一条消息 
+				Message.insertNewMsg(seller, orderid, 2, function(err, results){});
 			});
         });
 
@@ -43,8 +46,17 @@ Order.payOrder = function(orderid, alipay_id, callback){
 		conn.query(sql, function(err, results){
 			if(err)
 				return callback(err);
+
 			callback(err, results);
-			conn.release();
+
+			var sql = 'SELECT seller FROM orders WHERE orderid = ?';//根据订单号查询卖家的userid
+			conn.query(sql, [orderid], function(err, rows){
+				conn.release();
+				var seller = rows[0].seller;
+				//生成卖家的一条消息 
+				Message.insertNewMsg(seller, orderid, 2, function(err, results){});
+			});
+
         });
 
 	});
@@ -65,13 +77,21 @@ Order.deliverOrder = function(orderid, logistic, logistic_no, callback){
 			if(err)
 				return callback(err);
 			callback(err, results);
-			conn.release();
+
+			var sql = 'SELECT buyer FROM orders WHERE orderid = ?';//根据订单号查询买家的userid
+			conn.query(sql, [orderid], function(err, rows){
+				conn.release();
+				var buyer = rows[0].buyer;
+				//生成买家的一条消息 
+				Message.insertNewMsg(buyer, orderid, 2, function(err, results){});
+			});
+
         });
 
 	});
 };
 
-//订单收获， 交易成功
+//订单收货， 交易成功
 Order.receiveOrder = function(orderid, callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
@@ -81,10 +101,16 @@ Order.receiveOrder = function(orderid, callback){
 
 		console.log('receiveOrder_SQL: '+ sql);
 		conn.query(sql, function(err, results){
-			if(err)
-				return callback(err);
 			callback(err, results);
-			conn.release();
+
+			var sql = 'SELECT seller FROM orders WHERE orderid = ?';//根据订单号查询买家的userid
+			conn.query(sql, [orderid], function(err, rows){
+				conn.release();
+				var seller = rows[0].seller;
+				//生成买家的一条消息 
+				Message.insertNewMsg(seller, orderid, 2, function(err, results){});
+			});
+			
         });
 
 	});
@@ -103,10 +129,16 @@ Order.prolongOrder = function(orderid, callback){
 
 		console.log('prolongOrder_SQL: '+ sql);
 		conn.query(sql, function(err, results){
-			if(err)
-				return callback(err);
 			callback(err, results);
-			conn.release();
+			
+			var sql = 'SELECT seller FROM orders WHERE orderid = ?';//根据订单号查询买家的userid
+			conn.query(sql, [orderid], function(err, rows){
+				conn.release();
+				var seller = rows[0].seller;
+				//生成买家的一条消息 
+				Message.insertNewMsg(seller, orderid, 2, function(err, results){});
+			});
+
         });
 
 	});
@@ -122,10 +154,16 @@ Order.cancleOrder = function(orderid, callback){
 
 		console.log('cancleOrder_SQL: '+ sql);
 		conn.query(sql, function(err, results){
-			if(err)
-				return callback(err);
 			callback(err, results);
-			conn.release();
+			
+			var sql = 'SELECT seller FROM orders WHERE orderid = ?';//根据订单号查询买家的userid
+			conn.query(sql, [orderid], function(err, rows){
+				conn.release();
+				var seller = rows[0].seller;
+				//生成买家的一条消息 
+				Message.insertNewMsg(seller, orderid, 2, function(err, results){});
+			});
+			
         });
 	});
 };
