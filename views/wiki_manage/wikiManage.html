@@ -12,7 +12,7 @@
 
 	<meta charset="utf-8" />
 
-	<title>信息锁定</title>
+	<title>wiki信息管理</title>
 
 	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
@@ -224,21 +224,18 @@
 						<li>
 							<a href="/webWiki/add">百科增加</a>
 						</li>
-						<li>
+						<li class="active">
 							<a href="/webWiki/query">百科查询、删除、修改</a>
 						</li>
 						<li>
 							<a href="/webOrder/query">百科审核</a>
 						</li>
-						<li class="active">
+						<li >
 							<a href="/webWiki/lock">百科锁定</a>
 						</li>
 					</ul>
 
 				</li>
-
-
-				
 			</ul>
 
 			<!-- END SIDEBAR MENU -->
@@ -336,8 +333,10 @@
 											<th class="hidden-480">厂商</th>
 											<th class="hidden-480">价格</th>
 											<th class="hidden-480">贡献者</th>
-											<th class="hidden-480">锁定</th>
-											<th class="hidden-480">解除锁定</th>
+											<th class="hidden-480">是否锁定</th>
+											<th class="hidden-480">detail</th>
+											<th class="hidden-480">delete</th>
+											<th class="hidden-480">update</th>
 										</tr>
 
 									</thead>
@@ -366,7 +365,7 @@
 				<!-- ************************************************************** -->
 				<!-- BEGIN PAGE CONTENT-->
 
-				<div id='update' class="row-fluid" hidden=true>
+				<div id="update" class="row-fluid" hidden=true>
 
 					<div class="span12">
 
@@ -380,7 +379,7 @@
 
 									<i class="icon-reorder"></i>
 
-									<span class="hidden-480">修改卡片信息列表</span>
+									<span class="hidden-480">信息添加</span>
 
 								</div>
 
@@ -392,7 +391,8 @@
 
 									<ul class="nav nav-tabs">
 
-										<li><a href="">信息修改</a></li>
+										<li><a href="starcardAdd" data-toggle="tab">信息添加</a></li>
+
 									</ul>
 
 									<div class="tab-content">
@@ -401,85 +401,196 @@
 
 											<!-- BEGIN FORM-->
 
-											<form id='formUpdate' action="/webOrder/update" method="post" class="form-horizontal">
+											<form action="/webWiki/update" enctype="multipart/form-data" method="post" class="form-horizontal">
 
-												<div disable class="control-group">
-
-													<label class="control-label" >订单id:</label>
-
-													<div class="controls">
-
-														<input disabled id='orderid' type="text" class="m-wrap meduium" name="orderid" />
-													</div>
-
-												</div>
+												
 												<div class="control-group">
 
-													<label class="control-label" >卡片总价:</label>
+													<label class="control-label" >百科id:</label>
 
 													<div class="controls">
 
-														<input id='card_price' type="text" class="m-wrap meduium" name="card_price" />
+														<input id="wikiid" disabled type="text" class="m-wrap meduium" name="wikiid" />
 
-													</div>
-
-												</div> 
-
-												<div class="control-group">
-
-													<label class="control-label">运费:</label>
-
-													<div class="controls">
-
-														<input id='logistic_price' type="text"  class="m-wrap medium" name="logistic_price" />
-														<span class="help-inline">单位/元</span>
+														<!-- <span class="help-inline">Some hint here</span> -->
 
 													</div>
 
 												</div>
 												<div class="control-group">
 
-													<label class="control-label">卡片数量:</label>
+													<label class="control-label" >百科中文名称:</label>
 
 													<div class="controls">
 
-														<input id='card_num' type="text"  class="m-wrap medium" name="card_num" />
-														<span class="help-inline">单位/个</span>
+														<input id="wikiname" type="text" class="m-wrap meduium" name="wikiname" />
+
+														<!-- <span class="help-inline">Some hint here</span> -->
 
 													</div>
 
 												</div>
 												<div class="control-group">
 
-													<label class="control-label">消息:</label>
+													<label class="control-label" >百科英文名称:</label>
 
 													<div class="controls">
 
-														<input id='message' type="text"  class="m-wrap medium" name="message" />
+														<input id="english_name" type="text" class="m-wrap meduium" name="english_name" />
 													</div>
 
 												</div>
+
 												<div class="control-group">
 
-													<label class="control-label">订单状态:</label>
+													<label class="control-label">卡片类别:</label>
 
 													<div class="controls">
 
-														<select id='status' class="small m-wrap"  name="status">
+														<select id="category" class="small m-wrap" tabindex="1" name="category">
 
-															<option value="0">待付款</option>
-															<option value="1">待发货</option>
-															<option value="2">待收货</option>
-															<option value="3">交易完成</option>
+															<option value="足球卡">足球卡</option>
+
+															<option value="篮球卡">篮球卡</option>
+
+															<option value="其他卡">其他卡</option>
+
+															<!-- <option value="Category 4">Category 4</option> -->
 
 														</select>
 
 													</div>
 
 												</div>
+												<div class="control-group">
+
+													<label class="control-label">厂商:</label>
+
+													<div class="controls">
+
+														<select id="manufacturer" class="small m-wrap" tabindex="1" name="manufacturer">
+
+															<option value="Topps">Topps</option>
+
+															<option value="Panini">Panini</option>
+
+															<option value="Futera">Futera</option>
+
+															<option value="其他品牌">其他品牌</option>
+
+														</select>
+
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label">品牌:</label>
+
+													<div class="controls">
+
+														<select id="brand" class="small m-wrap" tabindex="1" name="brand">
+
+															<option value="Topps">Topps</option>
+
+															<option value="Panini">Panini</option>
+
+															<option value="Futera">Futera</option>
+
+															<option value="其他品牌">其他品牌</option>
+
+														</select>
+
+													</div>
+
+												</div>
+
+												<div class="control-group">
+
+													<label class="control-label">系列:</label>
+
+													<div class="controls">
+
+														<input id="series" type="text"  class="m-wrap medium" name="series" />
+													</div>
+
+												</div>
+
+												<div class="control-group">
+
+													<label class="control-label">系列编号:</label>
+
+													<div class="controls">
+
+														<input id="serial_number" type="text" class="m-wrap medium" name="serial_number" />
+
+														<span class="help-inline">(只接受数字)</span>
+
+													</div>
+
+												</div>
+				
+												<div class="control-group">
+
+													<label class="control-label">稀有度:</label>
+
+													<div class="controls">
+
+														<input id="rarity" type="text"  class="m-wrap large" name="rarity" />
+													</div>
+
+												</div>
+									
+												<div class="control-group">
+
+													<label class="control-label">价格</label>
+
+													<div class="controls">
+
+														<input id="price" type="text"  class="m-wrap medium" name="price" />
+
+														<span class="help-inline">单位/元</span>
+
+													</div>
+
+												</div>
+
+												<div class="control-group">
+
+													<label class="control-label">百科描述</label>
+
+													<div class="controls">
+
+														<textarea id="describes" name="describes" class="large m-wrap" rows="3" placeholder=""></textarea>
+
+													</div>
+
+												</div>
+												
+												<div class="control-group">
+
+													<label class="control-label">百科图片</label>
+
+													<div id="img" class="controls">
+													</div>
+
+												</div>
+
+												<div class="control-group">
+
+													<label class="control-label">图片上传</label>
+
+													<div class="controls">
+														<input class="medium m-wrap" type="file" name="imgs" multiple="multiple">
+														<span class="help-inline">(不修改图片就不上传)</span>
+													</div>
+
+												</div>
+
 												<div class="form-actions">
 
-													<button id="updateSubmit" type="submit" class="btn blue"><i class="icon-ok"></i> 订单信息修改</button>
+													<button id='updateSubmit' type="submit" class="btn blue"><i class="icon-ok"></i> 百科信息修改</button>
+
 													<!-- <button type="button" class="btn">取消</button> -->
 
 												</div>
@@ -489,7 +600,6 @@
 											<!-- END FORM-->  
 
 										</div>
-
 									</div>
 
 								</div>
@@ -545,21 +655,21 @@
 											<form id='formDetail' action="" enctype="multipart/form-data" method="post" class="form-horizontal">
 												<div class="control-group">
 
-													<label class="control-label" >订单id:</label>
+													<label class="control-label" >百科id:</label>
 
 													<div class="controls">
 
-														<input disabled id='orderidD' type="text" class="m-wrap large" name="orderid" />
+														<input disabled id='wikiidD' type="text" class="m-wrap large" name="wikiid" />
 													</div>
 
 												</div>
 												<div class="control-group">
 
-													<label class="control-label" >卡片id:</label>
+													<label class="control-label" >百科中文名称:</label>
 
 													<div class="controls">
 
-														<input disabled id='cardidD' type="text" class="m-wrap large" name="cardid" />
+														<input disabled id='wikinameD' type="text" class="m-wrap large" name="wikiname" />
 
 														<!-- <span class="help-inline">Some hint here</span> -->
 
@@ -568,142 +678,136 @@
 												</div>
 												<div class="control-group">
 
-													<label class="control-label" >卖家id:</label>
+													<label class="control-label" >百科英文名称:</label>
 
 													<div class="controls">
 
-														<input disabled id='sellerD' type="text" class="m-wrap large" name="seller" />
+														<input disabled id='english_nameD' type="text" class="m-wrap large" name="english_name" />
 													</div>
 
 												</div>
 												<div class="control-group">
 
-													<label class="control-label" >买家id:</label>
+													<label class="control-label" >类别:</label>
 
 													<div class="controls">
 
-														<input disabled id='buyerD' type="text" class="m-wrap large" name="buyer" />
+														<input disabled id='categoryD' type="text" class="m-wrap large" name="category" />
 													</div>
 
 												</div>
 												<div class="control-group">
 
-													<label class="control-label" >订单状态:</label>
+													<label class="control-label" >品牌:</label>
 
 													<div class="controls">
 
-														<input disabled id='statusD' type="text" class="m-wrap medium" name="status" />
+														<input disabled id='brandD' type="text" class="m-wrap medium" name="brand" />
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label" >厂商:</label>
+
+													<div class="controls">
+
+														<input disabled id='manufacturerD' type="text" class="m-wrap medium" name="manufacturer" />
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label" >价格:</label>
+
+													<div class="controls">
+
+														<input disabled id='priceD' type="text" class="m-wrap medium" name="price" />
 													</div>
 
 												</div>
 
 												<div class="control-group">
 
-													<label class="control-label" >卡片总价:</label>
+													<label class="control-label" >贡献者:</label>
 
 													<div class="controls">
 
-														<input disabled id='card_priceD' type="text" class="m-wrap medium" name="card_price" />
-
-													</div>
-
-												</div> 
-												<div class="control-group">
-
-													<label class="control-label" >物流价格:</label>
-
-													<div class="controls">
-
-														<input disabled id='logistic_priceD' type="text" class="m-wrap medium" name="logistic_price" />
-
-													</div>
-
-												</div> 
-												<div class="control-group">
-
-													<label class="control-label" >订单类型:</label>
-
-													<div class="controls">
-
-														<input disabled id='ordertypeD' type="text" class="m-wrap medium" name="ordertype" />
-
-													</div>
-
-												</div> 
-												<div class="control-group">
-
-													<label class="control-label" >物流:</label>
-
-													<div class="controls">
-
-														<input disabled id='logisticD' type="text" class="m-wrap medium" name="logistic" />
-
-													</div>
-
-												</div> 
-												<div class="control-group">
-
-													<label class="control-label" >运单号:</label>
-
-													<div class="controls">
-
-														<input disabled id='logistic_noD' type="text" class="m-wrap medium" name="logistic_no" />
-
-													</div>
-
-												</div> 
-												<div class="control-group">
-
-													<label class="control-label" >卡片数量:</label>
-
-													<div class="controls">
-
-														<input disabled id='card_numD' type="text" class="m-wrap medium" name="card_num" />
-													</div>
-
-												</div> 
-												<div class="control-group">
-
-													<label class="control-label" >支付宝订单编号:</label>
-
-													<div class="controls">
-
-														<input disabled id='alipay_idD' type="text" class="m-wrap medium" name="alipay_id" />
+														<input disabled id='contributorD' type="text" class="m-wrap medium" name="contributor" />
 													</div>
 
 												</div>
 												<div class="control-group">
 
-													<label class="control-label">信息:</label>
+													<label class="control-label" >系列:</label>
 
 													<div class="controls">
 
-														<input disabled id='messageD' type="text"  class="m-wrap large" name="message" />
-														<!-- <span class="help-inline">Some hint here</span> -->
-
-													</div>
-												</div>
-												<div class="control-group">
-
-													<label class="control-label" >地址信息:</label>
-
-													<div class="controls">
-
-														<input disabled id='addr_idD' type="text" class="m-wrap large" name="addr_id" />
+														<input disabled id='seriesD' type="text" class="m-wrap medium" name="series" />
 													</div>
 
 												</div>
 												<div class="control-group">
 
-													<label class="control-label" >收货时间:</label>
+													<label class="control-label" >编号:</label>
 
 													<div class="controls">
 
-														<input disabled id='receive_timeD' type="text" class="m-wrap medium" name="receive_time" />
+														<input disabled id='serial_numberD' type="text" class="m-wrap medium" name="serial_number" />
 													</div>
 
 												</div>
-											
+												<div class="control-group">
+
+													<label class="control-label" >稀有度:</label>
+
+													<div class="controls">
+
+														<input disabled id='rarityD' type="text" class="m-wrap medium" name="rarity" />
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label" >百科描述:</label>
+
+													<div class="controls">
+
+														<input disabled id='describesD' type="text" class="m-wrap large" name="describes" />
+													</div>
+
+												</div>
+												<!-- <div class="control-group">
+
+													<label class="control-label">百科描述:</label>
+
+													<div class="controls">
+
+														<textarea id="describesD" class="large m-wrap" rows="5" ></textarea>
+
+													</div>
+
+												</div> -->
+												<div class="control-group">
+
+													<label class="control-label" >是否锁定:</label>
+
+													<div class="controls">
+
+														<input disabled id='islockD' type="text" class="m-wrap medium" name="islock" />
+														<span class="help-inline">(1表示锁定,0表示未锁定)</span>
+
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label">百科图片</label>
+
+													<div id="imgD" class="controls">
+													</div>
+
+												</div>
 												<button id="backButton" type="button" class="btn blue" style="margin-left:25%">返回</button>
 											</form>
 
@@ -813,9 +917,8 @@
 	<script src="media/js/table-managed.js"></script>     
 
 	<script>
-		// 列表中展示的<!--index cardid seller buyer status card_price logistic_price ordertype -->
-		// <!--列表中未展示 orderid logistic  logistic_no alipay_id   card_num message  addr_id receive_time-->
-
+		// <!--列表中未展示 english_name series  serial_number rarity describes picture -->
+		// 列表中  <wikiname category brand manufacturer price contributor islock>
 		jQuery(document).ready(function() {     
 			function createTR(obj,index){
 				var tr = '<tr class="odd gradeX">'+
@@ -826,15 +929,18 @@
 					'<td>'+obj.brand+'</td>'+
 					'<td>'+obj.manufacturer+'</td>'+
 					'<td>'+obj.price+'</td>'+
-					'<td>'+obj.contributor+'</td>';
+					'<td>'+obj.contributor+'</td>'+
+					'<td>'+obj.islock+'</td>';
 
 				if(obj.islock == 0){
-					tr += '<td><button wikiid="'+obj.wikiid+'" class="lockButton">lock</button></td>'+
-						  '<td><button disabled wikiid="'+obj.wikiid+'" class="unlockButton">unlock</button></td></tr>';
+					tr += '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="detailButton">detail</button></td>'+
+						  '<td><button wikiid="'+obj.wikiid+'" class="deleteButton">delete</button></td>'+
+						  '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="updateButton">update</button></td></tr>';
 				}	
 				else{
-					tr += '<td><button disabled wikiid="'+obj.wikiid+'" class="lockButton">lock</button></td>'+
-						  '<td><button wikiid="'+obj.wikiid+'" class="unlockButton">unlock</button></td></tr>';
+					tr += '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="detailButton">detail</button></td>'+
+						  '<td><button disabled wikiid="'+obj.wikiid+'" class="deleteButton">delete</button></td>'+
+						  '<td><button disabled wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="updateButton">update</button></td></tr>';
 				}
 				return tr;
 			};
@@ -879,15 +985,6 @@
 			  				var tr = createTR(eva[i],i+1);
 			   				$('tbody').append(tr);
 			   			};
-			   			$("button.lockButton").click(function(e){
-			   				var wikiid = $(e.target).attr('wikiid');
-			   				console.log(wikiid);
-			   				PostAjax('/webWiki/setlock',{wikiid:wikiid, lock:1});
-			   			});
-			   			$("button.unlockButton").click(function(e){
-			   				var wikiid = $(e.target).attr('wikiid');
-			   				PostAjax('/webWiki/setlock',{wikiid:wikiid, lock:0});
-			   			});
 			   			$("button.detailButton").click(function(e){
 			   				$('div#update').attr('hidden',true);
 			   				$('div#query').attr('hidden',true);
@@ -895,67 +992,76 @@
 			   				var tar = $(e.target);
 			   				var tr = tar.parent().parent();
 			   				var tds = $(tr).find('td');
-			   				var orderid = tar.attr("orderid");
-			   				var logistic = tar.attr("logistic");
-			   				var logistic_no = tar.attr("logistic_no");
-			   				var alipay_id = tar.attr("alipay_id");
-			   				var card_num = tar.attr("card_num");
-			   				var message = tar.attr("message");
-			   				var addr_id = tar.attr("addr_id");
-			   				var receive_time = tar.attr("receive_time");
-			   				var cardid = $(tds[1]).text();
-			   				var seller = $(tds[2]).text();
-			   				var buyer = $(tds[3]).text();
-			   				var status = $(tds[4]).text();
-			   				var card_price = $(tds[5]).text();
-			   				var logistic_price = $(tds[6]).text();
-			   				var ordertype = $(tds[7]).text();
-			   				$("input#orderidD").attr({value:orderid});
-			   				$("input#logisticD").attr({value:logistic});
-			   				$("input#logistic_noD").attr({value:logistic_no});
-			   				$("input#alipay_idD").attr({value:alipay_id});
-			   				$("input#card_numD").attr({value:card_num});
-			   				$("input#messageD").attr({value:message});
-			   				$("input#addr_idD").attr({value:addr_id});
-			   				$("input#receive_timeD").attr({value:receive_time});
-			   				$("input#cardidD").attr({value:cardid});
-			   				$("input#sellerD").attr({value:seller});
-			   				$("input#buyerD").attr({value:buyer});
-			   				$("input#statusD").attr({value:status});
-			   				$("input#card_priceD").attr({value:card_price});
-			   				$("input#logistic_priceD").attr({value:logistic_price});
-			   				$("input#ordertypeD").attr({value:ordertype});
-			   				$.ajax({
-						   		type : 'POST',
-						   		url : '/webOrder/addr',
-						   		data : {addr_id:addr_id},
-						   		dataType : 'json',
-						   		cache : false,
-						   		success : function(data){
-						   			var eva = eval(data);
-						   			console.log("eva的data:",eva.addr.length);
-						   			if(eva.addr.length <1){
-						   				$("input#addr_idD").attr("value","买家未添加地址信息");
-						   			}
-						   			else{
-						   				var addrInfo = eva.addr[0];
-						   				var str = addrInfo.province+ ','+addrInfo.city+','+ addrInfo.district+', 收货人:'+addrInfo.consigee+' ,电话:'+addrInfo.telephone+' ,邮编:'+addrInfo.postcode;
-						   				$("input#addr_idD").attr("value",str);
-						   			}
-						   		},
-						   		error : function(){
-						   			console.log('删除信息失败');
-						   		}
-					   		});//ajax
+			   				var wikiid = tar.attr("wikiid");
+			   				var english_name = tar.attr("english_name");
+			   				var series = tar.attr("series");
+			   				var serial_number = tar.attr("serial_number");
+			   				var rarity = tar.attr("rarity");
+			   				var describes = tar.attr("describes");
+			   				console.log(describes);
+			   				var picture = tar.attr("picture");
+			   				var wikiname = $(tds[1]).text();
+			   				var category = $(tds[2]).text();
+			   				var brand = $(tds[3]).text();
+			   				var manufacturer = $(tds[4]).text();
+			   				var price = $(tds[5]).text();
+			   				var contributor = $(tds[6]).text();
+			   				var islock = $(tds[7]).text();
+			   				$("input#wikiidD").attr({value:wikiid});
+			   				$("input#english_nameD").attr({value:english_name});
+			   				$("input#seriesD").attr({value:series});
+			   				$("input#serial_numberD").attr({value:serial_number});
+			   				$("input#rarityD").attr({value:rarity});
+			   				$("input#describesD").attr({value:describes});
+			   				$("input#wikinameD").attr({value:wikiname});
+			   				$("input#categoryD").attr({value:category});
+			   				$("input#brandD").attr({value:brand});
+			   				$("input#manufacturerD").attr({value:manufacturer});
+			   				$("input#priceD").attr({value:price});
+			   				$("input#contributorD").attr({value:contributor});
+			   				$("input#islockD").attr({value:islock});
+			   				var strs = picture.split(',');
+		   					console.log('strs: ',strs[0]);
+		   					//<img src="../0.jpg" height="100" width="100">
+		   					$('#imgD').empty();
+		   					if(strs[0] != ''){
+		   						for(var i=0;i<strs.length;i++){
+		   						$('#imgD').append('<img src="../'+strs[i]+'" height="100" width="100">');
+		   						};
+		   					}
+		   					else{
+		   						$('#imgD').append('<span class="help-inline">没有图片</span>');
+		   					}
+			   				// $.ajax({
+						   	// 	type : 'POST',
+						   	// 	url : '/webOrder/addr',
+						   	// 	data : {addr_id:addr_id},
+						   	// 	dataType : 'json',
+						   	// 	cache : false,
+						   	// 	success : function(data){
+						   	// 		var eva = eval(data);
+						   	// 		console.log("eva的data:",eva.addr.length);
+						   	// 		if(eva.addr.length <1){
+						   	// 			$("input#addr_idD").attr("value","买家未添加地址信息");
+						   	// 		}
+						   	// 		else{
+						   	// 			var addrInfo = eva.addr[0];
+						   	// 			var str = addrInfo.province+ ','+addrInfo.city+','+ addrInfo.district+', 收货人:'+addrInfo.consigee+' ,电话:'+addrInfo.telephone+' ,邮编:'+addrInfo.postcode;
+						   	// 			$("input#addr_idD").attr("value",str);
+						   	// 		}
+						   	// 	},
+						   	// 	error : function(){
+						   	// 		console.log('删除信息失败');
+						   	// 	}
+					   		// });//ajax
 			   			});
 			   			$("button.deleteButton").click(function(e){
 			   				if(confirm('是否需要删除?')){
-			   					var cid = $(e.target).attr('orderid');
+			   					var cid = $(e.target).attr('wikiid');
 			   					console.log(cid);
-			   					PostAjax('/webOrder/delete',{orderid:cid});
+			   					PostAjax('/webWiki/delete',{wikiid:cid});
 			   				}
 			   			});
-			   			/*index  username  gender  email  telephone  score  IDCardNo*/
 			   			$("button.updateButton").click(function(e){
 			   				if(confirm('是否需要修改卡信息?')){
 			   					
@@ -965,40 +1071,63 @@
 			   					var tar = $(e.target);
 				   				var tr = tar.parent().parent();
 				   				var tds = $(tr).find('td');
-				   				var orderid = tar.attr("orderid");
-				   				var card_num = tar.attr("card_num");
-				   				var message = tar.attr("message");
-				   				var addr_id = tar.attr("addr_id");
-				   				var receive_time = tar.attr("receive_time");
-				   				var cardid = $(tds[1]).text();
-				   				var seller = $(tds[2]).text();
-				   				var buyer = $(tds[3]).text();
-				   				var status = $(tds[4]).text();
-				   				var card_price = $(tds[5]).text();
-				   				var logistic_price = $(tds[6]).text();
-				   				var ordertype = $(tds[7]).text();
-				   				$('input#orderid').attr("value",orderid);
-				   				$('input#orderid').attr("disabled",true);
-				   				$('input#card_price').attr("value",card_price);
-				   				$('input#logistic_price').attr("value",logistic_price);
-				   				$('input#card_num').attr("value",card_num);
-				   				$('input#message').attr("value",message);
-				   				var options = $('#status').find('option');
-			   					if(status == "待付款"){
-			   						$(options[0]).attr("selected",1);
-			   					}
-			   					else if(status == "待发货"){
-			   						$(options[1]).attr("selected",1);
-			   					}
-			   					else if(status == "待收货"){
-			   						$(options[2]).attr("selected",1);
+				   				var wikiid = tar.attr("wikiid");
+				   				var english_name = tar.attr("english_name");
+				   				var series = tar.attr("series");
+				   				var serial_number = tar.attr("serial_number");
+				   				var rarity = tar.attr("rarity");
+				   				var describes = tar.attr("describes");
+				   				var picture = tar.attr("picture");
+				   				var wikiname = $(tds[1]).text();
+				   				var category = $(tds[2]).text();
+				   				var brand = $(tds[3]).text();
+				   				var manufacturer = $(tds[4]).text();
+				   				var price = $(tds[5]).text();
+				   				var contributor = $(tds[6]).text();
+				   				var islock = $(tds[7]).text();
+
+				   				$('input#wikiid').attr({value:wikiid, disabled:true});
+				   				$('input#wikiname').attr("value",wikiname);
+				   				$('input#english_name').attr("value",english_name);
+				   				$('input#series').attr("value",series);
+				   				$('input#serial_number').attr("value",serial_number);
+				   				$('input#rarity').attr("value",rarity);
+				   				$('#describes').attr("value",describes);
+				   				$('input#price').attr("value",price);
+				   				var options = $('#category').find('option');
+			   					for (var i = 0; i < options.length; i++) {
+			   						if($(options[i]).text() == category){
+			   							$(options[i]).attr('selected',1);
+			   						}
+			   					};
+			   					var options = $('#brand').find('option');
+			   					for (var i = 0; i < options.length; i++) {
+			   						if($(options[i]).text() == brand){
+			   							$(options[i]).attr('selected',1);
+			   						}
+			   					};
+			   					var options = $('#manufacturer').find('option');
+			   					for (var i = 0; i < options.length; i++) {
+			   						if($(options[i]).text() == manufacturer){
+			   							$(options[i]).attr('selected',1);
+			   						}
+			   					};
+			   					var strs = picture.split(',');
+			   					console.log('strs: ',strs[0]);
+			   					//<img src="../0.jpg" height="100" width="100">
+			   					$('#img').empty();
+			   					if(strs[0] != ''){
+			   						for(var i=0;i<strs.length;i++){
+			   						$('#img').append('<img src="../'+strs[i]+'" height="100" width="100">');
+			   						};
 			   					}
 			   					else{
-			   						$(options[3]).attr("selected",1);
-			   					};
+			   						$('#img').append('<span class="help-inline">没有图片</span>');
+			   					}
+
 			   					$('#updateSubmit').click(function(e){
 			   						if(confirm('是否确认修改信息?')){
-			   							$('input#orderid').removeAttr('disabled');
+			   							$('input#wikiid').removeAttr('disabled');
 			   							return true;
 			   						}
 			   						else{

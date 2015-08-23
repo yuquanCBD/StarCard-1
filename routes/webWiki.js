@@ -89,7 +89,7 @@ function addInfo(fields, files, res, req){
     }
     else{
       for (var i  in files.imgs) {
-        if(i > 1) break; //最多1张
+        //if(i > 1) break; //最多1张
         var file = files.imgs[i];
         if(file.originalFilename.length == 0){
           break;
@@ -120,12 +120,17 @@ function addInfo(fields, files, res, req){
   });
 };
 
-router.get('/query',function(req, res, next){
+router.get('/lock',function(req, res, next){
 	var username = req.session.username;
 	var password = req.session.password;
 
 	return res.render('wiki_manage/lock.html');
+});
+router.get('/query',function(req, res, next){
+	var username = req.session.username;
+	var password = req.session.password;
 
+	return res.render('wiki_manage/wikiManage.html');
 });
 router.post('/query',function(req, res, next){
 	var sql = 'select * from wiki';
@@ -152,5 +157,118 @@ router.post('/setlock',function(req, res, next){
 	});
 });
 
+//根据id删除百科
+router.post("/delete",function(req, res, next){
+  var wikiid = req.body.wikiid;
+  var sql = 'DELETE FROM wiki WHERE wikiid = "'+wikiid+'"';
+  console.log("=======================",wikiid);
+  User.exec(sql, function(err, r){
+    if (err)
+       return res.json({error : err});
+    console.log('开始删除');
+    var filePath = path.join(__dirname, '../public/imgs/wiki/');
+    var dirpath = filePath+wikiid;
+    console.log("图片路径:",filePath);
+    exec('rm -rf '+dirpath, function(err){
+      if(err){
+        return console.log('删除图片文件夹失败');
+      }
+      else{
+        console.log('删除图片文件夹成功');
+        return res.json({sucess:r});
+      }
+    });
+  });
+});
+
+//根据提交的id更新用户信息，原则上不允许修改用户名以及用户id
+router.post("/update",function(req, res, next){
+  var form = new multiparty.Form();
+  form.parse(req, function(err, fields, files){
+    if(err){
+      console.log(err);
+      res.json({error:"数据解析错误"});
+      return;
+    };
+    updateInfo(fields, files, res);
+  })
+});
+//更新信息，逻辑
+//1.如果用户没有修改图片，那么只需要修改文本信息然后更新数据库
+//2.如果用户修改图片，那么需要将原来图片删除，然后将新文件写进原来文件夹，并且还需要更新数据库文本信息以及路径信息
+function updateInfo(fields, files, res){
+  var str = "";
+  var uId = fields.wikiid[0];
+  var wikiname = fields.wikiname[0];
+  var english_name = fields.english_name[0];
+  var category = fields.category[0];
+  var manufacturer = fields.manufacturer[0];
+  var series = fields.series[0];
+  var serial_number = fields.serial_number[0];
+  var rarity = fields.rarity[0];
+  var describes = fields.describes[0];
+  var price = fields.price[0];
+  var brand = fields.brand[0];
+  //存储图片，得到图片的路径信息
+  var filePath = path.join(__dirname, '../public/imgs/wiki/');
+
+  //如果存在上传文件
+  if(files.imgs[0].originalFilename){
+    // 判断文件夹是否存在,如果文件夹存在，删除里边所有文件 
+    fs.exists(filePath+uId, function(exists){ 
+     if(exists){ 
+        var dirList = fs.readdirSync(filePath+uId);
+        dirList.forEach(function(fileName){
+          fs.unlinkSync(filePath+uId+'/'+fileName);
+        });
+        console.log('删除成功');
+
+        //*******************
+        for (var i  in files.imgs) {
+          //if(i > 1) break; //最多1张
+          var file = files.imgs[i];
+          if(file.originalFilename.length == 0){
+            break;
+          }
+          var types = file.originalFilename.split('.');
+          var p = "imgs/wiki/"+uId+'/'+i+'.'+String(types[types.length-1]);
+          if(str === ""){
+            str += p;
+          }
+          else{
+            str += (','+p);
+          }
+          fs.renameSync(file.path, filePath+uId+'/'+i+'.'+String(types[types.length-1]));
+        };
+        console.log('图片信息添加成功');
+        //将路径和卡片信息存入数据库
+        var sql = 'UPDATE wiki SET wikiname="'+ wikiname +'", english_name="'+english_name+'", category="'+category+'", manufacturer="'+manufacturer+'", brand="'+brand+'",picture="'+str+'",series="'+series+'",serial_number="'+serial_number+'",rarity="'+rarity+'",price="'+price+'",describes="'+describes+'" WHERE wikiid = "'+uId+'"';
+        console.log(sql);
+        User.exec(sql, function(err, user){
+          if(err){
+            return res.json({error:"用户信息修改失败"});
+          }
+          return res.render('wiki_manage/wikiManage.html');
+        });
+        //*******************
+     }else{ 
+        console.log("文件夹不存在");
+        return res.json({error:'存储图片文件夹不存在'});
+     } 
+    });
+  }
+  //如果不存在上传文件
+  else{
+    //var sql = 'UPDATE user SET gender="'+ gender +'", email="'+email+'", telephone="'+telephone+'", score="'+score+'", IDCardNo="'+IDCardNo+'" WHERE userid = "'+uId+'"';
+    var sql = 'UPDATE wiki SET wikiname="'+ wikiname +'", english_name="'+english_name+'", category="'+category+'", manufacturer="'+manufacturer+'", brand="'+brand+'",series="'+series+'",serial_number="'+serial_number+'",rarity="'+rarity+'",price="'+price+'",describes="'+describes+'" WHERE wikiid = "'+uId+'"';
+    User.exec(sql, function(err, user){
+      if(err){
+        return res.json({error:"用户信息修改失败"});
+      }
+      return res.render('wiki_manage/wikiManage.html');
+    });
+        
+  }
+};
 
 module.exports = router;
