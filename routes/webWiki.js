@@ -281,8 +281,9 @@ router.get('/check',function(req, res, next){
 router.post('/check',function(req, res, next){
   var describes = req.body.describes;
   var wikiid = req.body.wikiid;
+  var id = req.body.id;
   var sql1 = 'UPDATE wiki SET describes="'+ describes +'" WHERE wikiid = "'+wikiid+'"';
-  var sql2 = 'delete from wiki_pre where wikiid="'+wikiid+'"';
+  var sql2 = 'delete from wiki_pre where id="'+id+'"';
   console.log("sql1=======:",sql1);
   console.log("sql2=======:",sql2);
   User.exec(sql1, function(err,r){

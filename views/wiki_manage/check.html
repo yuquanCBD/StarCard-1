@@ -595,8 +595,8 @@
 					'<td>'+obj.contributor+'</td>';
 
 				
-				tr += '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="detailButton">detail</button></td>'+
-					  '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="checkButton">check</button></td></tr>';
+				tr += '<td><button wikiid="'+obj.wikiid+'" preid="'+obj.id+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="detailButton">detail</button></td>'+
+					  '<td><button wikiid="'+obj.wikiid+'" preid="'+obj.id+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="checkButton">check</button></td></tr>';
 		
 				return tr;
 			};
@@ -678,8 +678,9 @@
 			   				if(confirm('是否审查通过?')){
 			   					var cid = $(e.target).attr('wikiid');
 			   					var describes = $(e.target).attr('describes');
+			   					var id = $(e.target).attr("preid");
 			   					console.log(cid);
-			   					PostAjax('/webWiki/check',{wikiid:cid, describes:describes});
+			   					PostAjax('/webWiki/check',{wikiid:cid, describes:describes, id:id});
 			   				}
 			   			});
 			   			
