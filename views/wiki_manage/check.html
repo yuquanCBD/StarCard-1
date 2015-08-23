@@ -224,10 +224,10 @@
 						<li>
 							<a href="/webWiki/add">百科增加</a>
 						</li>
-						<li class="active">
+						<li >
 							<a href="/webWiki/query">百科查询、删除、修改</a>
 						</li>
-						<li>
+						<li class="active">
 							<a href="/webWiki/check">百科审核</a>
 						</li>
 						<li >
@@ -333,10 +333,8 @@
 											<th class="hidden-480">厂商</th>
 											<th class="hidden-480">价格</th>
 											<th class="hidden-480">贡献者</th>
-											<th class="hidden-480">是否锁定</th>
-											<th class="hidden-480">detail</th>
-											<th class="hidden-480">delete</th>
-											<th class="hidden-480">update</th>
+											<th class="hidden-480">详情</th>
+											<th class="hidden-480">审核通过</th>
 										</tr>
 
 									</thead>
@@ -356,261 +354,6 @@
 					</div>
 
 					
-
-				</div>
-
-				
-
-				<!-- END PAGE CONTENT-->
-				<!-- ************************************************************** -->
-				<!-- BEGIN PAGE CONTENT-->
-
-				<div id="update" class="row-fluid" hidden=true>
-
-					<div class="span12">
-
-						<!-- BEGIN SAMPLE FORM PORTLET-->   
-
-						<div class="portlet box blue tabbable">
-
-							<div class="portlet-title">
-
-								<div class="caption">
-
-									<i class="icon-reorder"></i>
-
-									<span class="hidden-480">信息添加</span>
-
-								</div>
-
-							</div>
-
-							<div class="portlet-body form">
-
-								<div class="tabbable portlet-tabs">
-
-									<ul class="nav nav-tabs">
-
-										<li><a href="starcardAdd" data-toggle="tab">信息添加</a></li>
-
-									</ul>
-
-									<div class="tab-content">
-
-										<div class="tab-pane active" id="portlet_tab1">
-
-											<!-- BEGIN FORM-->
-
-											<form action="/webWiki/update" enctype="multipart/form-data" method="post" class="form-horizontal">
-
-												
-												<div class="control-group">
-
-													<label class="control-label" >百科id:</label>
-
-													<div class="controls">
-
-														<input id="wikiid" disabled type="text" class="m-wrap meduium" name="wikiid" />
-
-														<!-- <span class="help-inline">Some hint here</span> -->
-
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label" >百科中文名称:</label>
-
-													<div class="controls">
-
-														<input id="wikiname" type="text" class="m-wrap meduium" name="wikiname" />
-
-														<!-- <span class="help-inline">Some hint here</span> -->
-
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label" >百科英文名称:</label>
-
-													<div class="controls">
-
-														<input id="english_name" type="text" class="m-wrap meduium" name="english_name" />
-													</div>
-
-												</div>
-
-												<div class="control-group">
-
-													<label class="control-label">卡片类别:</label>
-
-													<div class="controls">
-
-														<select id="category" class="small m-wrap" tabindex="1" name="category">
-
-															<option value="足球卡">足球卡</option>
-
-															<option value="篮球卡">篮球卡</option>
-
-															<option value="其他卡">其他卡</option>
-
-															<!-- <option value="Category 4">Category 4</option> -->
-
-														</select>
-
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label">厂商:</label>
-
-													<div class="controls">
-
-														<select id="manufacturer" class="small m-wrap" tabindex="1" name="manufacturer">
-
-															<option value="Topps">Topps</option>
-
-															<option value="Panini">Panini</option>
-
-															<option value="Futera">Futera</option>
-
-															<option value="其他品牌">其他品牌</option>
-
-														</select>
-
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label">品牌:</label>
-
-													<div class="controls">
-
-														<select id="brand" class="small m-wrap" tabindex="1" name="brand">
-
-															<option value="Topps">Topps</option>
-
-															<option value="Panini">Panini</option>
-
-															<option value="Futera">Futera</option>
-
-															<option value="其他品牌">其他品牌</option>
-
-														</select>
-
-													</div>
-
-												</div>
-
-												<div class="control-group">
-
-													<label class="control-label">系列:</label>
-
-													<div class="controls">
-
-														<input id="series" type="text"  class="m-wrap medium" name="series" />
-													</div>
-
-												</div>
-
-												<div class="control-group">
-
-													<label class="control-label">系列编号:</label>
-
-													<div class="controls">
-
-														<input id="serial_number" type="text" class="m-wrap medium" name="serial_number" />
-
-														<span class="help-inline">(只接受数字)</span>
-
-													</div>
-
-												</div>
-				
-												<div class="control-group">
-
-													<label class="control-label">稀有度:</label>
-
-													<div class="controls">
-
-														<input id="rarity" type="text"  class="m-wrap large" name="rarity" />
-													</div>
-
-												</div>
-									
-												<div class="control-group">
-
-													<label class="control-label">价格</label>
-
-													<div class="controls">
-
-														<input id="price" type="text"  class="m-wrap medium" name="price" />
-
-														<span class="help-inline">单位/元</span>
-
-													</div>
-
-												</div>
-
-												<div class="control-group">
-
-													<label class="control-label">百科描述</label>
-
-													<div class="controls">
-
-														<textarea id="describes" name="describes" class="large m-wrap" rows="3" placeholder=""></textarea>
-
-													</div>
-
-												</div>
-												
-												<div class="control-group">
-
-													<label class="control-label">百科图片</label>
-
-													<div id="img" class="controls">
-													</div>
-
-												</div>
-
-												<div class="control-group">
-
-													<label class="control-label">图片上传</label>
-
-													<div class="controls">
-														<input class="medium m-wrap" type="file" name="imgs" multiple="multiple">
-														<span class="help-inline">(不修改图片就不上传)</span>
-													</div>
-
-												</div>
-
-												<div class="form-actions">
-
-													<button id='updateSubmit' type="submit" class="btn blue"><i class="icon-ok"></i> 百科信息修改</button>
-
-													<!-- <button type="button" class="btn">取消</button> -->
-
-												</div>
-
-											</form>
-
-											<!-- END FORM-->  
-
-										</div>
-									</div>
-
-								</div>
-
-							</div>
-
-						</div>
-
-						<!-- END SAMPLE FORM PORTLET-->
-
-					</div>
 
 				</div>
 
@@ -718,67 +461,6 @@
 												</div>
 												<div class="control-group">
 
-													<label class="control-label" >价格:</label>
-
-													<div class="controls">
-
-														<input disabled id='priceD' type="text" class="m-wrap medium" name="price" />
-													</div>
-
-												</div>
-
-												<div class="control-group">
-
-													<label class="control-label" >贡献者:</label>
-
-													<div class="controls">
-
-														<input disabled id='contributorD' type="text" class="m-wrap medium" name="contributor" />
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label" >系列:</label>
-
-													<div class="controls">
-
-														<input disabled id='seriesD' type="text" class="m-wrap medium" name="series" />
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label" >编号:</label>
-
-													<div class="controls">
-
-														<input disabled id='serial_numberD' type="text" class="m-wrap medium" name="serial_number" />
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label" >稀有度:</label>
-
-													<div class="controls">
-
-														<input disabled id='rarityD' type="text" class="m-wrap medium" name="rarity" />
-													</div>
-
-												</div>
-												<!-- <div class="control-group">
-
-													<label class="control-label" >百科描述:</label>
-
-													<div class="controls">
-
-														<input disabled id='describesD' type="text" class="m-wrap large" name="describes" />
-													</div>
-
-												</div>
- -->												<div class="control-group">
-
 													<label class="control-label">百科描述:</label>
 
 													<div class="controls">
@@ -788,26 +470,7 @@
 													</div>
 
 												</div>
-												<div class="control-group">
-
-													<label class="control-label" >是否锁定:</label>
-
-													<div class="controls">
-
-														<input disabled id='islockD' type="text" class="m-wrap medium" name="islock" />
-														<span class="help-inline">(1表示锁定,0表示未锁定)</span>
-
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label">百科图片</label>
-
-													<div id="imgD" class="controls">
-													</div>
-
-												</div>
+											
 												<button id="backButton" type="button" class="btn blue" style="margin-left:25%">返回</button>
 											</form>
 
@@ -929,19 +592,12 @@
 					'<td>'+obj.brand+'</td>'+
 					'<td>'+obj.manufacturer+'</td>'+
 					'<td>'+obj.price+'</td>'+
-					'<td>'+obj.contributor+'</td>'+
-					'<td>'+obj.islock+'</td>';
+					'<td>'+obj.contributor+'</td>';
 
-				if(obj.islock == 0){
-					tr += '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="detailButton">detail</button></td>'+
-						  '<td><button wikiid="'+obj.wikiid+'" class="deleteButton">delete</button></td>'+
-						  '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="updateButton">update</button></td></tr>';
-				}	
-				else{
-					tr += '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="detailButton">detail</button></td>'+
-						  '<td><button disabled wikiid="'+obj.wikiid+'" class="deleteButton">delete</button></td>'+
-						  '<td><button disabled wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="updateButton">update</button></td></tr>';
-				}
+				
+				tr += '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="detailButton">detail</button></td>'+
+					  '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="checkButton">check</button></td></tr>';
+		
 				return tr;
 			};
 			function PostAjax(url, obj){
@@ -974,19 +630,19 @@
 			function query(){
 				$.ajax({
 			   		type : 'POST',
-			   		url : '/webWiki/query',
+			   		url : '/webWiki/checkquery',
 			   		data : {pageIndex : 0, pageSize : 20},
 			   		dataType : 'json',
 			   		cache : false,
 			   		success : function(data){
 			   			var eva = eval(data);
+			   			console.log(eva);
 			   			$('tbody').empty();
 			   			for (var i = 0; i < eva.length; i++) {
 			  				var tr = createTR(eva[i],i+1);
 			   				$('tbody').append(tr);
 			   			};
 			   			$("button.detailButton").click(function(e){
-			   				$('div#update').attr('hidden',true);
 			   				$('div#query').attr('hidden',true);
 			   				$('div#detail').attr('hidden',false);
 			   				var tar = $(e.target);
@@ -1006,140 +662,27 @@
 			   				var manufacturer = $(tds[4]).text();
 			   				var price = $(tds[5]).text();
 			   				var contributor = $(tds[6]).text();
-			   				var islock = $(tds[7]).text();
+			   				
 			   				$("input#wikiidD").attr({value:wikiid});
 			   				$("input#english_nameD").attr({value:english_name});
-			   				$("input#seriesD").attr({value:series});
-			   				$("input#serial_numberD").attr({value:serial_number});
-			   				$("input#rarityD").attr({value:rarity});
+			   				//$("input#seriesD").attr({value:series});
+			   				//$("input#serial_numberD").attr({value:serial_number});
+			   				//$("input#rarityD").attr({value:rarity});
 			   				$("#describesD").attr({value:describes});
 			   				$("input#wikinameD").attr({value:wikiname});
 			   				$("input#categoryD").attr({value:category});
 			   				$("input#brandD").attr({value:brand});
 			   				$("input#manufacturerD").attr({value:manufacturer});
-			   				$("input#priceD").attr({value:price});
-			   				$("input#contributorD").attr({value:contributor});
-			   				$("input#islockD").attr({value:islock});
-			   				var strs = picture.split(',');
-		   					console.log('strs: ',strs[0]);
-		   					//<img src="../0.jpg" height="100" width="100">
-		   					$('#imgD').empty();
-		   					if(strs[0] != ''){
-		   						for(var i=0;i<strs.length;i++){
-		   						$('#imgD').append('<img src="../'+strs[i]+'" height="100" width="100">');
-		   						};
-		   					}
-		   					else{
-		   						$('#imgD').append('<span class="help-inline">没有图片</span>');
-		   					}
-			   				// $.ajax({
-						   	// 	type : 'POST',
-						   	// 	url : '/webOrder/addr',
-						   	// 	data : {addr_id:addr_id},
-						   	// 	dataType : 'json',
-						   	// 	cache : false,
-						   	// 	success : function(data){
-						   	// 		var eva = eval(data);
-						   	// 		console.log("eva的data:",eva.addr.length);
-						   	// 		if(eva.addr.length <1){
-						   	// 			$("input#addr_idD").attr("value","买家未添加地址信息");
-						   	// 		}
-						   	// 		else{
-						   	// 			var addrInfo = eva.addr[0];
-						   	// 			var str = addrInfo.province+ ','+addrInfo.city+','+ addrInfo.district+', 收货人:'+addrInfo.consigee+' ,电话:'+addrInfo.telephone+' ,邮编:'+addrInfo.postcode;
-						   	// 			$("input#addr_idD").attr("value",str);
-						   	// 		}
-						   	// 	},
-						   	// 	error : function(){
-						   	// 		console.log('删除信息失败');
-						   	// 	}
-					   		// });//ajax
 			   			});
-			   			$("button.deleteButton").click(function(e){
-			   				if(confirm('是否需要删除?')){
+			   			$("button.checkButton").click(function(e){
+			   				if(confirm('是否审查通过?')){
 			   					var cid = $(e.target).attr('wikiid');
+			   					var describes = $(e.target).attr('describes');
 			   					console.log(cid);
-			   					PostAjax('/webWiki/delete',{wikiid:cid});
+			   					PostAjax('/webWiki/check',{wikiid:cid, describes:describes});
 			   				}
 			   			});
-			   			$("button.updateButton").click(function(e){
-			   				if(confirm('是否需要修改卡信息?')){
-			   					
-			   					$('div#query').attr('hidden',true);
-			   					$('div#detail').attr('hidden',true);
-			   					$('div#update').attr('hidden',false);
-			   					var tar = $(e.target);
-				   				var tr = tar.parent().parent();
-				   				var tds = $(tr).find('td');
-				   				var wikiid = tar.attr("wikiid");
-				   				var english_name = tar.attr("english_name");
-				   				var series = tar.attr("series");
-				   				var serial_number = tar.attr("serial_number");
-				   				var rarity = tar.attr("rarity");
-				   				var describes = tar.attr("describes");
-				   				var picture = tar.attr("picture");
-				   				var wikiname = $(tds[1]).text();
-				   				var category = $(tds[2]).text();
-				   				var brand = $(tds[3]).text();
-				   				var manufacturer = $(tds[4]).text();
-				   				var price = $(tds[5]).text();
-				   				var contributor = $(tds[6]).text();
-				   				var islock = $(tds[7]).text();
-
-				   				$('input#wikiid').attr({value:wikiid, disabled:true});
-				   				$('input#wikiname').attr("value",wikiname);
-				   				$('input#english_name').attr("value",english_name);
-				   				$('input#series').attr("value",series);
-				   				$('input#serial_number').attr("value",serial_number);
-				   				$('input#rarity').attr("value",rarity);
-				   				$('#describes').attr("value",describes);
-				   				$('input#price').attr("value",price);
-				   				var options = $('#category').find('option');
-			   					for (var i = 0; i < options.length; i++) {
-			   						if($(options[i]).text() == category){
-			   							$(options[i]).attr('selected',1);
-			   						}
-			   					};
-			   					var options = $('#brand').find('option');
-			   					for (var i = 0; i < options.length; i++) {
-			   						if($(options[i]).text() == brand){
-			   							$(options[i]).attr('selected',1);
-			   						}
-			   					};
-			   					var options = $('#manufacturer').find('option');
-			   					for (var i = 0; i < options.length; i++) {
-			   						if($(options[i]).text() == manufacturer){
-			   							$(options[i]).attr('selected',1);
-			   						}
-			   					};
-			   					var strs = picture.split(',');
-			   					console.log('strs: ',strs[0]);
-			   					//<img src="../0.jpg" height="100" width="100">
-			   					$('#img').empty();
-			   					if(strs[0] != ''){
-			   						for(var i=0;i<strs.length;i++){
-			   						$('#img').append('<img src="../'+strs[i]+'" height="100" width="100">');
-			   						};
-			   					}
-			   					else{
-			   						$('#img').append('<span class="help-inline">没有图片</span>');
-			   					}
-
-			   					$('#updateSubmit').click(function(e){
-			   						if(confirm('是否确认修改信息?')){
-			   							$('input#wikiid').removeAttr('disabled');
-			   							return true;
-			   						}
-			   						else{
-			   							//console.log('点击');
-			   							$('div#update').attr('hidden',true);
-			   							$('div#query').attr('hidden',false);
-			   							return false;
-			   						}
-			   						
-			   					});
-			   				}
-			   			})
+			   			
 			   			App.init();
 
 			   			TableManaged.init();
@@ -1157,7 +700,6 @@
 				});
 			});
 			$("button#backButton").click(function(e){
-				$('div#update').attr('hidden',true);
 				$('div#detail').attr('hidden',true);
 			   	$('div#query').attr('hidden',false);
 			});

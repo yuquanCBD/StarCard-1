@@ -114,7 +114,7 @@ function addInfo(fields, files, res, req){
         if(err){
           return res.json({error:"wiki信息添加失败"});
         }
-        return res.render('wiki_manage/wikiAdd.html');
+        return res.render('wiki_manage/wikiAdd.html',{title:""});
       });
     }
   });
@@ -270,5 +270,47 @@ function updateInfo(fields, files, res){
         
   }
 };
+
+router.get('/check',function(req, res, next){
+  var username = req.session.username;
+  var password = req.session.password;
+
+  return res.render("wiki_manage/check.html");
+});
+//先更新wiki表信息相应记录，然后在删除wiki_pre表中的相应记录
+router.post('/check',function(req, res, next){
+  var describes = req.body.describes;
+  var wikiid = req.body.wikiid;
+  var sql1 = 'UPDATE wiki SET describes="'+ describes +'" WHERE wikiid = "'+wikiid+'"';
+  var sql2 = 'delete from wiki_pre where wikiid="'+wikiid+'"';
+  console.log("sql1=======:",sql1);
+  console.log("sql2=======:",sql2);
+  User.exec(sql1, function(err,r){
+    if(err){
+      return res.json({error:"error"});
+    }
+    else{
+      User.exec(sql2, function(err, r){
+        if(err){
+          return res.json({error:"error"});
+        }
+        return res.json({success:"success"});
+      })
+    }
+  });
+
+})
+router.post('/checkquery',function(req, res, next){
+  var sql = 'select * from wiki_pre';
+  User.exec(sql, function(err, r){
+    if(err){
+      console.log("获取审核表数据错误！");
+      return res.json({error:err});
+    }
+    return res.json(r);
+  });
+});
+
+
 
 module.exports = router;
