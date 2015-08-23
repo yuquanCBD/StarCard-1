@@ -30,6 +30,8 @@ var admin_route = require('./routes/admin');            //web卡片管理
 var webOrder_route = require('./routes/webOrder');      //web订单管理
 var webWiki_route = require('./routes/webWiki');        //wiki信息管理
 
+var message_route = require('./routes/message');        //消息路由
+
 var io = require('./my_server');
 var app = express();
 
@@ -92,6 +94,7 @@ app.use('/exchange',exchange_route);
 app.use('/test', test_route);
 app.use('/order', order_route);
 app.use('/webUser',webUser_route);
+app.use('/message', message_route);
 app.use('/webOrder', webOrder_route);
 app.use('/webWiki', webWiki_route);
 
