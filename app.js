@@ -9,6 +9,7 @@ var MongoStore = require("connect-mongo")(session);
 var settings = require("./settings");
 var flash = require("connect-flash");
 var methodOverride = require('method-override');
+var Queue = require('./struct/queue');
 
 
 var index_route = require('./routes/index');            //主路由
@@ -34,6 +35,8 @@ var message_route = require('./routes/message');        //消息路由
 
 var io = require('./my_server');
 var app = express();
+
+require('./scheduler/schedule'); //激活定时器
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

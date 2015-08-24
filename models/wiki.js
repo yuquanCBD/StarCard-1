@@ -73,11 +73,13 @@ Wiki.queryDetail = function(wikiid, callback){
     });
 };
 
-Wiki.modify = function(wiki, callback){
+Wiki.modify = function(wikiid, describes, callback){
     mysql.getConnection(function(err, conn){
         if (err) 
             callback(err);
 
+        var sql = 'INSERT INTO wiki_pre (wikiid, describes) VALUES (?,?)'
+        /*
         var sql = 'UPDATE wiki set ';
         if (wiki.wikiname)
             sql += 'wikiname = "'+ wiki.wikiname +'", ';
@@ -105,10 +107,10 @@ Wiki.modify = function(wiki, callback){
         sql = sql.slice(0, sql.length - 2);       //去掉最后的逗号
 
         sql += ' WHERE wikiid = "'+ wiki.wikiid +'"';
-
-        console.log('queryDetail_SQL: '+ sql);
-        conn.query(sql, function(err, result){
-            callback(err, result);
+        */
+        console.log(sql);
+        conn.query(sql, [wikiid, describes],function(err, results){
+            callback(err, results);
             conn.release();
         });
     });

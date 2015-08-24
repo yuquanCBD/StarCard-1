@@ -36,7 +36,8 @@ User.get = function get(username, callback){
         	conn.release();
 		});
 	});
-};
+}
+
 User.save = function save(user,callback){
 		mysql.getConnection(function(err, conn){
 		if (err) {
@@ -57,7 +58,7 @@ User.save = function save(user,callback){
         	callback(err,res);
 		});
 	});
-};
+}
 
 User.getUserByTel = function getUserByTel(tel, callback){
 		mysql.getConnection(function(err, conn){
@@ -148,10 +149,8 @@ User.query = function(sql, callback){
 }
 User.exec = function(sql, callback){
 	mysql.getConnection(function(err, conn){
-		if(err){
-			console.log("POOL ==>" + err);
-			callback(err);
-		};
+		if(err)
+			return callback(err);
 
 		conn.query(sql, function(err, res){
 			conn.release();
@@ -170,14 +169,15 @@ User.queryScore = function(userid, callback){
 		var sql = 'select score from user where userid = "'+ userid +'"';
 		console.log('SelectSQL: '+ sql);
 		conn.query(sql, function(err, rows){
-			callback(err,rows[0])
+			callback(err,rows[0]);
+			conn.release();
 		});
 	});
 };
 
 
 //查询用户收藏的卡片
-User.queryCollect = function(userid, callback){
+User.queryCollect = function(userid, offset, capacity, callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
 			callback(err);
@@ -186,9 +186,14 @@ User.queryCollect = function(userid, callback){
 		var sql = 'SELECT a.cardid, a.title, a.pictures, a.describes, a.price, a.logistic, a.category, a.brand, '+
 				'a.freight, a.exchange, a.owner, a.amount, a.time, a.longitude, a.latitude FROM card a '+
 				'LEFT JOIN collect b ON a.cardid = b.cardid where b.userid = "'+ userid +'"';
+
+       	offset = parseInt(offset) * parseInt(capacity);
+        sql += 'LIMIT ' + offset + ', ' + capacity;  //分页查询
+
 		console.log('SelectSQL: '+ sql);
 		conn.query(sql, function(err, rows){
-			callback(err,rows)
+			callback(err,rows);
+			conn.release();
 		});
 	});
 };
@@ -196,7 +201,7 @@ User.queryCollect = function(userid, callback){
 
 //卡片查询，0.待交易卡查询 1.售出卡查询 2.购入卡查询 
 //TODO 购入卡查询
-User.queryMyCard = function(userid, type, callback){
+User.queryMyCard = function(userid, type, offset, capacity, callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
 			return callback(err);
@@ -211,6 +216,10 @@ User.queryMyCard = function(userid, type, callback){
 			sql = 'SELECT a.cardid, a.title, a.pictures, a.describes, a.price, a.logistic, a.category, a.brand, '+
 				'a.freight, a.exchange, a.owner, a.amount, a.time, a.longitude, a.latitude FROM card a  WHERE '+
 				'status = 1 AND owner = "'+ userid +'"';
+
+		offset = parseInt(offset) * parseInt(capacity);
+        sql += 'LIMIT ' + offset + ', ' + capacity;  //分页查询
+
 		console.log('SelectSQL: '+ sql);
 		conn.query(sql, function(err, rows){
 			callback(err,rows)
@@ -292,10 +301,9 @@ User.queryTradeByUserid = function(userid, callback){
 
 		var in_num, out_num, username;
 
-		if(err){
-			conn.release()
-			callback(err);
-		}
+		if(err)
+			return callback(err);
+		
 		var sql = 'SELECT COUNT(*) AS in_num FROM orders GROUP BY buyer HAVING buyer = "' + userid + '"'; //查询买入卡片数量
 		console.log("SQL:", sql);
 
@@ -310,7 +318,7 @@ User.queryTradeByUserid = function(userid, callback){
 
 			conn.query(sql, function(err, rows){
 				if(err){
-					conn.release()
+					conn.release();
 					callback(err);
 				}
 				out_num = rows[0].out_num;
@@ -331,5 +339,19 @@ User.queryTradeByUserid = function(userid, callback){
 	});
 };
 
+
+User.findUserById = function(userid, callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			return callback(err);
+
+		var sql = 'SELECT userid, username, email, create_time, telephone, IDCardNo, score, gender, portrait FROM user WHERE userid = ?';
+		conn.query(sql, [userid], function(err, rows){
+			conn.release();
+			callback(err, rows[0]);
+		});
+
+	});
+}
 
 module.exports = User;

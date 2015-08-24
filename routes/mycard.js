@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user')
 var multiparty = require('multiparty');
+var ScoreRule = require('../models/score_rule');
 
 
 //积分查询
@@ -18,7 +19,10 @@ router.post('/queryScore', function(req, res, next) {
 //收藏卡片查询
 router.post('/queryCollect', function(req, res, next) {
 	var userid = req.body.userid;
-	User.queryCollect(userid, function(err, cards){
+	var offset = req.body.offset;
+	var capacity = req.body.capacity;
+
+	User.queryCollect(userid, offset, capacity,function(err, cards){
 		if(err)
 			return res.json({error : err});
 		return res.json(cards);
@@ -65,6 +69,25 @@ router.post('/updateUserInfo', function(req, res, next) {
 
 	});
 
+});
+
+//根据userid返回用户信息
+router.post('/findUserById', function(req, res, next){
+    var userid = req.body.userid;
+    User.findUserById(userid, function(err, user){
+       if (err) 
+            return res.json({error : err});
+        return res.json(user);
+    });
+});
+
+//查询用户积分规则
+router.get('/getScoreRule', function(req, res, next){
+    ScoreRule.getRule(function(err, rule){
+       if (err) 
+            return res.json({error : err});
+        return res.json(rule);
+    });
 });
 
 

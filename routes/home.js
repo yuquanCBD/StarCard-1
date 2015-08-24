@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var Card = require('../models/card')
-var User = require('../models/user')
+var Card = require('../models/card');
+var User = require('../models/user');
+var ScoreRule = require('../models/score_rule');
 
 //根据卡片类别和品牌, 排序条件(1, 默认; 2.最近发布；3.离我最近)返回卡片列表
 router.get('/showList', function(req, res, next) {
@@ -50,6 +51,26 @@ router.post('/showTradeInfo', function(req, res, next){
         if (err) 
             return res.json({error : err});
         return res.json({in_num : in_num, out_num : out_num, username : username})
+    });
+});
+
+
+//根据userid返回用户信息
+router.post('/findUserById', function(req, res, next){
+    var userid = req.body.userid;
+    User.findUserById(userid, function(err, user){
+       if (err) 
+            return res.json({error : err});
+        return res.json(user);
+    });
+});
+
+//查询用户积分规则
+router.get('/getScoreRule', function(req, res, next){
+    ScoreRule.getRule(function(err, rule){
+       if (err) 
+            return res.json({error : err});
+        return res.json(rule);
     });
 });
 

@@ -126,8 +126,9 @@ router.post('/cancleOrder', function(req, res, next){
 router.post('/queryOrderList', function(req, res, next){
 	var userid = req.body.userid;
 	var tag = req.body.tag;
+	var usertype = req.body.usertype;
 
-	Order.queryOrderList(userid, tag, function(err, rows){
+	Order.queryOrderList(userid, tag, usertype, function(err, rows){
 		if(err)
 			return res.json({error : err});
 		return res.json(rows);
