@@ -38,6 +38,8 @@ router.post('/query', function(req, res, next){
 			console.log("err ===========>",err);
 			return res.json({'error':"数据库查询错误"});
 		}
+		//console.log("========================***********=========",rows);
+
 		return res.json(rows);
 	})
   //res.render('order_manage/orderManage.html',{title:'订单查询'});
@@ -75,6 +77,30 @@ router.post('/update', function(req, res, next){
 			return res.json({error:"数据库发生错误"});
 		}
 		return res.render('order_manage/orderManage.html',{title:"订单查询"});
+	})
+});
+router.post('/gettele',function(req, res, next){
+	var buyer = req.body.buyer;
+	var seller = req.body.seller;
+
+	var sql1 = 'select * from user where userid="'+seller+'"';
+	var sql2 = 'select * from user where userid="'+buyer+'"';
+
+	var buyerTele,sellerTele;
+	Order.exec(sql1, function(err, r){
+		if(err){
+			return res.json({error:err});
+		}
+		else{
+			sellerTele = r[0].telephone;
+			Order.exec(sql2, function(err1, row){
+				if(err){
+					return res.json({error:err1});
+				}
+				buyerTele = row[0].telephone;
+				return res.json({buyerTele:buyerTele, sellerTele:sellerTele});
+			})
+		}
 	})
 })
 
