@@ -1,7 +1,7 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
+//var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require("express-session");
@@ -9,7 +9,9 @@ var MongoStore = require("connect-mongo")(session);
 var settings = require("./settings");
 var flash = require("connect-flash");
 var methodOverride = require('method-override');
-var Queue = require('./struct/queue');
+var Queue = require('./struct/queue'); // 自动收货订单队列
+var log4js = require('log4js'); // log4j日志
+
 
 
 var index_route = require('./routes/index');            //主路由
@@ -45,7 +47,8 @@ app.set('view engine', 'html');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(logger('dev'));
+//app.use(logger('dev'));
+app.use(log4js.connectLogger(require('./helper/logger').logger('normal'), {level:'debug', format:':method :url'}));  
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -80,6 +83,7 @@ app.use(function(req,res,next){
 
     next();
 });
+
 
 
 //使用路由

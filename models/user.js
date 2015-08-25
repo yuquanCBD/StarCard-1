@@ -182,7 +182,6 @@ User.queryCollect = function(userid, offset, capacity, callback){
 		if(err)
 			callback(err);
 
-
 		var sql = 'SELECT a.cardid, a.title, a.pictures, a.describes, a.price, a.logistic, a.category, a.brand, '+
 				'a.freight, a.exchange, a.owner, a.amount, a.time, a.longitude, a.latitude FROM card a '+
 				'LEFT JOIN collect b ON a.cardid = b.cardid where b.userid = "'+ userid +'"';
