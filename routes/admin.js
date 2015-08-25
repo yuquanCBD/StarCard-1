@@ -10,6 +10,8 @@ var fs = require('fs');
 var exec = require('child_process').exec;
 var router = express.Router();
 var Card = require('../models/card');
+var logger = require('../helper/logger').logger('admin');
+
 
 var options = {
 	root: __dirname + '/../views/',
@@ -22,6 +24,7 @@ var options = {
 
 router.get('/login', function(req, res, next){
   res.render('card_manage/login.html');
+
 });
 router.get('/test', function(req, res, next){
   res.render('test.html',{title:'测试程序'});
