@@ -301,8 +301,8 @@
 											<!--列表中未展示 logistic  logistic_no alipay_id   card_num message  addr_id receive_time-->
 											<th class="hidden-480">序号</th>
 											<th class="hidden-480">卡号</th>
-											<th class="hidden-480">卖家id</th>
-											<th class="hidden-480">买家id</th>
+											<th class="hidden-480">卖家手机号</th>
+											<th class="hidden-480">买家手机号</th>
 											<!-- <th class="hidden-480">物流</th>  -->
 											<!-- <th class="hidden-480">运单号</th> -->
 											<th class="hidden-480">运单状态</th>
@@ -548,7 +548,7 @@
 												</div>
 												<div class="control-group">
 
-													<label class="control-label" >卖家id:</label>
+													<label class="control-label" >卖家手机号:</label>
 
 													<div class="controls">
 
@@ -558,7 +558,7 @@
 												</div>
 												<div class="control-group">
 
-													<label class="control-label" >买家id:</label>
+													<label class="control-label" >买家手机号:</label>
 
 													<div class="controls">
 
@@ -802,8 +802,8 @@
 					//'<td><input type="checkbox" class="checkboxes" value="1" name="checks"/></td>'+
 					'<td>'+index+'</td>'+
 					'<td>'+obj.cardid+'</td>'+
-					'<td>'+obj.seller+'</td>'+
-					'<td>'+obj.buyer+'</td>';
+					'<td>'+''+'</td>'+
+					'<td>'+''+'</td>';
 					//'<td>'+obj.logistic+'</td>';
 				if(obj.status == 0){
 					tr += '<td>待付款</td>';
@@ -854,7 +854,8 @@
 			   		}
 		   		}); 
 			};
-			function updateAjax(url, obj){
+			function getTeleAjax(url, obj, tr){
+				console.log("=====begin:");
 				console.log(url);
 				console.log(obj);
 				$.ajax({
@@ -863,6 +864,21 @@
 			   		data : obj,
 			   		dataType : 'json',
 			   		cache : false,
+			   		success: function(data){
+			   			console.log("后台获取手机号");
+			   			console.log(data);
+			   			var tds = $(tr).find("td");
+			   			console.log($(tds[0]).text());
+			   			console.log($(tds[1]).text());
+			   			$(tds[2]).html(data.sellerTele);
+			   			//$(tds[2]).attr("html",data.sellerTele);
+			   			$(tds[3]).html(data.buyerTele);
+			   			
+			   			//$(td).attr("value",data[0].telephone);
+			   		},
+			   		error : function(){
+			   			alert('获取手机号码失败！');
+			   		}
 		   		});
 			}
 			function query(){
@@ -879,6 +895,16 @@
 			  				var tr = createTR(eva[i],i+1);
 			   				$('tbody').append(tr);
 			   			};
+			   			eva.forEach(function(obj, index){
+			   				var trs = $("tbody").find("tr");
+				   			// console.log(trs.length);
+				   			// var resultTr;
+				   			// for (var i = 0; i < trs.length; i++) {
+				   			// 	var tr = trs[i];
+				   			// 	tds = $(tr).find("td");
+				   			// };
+			   				getTeleAjax('/webOrder/gettele',{seller:obj.seller, buyer:obj.buyer},trs[index]);
+			   			});
 			   			$("button.detailButton").click(function(e){
 			   				$('div#update').attr('hidden',true);
 			   				$('div#query').attr('hidden',true);
