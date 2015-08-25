@@ -10,6 +10,7 @@ var fs = require('fs');
 var exec = require('child_process').exec;
 var router = express.Router();
 var Card = require('../models/card');
+var crypto = require('crypto');
 var logger = require('../helper/logger').logger('admin');
 
 
@@ -23,6 +24,7 @@ var options = {
 };
 
 router.get('/login', function(req, res, next){
+  logger.error('错误错误');
   res.render('card_manage/login.html');
 
 });
@@ -30,8 +32,12 @@ router.get('/test', function(req, res, next){
   res.render('test.html',{title:'测试程序'});
 });
 router.post('/login', function(req, res, next){
+  //生成口令的散列值
+  var md5 = crypto.createHash('md5');
+
   var username = req.body.username;
-  var password = req.body.password;
+  var password = md5.update(req.body.password).digest('base64');
+
   console.log('username: '+username+', password: '+password);
   var sql = 'select * from manager where username="'+username+'" and password="'+password+'"';
   User.exec(sql, function(err, rows){
