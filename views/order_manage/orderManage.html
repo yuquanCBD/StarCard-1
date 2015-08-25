@@ -112,14 +112,12 @@
 		<div class="page-sidebar nav-collapse collapse">
 
 			<!-- BEGIN SIDEBAR MENU -->        
-
-			<ul class="page-sidebar-menu">
-
+<ul class="page-sidebar-menu">
 				<li class="">
 
 					<a href="javascript:;">
-				
-					<i class="icon-th"></i> 
+
+					<i class="icon-table"></i> 
 
 					<span class="title">球星卡管理</span>
 
@@ -130,15 +128,15 @@
 					</a>
 
 					<ul class="sub-menu">
-
-						<li class="">
+						<li>
 
 							<a href="/admin/query">
 
 							信息查询、删除、修改</a>
 
 						</li>
-						<li >
+
+						<li class="">
 
 							<a href="/admin/starcardAdd">
 
@@ -146,9 +144,11 @@
 
 						</li>
 
+
 					</ul>
 
 				</li>
+
 				<li class="">
 
 					<a href="javascript:;">
@@ -164,9 +164,9 @@
 					</a>
 
 					<ul class="sub-menu">
-						<li class="">
+						<li>
 
-							<a href="query">人员查询、删除、修改</a>
+							<a href="/webUser/query">人员查询、删除、修改</a>
 
 						</li>
 
@@ -177,7 +177,7 @@
 						</li>
 						<li class="">
 
-							<a href="query">管理员管理</a>
+							<a href="/webUser/getmanager">管理员管理</a>
 
 						</li>
 
@@ -200,15 +200,45 @@
 					</a>
 
 					<ul class="sub-menu">
-						<li class="active">
+						<li>
+
 							<a href="/webOrder/query">订单查询、删除、修改</a>
+
+						</li>
+					</ul>
+
+				</li>
+				<li class="active">
+
+					<a href="javascript:;">
+
+						<i class="icon-table"></i> 
+
+						<span class="title">百科管理</span>
+
+						<!-- <span class="selected"></span> -->
+
+						<span class="arrow open"></span>
+
+					</a>
+
+					<ul class="sub-menu">
+						<li>
+							<a href="/webWiki/add">百科增加</a>
+						</li>
+						<li>
+							<a href="/webWiki/query">百科查询、删除、修改</a>
+						</li>
+						<li>
+							<a href="/webWiki/check">百科审核</a>
+						</li>
+						<li>
+							<a href="/webWiki/lock">百科锁定</a>
 						</li>
 					</ul>
 
 				</li>
 
-
-				
 			</ul>
 
 			<!-- END SIDEBAR MENU -->

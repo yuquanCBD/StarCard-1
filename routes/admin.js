@@ -10,6 +10,7 @@ var fs = require('fs');
 var exec = require('child_process').exec;
 var router = express.Router();
 var Card = require('../models/card');
+var crypto = require('crypto');
 
 var options = {
 	root: __dirname + '/../views/',
@@ -29,6 +30,8 @@ router.get('/test', function(req, res, next){
 router.post('/login', function(req, res, next){
   var username = req.body.username;
   var password = req.body.password;
+  var md5 = crypto.createHash('md5');
+  password = md5.update(password).digest('base64');
   console.log('username: '+username+', password: '+password);
   var sql = 'select * from manager where username="'+username+'" and password="'+password+'"';
   User.exec(sql, function(err, rows){
@@ -136,7 +139,7 @@ router.post('/query', function(req, res, next){
     Card.query(function(err, cards){
         if (err)
             return res.json({error: err});
-        console.log(cards);
+        console.log("======================",cards);
         return res.json(cards);    
     });         
 });
@@ -269,5 +272,6 @@ router.post('/detail', function(req, res, next){
 router.get("/userAdd",function(req, res, next){
   res.render("card_manage/userAdd.html");
 });
+
 module.exports = router;
 
