@@ -12,6 +12,8 @@ var Exchange = require('../models/exchange');
 var path = require('path');
 var fs = require('fs');
 var exec = require('child_process').exec;
+var Message = require('../models/message')
+
 
 
 router.get('/',function(req,res,next){
@@ -143,6 +145,9 @@ function addInfo(fields, files, res){
         if(err){
           return res.json({error:"卡信息添加失败"});
         }
+        //发送消息给卖家
+        Message.insertNewMsg(suserid, uId, 4, function(err, results){if(err) console.log(err)});
+
         return res.json({success:'success'});
       });
     }

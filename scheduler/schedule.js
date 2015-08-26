@@ -1,7 +1,6 @@
 var schedule = require('node-schedule');
 var queue = require('../struct/queue');
 var Order = require('../models/order');
-console.log('---------------------shcedule', queue);
 
 	queue.push(new Order('orderid1', 3));
 	queue.push(new Order('orderid2', 1));

@@ -48,7 +48,7 @@ app.set('view engine', 'html');
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 //app.use(logger('dev'));
-app.use(log4js.connectLogger(require('./helper/logger').logger('normal'), {level:'debug', format:':method :url'}));  
+app.use(log4js.connectLogger(require('./helper/logger').logger('normal'), {level:'auto', format:':method :url'}));  
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());

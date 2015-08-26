@@ -2,7 +2,6 @@ var mysql = require('./mysql');
 var uuid = require('node-uuid');
 var Message = require('./message')
 var queue = require('../struct/queue');
-console.log('---------------------1order', queue);
 
 
 function Order(){}
