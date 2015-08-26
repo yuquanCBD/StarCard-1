@@ -13,7 +13,6 @@ var Card = require('../models/card');
 var crypto = require('crypto');
 var logger = require('../helper/logger').logger('admin');
 
-
 var options = {
 	root: __dirname + '/../views/',
 	dotfiles: 'deny',
@@ -36,6 +35,9 @@ router.post('/login', function(req, res, next){
   var md5 = crypto.createHash('md5');
 
   var username = req.body.username;
+  // var password = req.body.password;
+  // var md5 = crypto.createHash('md5');
+  // password = md5.update(password).digest('base64');
   var password = md5.update(req.body.password).digest('base64');
 
   console.log('username: '+username+', password: '+password);
@@ -145,7 +147,7 @@ router.post('/query', function(req, res, next){
     Card.query(function(err, cards){
         if (err)
             return res.json({error: err});
-        console.log(cards);
+        console.log("======================",cards);
         return res.json(cards);    
     });         
 });
@@ -278,5 +280,6 @@ router.post('/detail', function(req, res, next){
 router.get("/userAdd",function(req, res, next){
   res.render("card_manage/userAdd.html");
 });
+
 module.exports = router;
 
