@@ -22,4 +22,24 @@ router.get('/markRead', function(req, res, next){
 	});
 });
 
+//查询未读消息数量
+router.get('/queryUnreadMsgNum', function(req, res, next){
+	var userid = req.query.userid;
+	Message.queryUnreadMsgNum(userid, function(err, num){
+		if(err)
+			return res.json({error : err});
+		return res.json({number : num});//返回空或者数值
+	});
+});
+
+//返回所有的消息
+router.get('/showAllMessages', function(req, res, next){
+	var userid = req.query.userid;
+	Message.showAllMessages(userid, function(err, rows){
+		if(err)
+			return res.json({error : err});
+		return res.json(rows);
+	});
+});
+
 module.exports = router;

@@ -11,12 +11,8 @@ Exchange.execSql = function(sql, callback){
 		};
 
 		conn.query(sql, function(err, res){
-			if(err){
-				console.log(err);
-				callback(err);
-			}
-			conn.release();
 			callback(err, res);
+
 		})
 	})
 };
