@@ -12,7 +12,7 @@
 
 	<meta charset="utf-8" />
 
-	<title>wiki信息管理</title>
+	<title>信息查询</title>
 
 	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
@@ -113,8 +113,10 @@
 
 			<!-- BEGIN SIDEBAR MENU -->        
 
+			
+			
 			<ul class="page-sidebar-menu">
-				<li class="">
+				<li class="active">
 
 					<a href="javascript:;">
 
@@ -136,7 +138,7 @@
 							 管理员卡片管理</a>
 
 						</li>
-						<li class="">
+						<li class="active">
 
 							<a href="/admin/commonquery">
 
@@ -221,7 +223,7 @@
 					</ul>
 
 				</li>
-				<li class="active">
+				<li class="">
 
 					<a href="javascript:;">
 
@@ -239,7 +241,7 @@
 						<li>
 							<a href="/webWiki/add">百科增加</a>
 						</li>
-						<li class="active">
+						<li>
 							<a href="/webWiki/query">百科查询、删除、修改</a>
 						</li>
 						<li>
@@ -322,7 +324,7 @@
 
 							<div class="portlet-title">
 
-								<div class="caption"><i class="icon-user"></i>订单信息查询结果</div>
+								<div class="caption"><i class="icon-user"></i>管理员卡片查询结果</div>
 
 								<div class="actions">
 
@@ -339,24 +341,25 @@
 									<thead>
 
 										<tr>
-											<!-- cardid seller buyer status card_price logistic_price ordertype  -->
-											<!--列表中未展示 logistic  logistic_no alipay_id   card_num message  addr_id receive_time-->
-											<th class="hidden-480">序号</th>
-											<th class="hidden-480">中文名称</th>
-											<th class="hidden-480">类别</th>
-											<th class="hidden-480">品牌</th>
-											<th class="hidden-480">厂商</th>
-											<th class="hidden-480">价格</th>
-											<th class="hidden-480">贡献者</th>
-											<th class="hidden-480">是否锁定</th>
-											<th class="hidden-480">detail</th>
+											<th>Number</th>
+											<th class="hidden-480">title</th>
+											<!-- <th class="hidden-480">describes</th> -->
+											<th class="hidden-480">price</th>
+											<th class="hidden-480">logistic</th>
+											<th class="hidden-480">category</th>
+											<th class="hidden-480">brand</th>
+											<th class="hidden-100">freight</th>
+											<th class="hidden-100">exchange</th>
+											<!-- <th class="hidden-100">owner</th> -->
+											<th class="hidden-100">amount</th>
+											<th class="hidden-100">details</th>
 											<th class="hidden-480">delete</th>
 											<th class="hidden-480">update</th>
 										</tr>
 
 									</thead>
 
-									<tbody>
+									<tbody id="bodyM">
 
 									</tbody>
 
@@ -369,18 +372,12 @@
 						<!-- END EXAMPLE TABLE PORTLET-->
 
 					</div>
-
-					
-
 				</div>
-
-				
-
 				<!-- END PAGE CONTENT-->
 				<!-- ************************************************************** -->
 				<!-- BEGIN PAGE CONTENT-->
 
-				<div id="update" class="row-fluid" hidden=true>
+				<div id='update' class="row-fluid" hidden=true>
 
 					<div class="span12">
 
@@ -394,7 +391,7 @@
 
 									<i class="icon-reorder"></i>
 
-									<span class="hidden-480">信息添加</span>
+									<span class="hidden-480">修改卡片信息列表</span>
 
 								</div>
 
@@ -406,8 +403,7 @@
 
 									<ul class="nav nav-tabs">
 
-										<li><a href="starcardAdd" data-toggle="tab">信息添加</a></li>
-
+										<li><a href="">表单</a></li>
 									</ul>
 
 									<div class="tab-content">
@@ -416,16 +412,15 @@
 
 											<!-- BEGIN FORM-->
 
-											<form action="/webWiki/update" enctype="multipart/form-data" method="post" class="form-horizontal">
+											<form id='formUpdate' action="/admin/update" enctype="multipart/form-data" method="post" class="form-horizontal">
 
-												
-												<div class="control-group">
+												<div hidden class="control-group">
 
-													<label class="control-label" >百科id:</label>
+													<label class="control-label" >卡片id</label>
 
 													<div class="controls">
 
-														<input id="wikiid" disabled type="text" class="m-wrap meduium" name="wikiid" />
+														<input id='cardid' type="text" class="m-wrap meduium" name="cardid" />
 
 														<!-- <span class="help-inline">Some hint here</span> -->
 
@@ -434,35 +429,53 @@
 												</div>
 												<div class="control-group">
 
-													<label class="control-label" >百科中文名称:</label>
+													<label class="control-label" >卡片名称</label>
 
 													<div class="controls">
 
-														<input id="wikiname" type="text" class="m-wrap meduium" name="wikiname" />
+														<input id='title' type="text" class="m-wrap meduium" name="title" />
 
 														<!-- <span class="help-inline">Some hint here</span> -->
 
 													</div>
 
 												</div>
+
 												<div class="control-group">
 
-													<label class="control-label" >百科英文名称:</label>
+													<label class="control-label">价格</label>
 
 													<div class="controls">
 
-														<input id="english_name" type="text" class="m-wrap meduium" name="english_name" />
+														<input id='price' type="text"  class="m-wrap medium" name="price" />
+														<span class="help-inline">单位/元</span>
+														<!-- <span class="help-inline">Some hint here</span> -->
+
+													</div>
+
+												</div>
+
+												<div id='amountFlag' class="control-group">
+
+													<label class="control-label">卡片数量</label>
+
+													<div class="controls">
+
+														<input id='amount' type="text" class="m-wrap medium" name="amount" />
+
+														<span class="help-inline">单位/个</span>
+
 													</div>
 
 												</div>
 
 												<div class="control-group">
 
-													<label class="control-label">卡片类别:</label>
+													<label class="control-label">卡片类别</label>
 
 													<div class="controls">
 
-														<select id="category" class="small m-wrap" tabindex="1" name="category">
+														<select id='category' class="small m-wrap"  name="category">
 
 															<option value="足球卡">足球卡</option>
 
@@ -477,13 +490,15 @@
 													</div>
 
 												</div>
+
+												
 												<div class="control-group">
 
-													<label class="control-label">厂商:</label>
+													<label class="control-label">品牌</label>
 
 													<div class="controls">
 
-														<select id="manufacturer" class="small m-wrap" tabindex="1" name="manufacturer">
+														<select id='brand' class="small m-wrap" name="brand">
 
 															<option value="Topps">Topps</option>
 
@@ -500,69 +515,32 @@
 												</div>
 												<div class="control-group">
 
-													<label class="control-label">品牌:</label>
+													<label class="control-label">物流</label>
 
 													<div class="controls">
 
-														<select id="brand" class="small m-wrap" tabindex="1" name="brand">
+														<select id='logistic' class="small m-wrap" name="logistic">
 
-															<option value="Topps">Topps</option>
+															<option value="顺丰">顺丰</option>
 
-															<option value="Panini">Panini</option>
+															<option value="圆通">圆通</option>
 
-															<option value="Futera">Futera</option>
+															<option value="中通">中通</option>
 
-															<option value="其他品牌">其他品牌</option>
+															<option value="天天">天天</option>
 
 														</select>
 
 													</div>
 
 												</div>
-
 												<div class="control-group">
 
-													<label class="control-label">系列:</label>
+													<label class="control-label">物流价格</label>
 
 													<div class="controls">
 
-														<input id="series" type="text"  class="m-wrap medium" name="series" />
-													</div>
-
-												</div>
-
-												<div class="control-group">
-
-													<label class="control-label">系列编号:</label>
-
-													<div class="controls">
-
-														<input id="serial_number" type="text" class="m-wrap medium" name="serial_number" />
-
-														<span class="help-inline">(只接受数字)</span>
-
-													</div>
-
-												</div>
-				
-												<div class="control-group">
-
-													<label class="control-label">稀有度:</label>
-
-													<div class="controls">
-
-														<input id="rarity" type="text"  class="m-wrap large" name="rarity" />
-													</div>
-
-												</div>
-									
-												<div class="control-group">
-
-													<label class="control-label">价格</label>
-
-													<div class="controls">
-
-														<input id="price" type="text"  class="m-wrap medium" name="price" />
+														<input id='freight' type="text"  class="m-wrap medium" name="freight" />
 
 														<span class="help-inline">单位/元</span>
 
@@ -570,43 +548,69 @@
 
 												</div>
 
-												<div class="control-group">
+												<div id='exchange' class="control-group">
 
-													<label class="control-label">百科描述</label>
+													<label class="control-label">是否支持换卡</label>
 
 													<div class="controls">
 
-														<textarea id="describes" name="describes" class="large m-wrap" rows="3" placeholder=""></textarea>
+														<label class="radio">
+
+														<input type="radio" name="exchange" value="1" />
+
+														支持
+
+														</label>
+
+														<label class="radio">
+
+														<input type="radio" name="exchange" value="0"/>
+
+														不支持
+
+														</label> 
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label">卡片描述</label>
+
+													<div class="controls">
+
+														<textarea id='describes' name="describes" class="large m-wrap" rows="3" placeholder="少于50字"></textarea>
 
 													</div>
 
 												</div>
-												
 												<div class="control-group">
 
-													<label class="control-label">百科图片</label>
+													<label class="control-label">卡片图片</label>
 
-													<div id="img" class="controls">
+													<div id="cardImg" class="controls">
+														<!-- <input class="medium m-wrap" type="file" name="imgs" multiple="multiple">
+														<span class="help-inline">最多三张</span> -->
+														<!-- <img src="../0.jpg" height="100" width="100">
+														<img src="../0.jpg" height="100" width="100">
+														<img src="../1.jpg" height="100" width="100"> -->
 													</div>
 
 												</div>
-
 												<div class="control-group">
 
-													<label class="control-label">图片上传</label>
+													<label class="control-label">卡片图片上传</label>
 
 													<div class="controls">
 														<input class="medium m-wrap" type="file" name="imgs" multiple="multiple">
-														<span class="help-inline">(不修改图片就不上传)</span>
+														<span class="help-inline">最多三张,不更换图片不要上传</span>
 													</div>
 
 												</div>
 
 												<div class="form-actions">
 
-													<button id='updateSubmit' type="submit" class="btn blue"><i class="icon-ok"></i> 百科信息修改</button>
-
-													<!-- <button type="button" class="btn">取消</button> -->
+													<button id="updateSubmit" type="submit" class="btn blue"><i class="icon-ok"></i> 修改</button>
+													<!-- <button id="updateBack" type="button" class="btn">返回</button> -->
 
 												</div>
 
@@ -615,6 +619,7 @@
 											<!-- END FORM-->  
 
 										</div>
+
 									</div>
 
 								</div>
@@ -629,8 +634,8 @@
 
 				</div>
 
-				<!-- END PAGE CONTENT-->         
-				<!-- 详细信息查看-->
+				<!-- END PAGE CONTENT-->   
+				<!-- 查看详情 -->
 
 				<div id='detail' class="row-fluid" hidden=true>
 
@@ -646,7 +651,7 @@
 
 									<i class="icon-reorder"></i>
 
-									<span class="hidden-480">详细信息查看</span>
+									<span class="hidden-480">查看详情</span>
 
 								</div>
 
@@ -658,7 +663,7 @@
 
 									<ul class="nav nav-tabs">
 
-										<li><a href="">信息查看</a></li>
+										<li><a href="">表单</a></li>
 									</ul>
 
 									<div class="tab-content">
@@ -667,24 +672,15 @@
 
 											<!-- BEGIN FORM-->
 
-											<form id='formDetail' action="" enctype="multipart/form-data" method="post" class="form-horizontal">
+											<form id='formDetailD' action="/admin/update" enctype="multipart/form-data" method="post" class="form-horizontal">
+
 												<div class="control-group">
 
-													<label class="control-label" >百科id:</label>
+													<label class="control-label" >卡片id</label>
 
 													<div class="controls">
 
-														<input disabled id='wikiidD' type="text" class="m-wrap large" name="wikiid" />
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label" >百科中文名称:</label>
-
-													<div class="controls">
-
-														<input disabled id='wikinameD' type="text" class="m-wrap large" name="wikiname" />
+														<input id='cardidD' type="text" class="m-wrap large" name="cardid" />
 
 														<!-- <span class="help-inline">Some hint here</span> -->
 
@@ -693,137 +689,176 @@
 												</div>
 												<div class="control-group">
 
-													<label class="control-label" >百科英文名称:</label>
+													<label class="control-label" >卡片名称</label>
 
 													<div class="controls">
 
-														<input disabled id='english_nameD' type="text" class="m-wrap large" name="english_name" />
-													</div>
+														<input id='titleD' type="text" class="m-wrap meduium" name="title" />
 
-												</div>
-												<div class="control-group">
+														<!-- <span class="help-inline">Some hint here</span> -->
 
-													<label class="control-label" >类别:</label>
-
-													<div class="controls">
-
-														<input disabled id='categoryD' type="text" class="m-wrap large" name="category" />
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label" >品牌:</label>
-
-													<div class="controls">
-
-														<input disabled id='brandD' type="text" class="m-wrap medium" name="brand" />
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label" >厂商:</label>
-
-													<div class="controls">
-
-														<input disabled id='manufacturerD' type="text" class="m-wrap medium" name="manufacturer" />
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label" >价格:</label>
-
-													<div class="controls">
-
-														<input disabled id='priceD' type="text" class="m-wrap medium" name="price" />
 													</div>
 
 												</div>
 
 												<div class="control-group">
 
-													<label class="control-label" >贡献者:</label>
+													<label class="control-label">价格</label>
 
 													<div class="controls">
 
-														<input disabled id='contributorD' type="text" class="m-wrap medium" name="contributor" />
+														<input id='priceD' type="text"  class="m-wrap medium" name="price" />
+														<span class="help-inline">单位/元</span>
+														<!-- <span class="help-inline">Some hint here</span> -->
+
+													</div>
+
+												</div>
+
+												<div id='amountFlagD' class="control-group">
+
+													<label class="control-label">卡片数量</label>
+
+													<div class="controls">
+
+														<input id='amountD' type="text" class="m-wrap medium" name="amount" />
+
+														<span class="help-inline">单位/个</span>
+
+													</div>
+
+												</div>
+
+												<div class="control-group">
+
+													<label class="control-label">卡片类别</label>
+
+													<div class="controls">
+
+														<select id='categoryD' class="small m-wrap"  name="category">
+
+															<option value="足球卡">足球卡</option>
+
+															<option value="篮球卡">篮球卡</option>
+
+															<option value="其他卡">其他卡</option>
+
+															<!-- <option value="Category 4">Category 4</option> -->
+
+														</select>
+
+													</div>
+
+												</div>
+
+												
+												<div class="control-group">
+
+													<label class="control-label">品牌</label>
+
+													<div class="controls">
+
+														<select id='brandD' class="small m-wrap" name="brand">
+
+															<option value="Topps">Topps</option>
+
+															<option value="Panini">Panini</option>
+
+															<option value="Futera">Futera</option>
+
+															<option value="其他品牌">其他品牌</option>
+
+														</select>
+
 													</div>
 
 												</div>
 												<div class="control-group">
 
-													<label class="control-label" >系列:</label>
+													<label class="control-label">物流</label>
 
 													<div class="controls">
 
-														<input disabled id='seriesD' type="text" class="m-wrap medium" name="series" />
-													</div>
+														<select id='logisticD' class="small m-wrap" name="logistic">
 
-												</div>
-												<div class="control-group">
+															<option value="顺丰">顺丰</option>
 
-													<label class="control-label" >编号:</label>
+															<option value="圆通">圆通</option>
 
-													<div class="controls">
+															<option value="中通">中通</option>
 
-														<input disabled id='serial_numberD' type="text" class="m-wrap medium" name="serial_number" />
-													</div>
+															<option value="天天">天天</option>
 
-												</div>
-												<div class="control-group">
-
-													<label class="control-label" >稀有度:</label>
-
-													<div class="controls">
-
-														<input disabled id='rarityD' type="text" class="m-wrap medium" name="rarity" />
-													</div>
-
-												</div>
-												<!-- <div class="control-group">
-
-													<label class="control-label" >百科描述:</label>
-
-													<div class="controls">
-
-														<input disabled id='describesD' type="text" class="m-wrap large" name="describes" />
-													</div>
-
-												</div>
- -->												<div class="control-group">
-
-													<label class="control-label">百科描述:</label>
-
-													<div class="controls">
-
-														<textarea disabled="disabled" id="describesD" class="large m-wrap" rows="5" ></textarea>
+														</select>
 
 													</div>
 
 												</div>
 												<div class="control-group">
 
-													<label class="control-label" >是否锁定:</label>
+													<label class="control-label">物流价格</label>
 
 													<div class="controls">
 
-														<input disabled id='islockD' type="text" class="m-wrap medium" name="islock" />
-														<span class="help-inline">(1表示锁定,0表示未锁定)</span>
+														<input id='freightD' type="text"  class="m-wrap medium" name="freight" />
+
+														<span class="help-inline">单位/元</span>
+
+													</div>
+
+												</div>
+
+												<div id='exchangeD' class="control-group">
+
+													<label class="control-label">是否支持换卡</label>
+
+													<div class="controls">
+
+														<label class="radio">
+
+														<input type="radio" name="exchange" value="1" />
+
+														支持
+
+														</label>
+
+														<label class="radio">
+
+														<input type="radio" name="exchange" value="0"/>
+
+														不支持
+
+														</label> 
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label">卡片描述</label>
+
+													<div class="controls">
+
+														<textarea id='describesD' name="describes" class="large m-wrap" rows="3" placeholder=""></textarea>
 
 													</div>
 
 												</div>
 												<div class="control-group">
 
-													<label class="control-label">百科图片</label>
+													<label class="control-label">卡片图片</label>
 
-													<div id="imgD" class="controls">
+													<div id="cardImgD" class="controls">
 													</div>
 
 												</div>
-												<button id="backButton" type="button" class="btn blue" style="margin-left:25%">返回</button>
+												<button id="detailBack" type="button" style="margin-left:25%" class="btn blue">返回</button>
+												<!-- <div class="form-actions">
+
+													<button id="updateSubmit" type="submit" class="btn blue"><i class="icon-ok"></i> 修改</button>
+													
+
+												</div> -->
+
 											</form>
 
 											<!-- END FORM-->  
@@ -843,8 +878,7 @@
 					</div>
 
 				</div>
-
-				<!-- 详细信息查看-->         
+				<!-- 查看详情 -->      
 
 				<!-- ************************************************************** -->
 			</div>
@@ -932,34 +966,73 @@
 	<script src="media/js/table-managed.js"></script>     
 
 	<script>
-		// <!--列表中未展示 english_name series  serial_number rarity describes picture -->
-		// 列表中  <wikiname category brand manufacturer price contributor islock>
-		jQuery(document).ready(function() {     
+
+
+		// <tr class="odd gradeX">
+
+		// 	<td><input type="checkbox" class="checkboxes" value="1" /></td>
+
+		// 	<td>test</td>
+
+		// 	<td class="hidden-480"><a href="mailto:userwow@gmail.com">good@gmail.com</a></td>
+
+		// 	<td><span class="label label-success">Approved</span></td>
+		// 	<td>shuxer</td><td>shuxer</td><td>shuxer</td><td>shuxer</td><td>shuxer</td><td>shuxer</td><td>shuxer</td>
+		// </tr>
+
+
+		jQuery(document).ready(function() { 
+			// 描述信息 和 拥有者可以在用户详情中查看    
 			function createTR(obj,index){
 				var tr = '<tr class="odd gradeX">'+
 					//'<td><input type="checkbox" class="checkboxes" value="1" name="checks"/></td>'+
 					'<td>'+index+'</td>'+
-					'<td>'+obj.wikiname+'</td>'+
+					'<td>'+obj.title+'</td>'+
+					//'<td class="hidden-480">'+obj.describes+'</td>'+
+					'<td>'+obj.price+'</td>'+
+					'<td>'+obj.logistic+'</td>'+
 					'<td>'+obj.category+'</td>'+
 					'<td>'+obj.brand+'</td>'+
-					'<td>'+obj.manufacturer+'</td>'+
-					'<td>'+obj.price+'</td>'+
-					'<td>'+obj.contributor+'</td>'+
-					'<td>'+obj.islock+'</td>';
+					'<td>'+obj.freight+'</td>'+
+					'<td>'+obj.exchange+'</td>'+
+					//'<td>'+obj.owner+'</td>'+
+					'<td>'+obj.amount+'</td>'+
+					//'<td><a href="#" cardId="'+obj.cardId+'" onclick="beSure()">delete</a></td>'+
+					'<td><button cardId="'+obj.cardid+'" owner="'+obj.owner+'" pictures="'+obj.pictures+'" describes="'+obj.describes+'" class="detailsButton">details</button></td>'+
+					'<td><button cardId="'+obj.cardid+'" class="deleteButton">delete</button></td>'+
+					'<td><button cardId="'+obj.cardid+'" owner="'+obj.owner+'" pictures="'+obj.pictures+'" describes="'+obj.describes+'" class="updateButton">update</button></td>'+
+					//'<td><button cardId="'+obj.cardid+'"class="updateButton">修改</button></td>'+
+					//'<td><a href="StarCardAdd.html?hsjsh">ceshi</a></td>'
+					//'<td><button cardId="'+obj.cardid+'" class="updateButton">修改</button></td>'+
 
-				if(obj.islock == 0){
-					tr += '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="detailButton">detail</button></td>'+
-						  '<td><button wikiid="'+obj.wikiid+'" class="deleteButton">delete</button></td>'+
-						  '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="updateButton">update</button></td></tr>';
-				}	
-				else{
-					tr += '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="detailButton">detail</button></td>'+
-						  '<td><button disabled wikiid="'+obj.wikiid+'" class="deleteButton">delete</button></td>'+
-						  '<td><button disabled wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="updateButton">update</button></td></tr>';
-				}
+					'</tr>';
 				return tr;
 			};
+			function createChange(exchange,id){
+				var text;
+				if(exchange == 1){
+					text = '<div id="'+id+'" class="control-group">'+
+						'<label class="control-label">是否支持换卡</label>'+
+						'<div class="controls">'+
+						'<div style="margin-left:20px"><label class="radio"><input type="radio" name="exchange" checked value="1" />支持'+
+						'</label></div>'+
+						'<div style="margin-left:20px"><label class="radio"><input type="radio" name="exchange" value="0"/>'+
+						'不支持</label></div> </div></div>';
+				}
+				else{
+					text = '<div id="'+id+'" class="control-group">'+
+						'<label class="control-label">是否支持换卡</label>'+
+						'<div class="controls">'+
+						'<div style="margin-left:20px"><label class="radio"><input type="radio" name="exchange"  value="1" />支持'+
+						'</label></div>'+
+						'<div style="margin-left:20px"><label class="radio"><input type="radio" name="exchange" value="0" checked />'+
+						'不支持</label></div> </div></div>';
+				}
+				return text;
+			}
 			function PostAjax(url, obj){
+				console.log(url);
+				console.log(obj);
 				$.ajax({
 			   		type : 'POST',
 			   		url : url,
@@ -967,7 +1040,7 @@
 			   		dataType : 'json',
 			   		cache : false,
 			   		success : function(data){
-			   			console.log('信息锁定',data);
+			   			console.log('success');
 			   			location.reload();
 			   		},
 			   		error : function(){
@@ -975,6 +1048,23 @@
 			   		}
 		   		}); 
 			};
+			function detailAjax(url, obj){
+				$.ajax({
+			   		type : 'POST',
+			   		url : url,
+			   		data : obj,
+			   		dataType : 'json',
+			   		cache : false,
+			   		success : function(data){
+			   			var evaData = eval(data);
+			   			console.log("detail的数据:",evaData,'   ,   ',evaData["card"]);
+			   			alert(evaData["card"]["cardid"]);
+			   		},
+			   		error : function(){
+			   			console.log('删除信息失败');
+			   		}
+		   		});
+			}
 			function updateAjax(url, obj){
 				console.log(url);
 				console.log(obj);
@@ -986,130 +1076,133 @@
 			   		cache : false,
 		   		});
 			}
+			$("button#detailBack").click(function(e){
+				$('div#detail').attr('hidden',true);
+				$('div#update').attr('hidden',true);
+				$('div#query').attr('hidden',false);
+			})
 			function query(){
 				$.ajax({
 			   		type : 'POST',
-			   		url : '/webWiki/query',
+			   		url : 'commonquery',
 			   		data : {pageIndex : 0, pageSize : 20},
 			   		dataType : 'json',
 			   		cache : false,
 			   		success : function(data){
 			   			var eva = eval(data);
-			   			$('tbody').empty();
+			   			console.log(eva.length);
+			   			console.log(eva);
+			   			$('tbody#bodyM').empty();
 			   			for (var i = 0; i < eva.length; i++) {
 			  				var tr = createTR(eva[i],i+1);
-			   				$('tbody').append(tr);
-			   			};
-			   			$("button.detailButton").click(function(e){
-			   				$('div#update').attr('hidden',true);
-			   				$('div#query').attr('hidden',true);
+			   				$('tbody#bodyM').append(tr);			   			};
+			   			$("button.detailsButton").click(function(e){
+			   				var cardid = $(e.target).attr("cardId");
+			   				var describes = $(e.target).attr("describes");
+			   				var pictures = $(e.target).attr('pictures');
+			   				var owner = $(e.target).attr("owner");
+		   					var tr = $(e.target).parent().parent();
+		   					var tds = $(tr).find('td');
+		   					var title = $(tds[1]).text();
+		   					//var describes = $(tds[2]).text();
+		   					var price = $(tds[2]).text();
+		   					var logistic = $(tds[3]).text();
+		   					var category = $(tds[4]).text();
+		   					var brand = $(tds[5]).text();
+		   					var freight = $(tds[6]).text();
+		   					var exchange = $(tds[7]).text();
+		   					//var owner = $(tds[]).text();
+		   					var amount = $(tds[8]).text();
+			   				//detailAjax('detail',{cardid:cardid});
 			   				$('div#detail').attr('hidden',false);
-			   				var tar = $(e.target);
-			   				var tr = tar.parent().parent();
-			   				var tds = $(tr).find('td');
-			   				var wikiid = tar.attr("wikiid");
-			   				var english_name = tar.attr("english_name");
-			   				var series = tar.attr("series");
-			   				var serial_number = tar.attr("serial_number");
-			   				var rarity = tar.attr("rarity");
-			   				var describes = tar.attr("describes");
-			   				console.log(describes);
-			   				var picture = tar.attr("picture");
-			   				var wikiname = $(tds[1]).text();
-			   				var category = $(tds[2]).text();
-			   				var brand = $(tds[3]).text();
-			   				var manufacturer = $(tds[4]).text();
-			   				var price = $(tds[5]).text();
-			   				var contributor = $(tds[6]).text();
-			   				var islock = $(tds[7]).text();
-			   				$("input#wikiidD").attr({value:wikiid});
-			   				$("input#english_nameD").attr({value:english_name});
-			   				$("input#seriesD").attr({value:series});
-			   				$("input#serial_numberD").attr({value:serial_number});
-			   				$("input#rarityD").attr({value:rarity});
-			   				$("#describesD").attr({value:describes});
-			   				$("input#wikinameD").attr({value:wikiname});
-			   				$("input#categoryD").attr({value:category});
-			   				$("input#brandD").attr({value:brand});
-			   				$("input#manufacturerD").attr({value:manufacturer});
-			   				$("input#priceD").attr({value:price});
-			   				$("input#contributorD").attr({value:contributor});
-			   				$("input#islockD").attr({value:islock});
-			   				var strs = picture.split(',');
+			   				$('div#update').attr('hidden',true);
+		   					$('div#query').attr('hidden',true);
+		   					$('input#cardidD').attr({value:cardid,disabled:true});
+		   					$('input#titleD').attr({value:title,disabled:true});
+		   					$('input#priceD').attr({value:price,disabled:true});
+		   					$('input#amountD').attr({value:amount,disabled:true});
+		   					$('input#freightD').attr({value:freight,disabled:true});
+		   					$('#describesD').attr({value:describes,disabled:true});
+		   					$('#exchangeD').remove();
+			   				$('#amountFlagD').after(createChange(exchange,"exchangeD"));
+			   				$('#exchangeD').find('input').attr("disabled",true);
+			   				var options = $('#categoryD').find('option');
+		   					for (var i = 0; i < options.length; i++) {
+		   						if($(options[i]).text() == category){
+		   							$(options[i]).attr('selected',1);
+		   						}
+		   					};
+		   					$('#categoryD').attr('disabled',true);
+		   					var options = $('#brandD').find('option');
+		   					for (var i = 0; i < options.length; i++) {
+		   						if($(options[i]).text() == brand){
+		   							$(options[i]).attr('selected',1);
+		   						}
+		   					};
+		   					$('#brandD').attr('disabled',true);
+		   					var options = $('#logisticD').find('option');
+		   					for (var i = 0; i < options.length; i++) {
+		   						if($(options[i]).text() == logistic){
+		   							$(options[i]).attr('selected',1);
+		   						}
+		   					};
+		   					$('#logisticD').attr('disabled',true);
+		   					var strs = pictures.split(',');
 		   					console.log('strs: ',strs[0]);
 		   					//<img src="../0.jpg" height="100" width="100">
-		   					$('#imgD').empty();
+		   					$('#cardImgD').empty();
 		   					if(strs[0] != ''){
 		   						for(var i=0;i<strs.length;i++){
-		   						$('#imgD').append('<img src="../'+strs[i]+'" height="100" width="100">');
+		   						$('#cardImgD').append('<img src="../'+strs[i]+'" height="100" width="100">');
 		   						};
 		   					}
 		   					else{
-		   						$('#imgD').append('<span class="help-inline">没有图片</span>');
+		   						$('#cardImgD').append('<span class="help-inline">没有图片</span>');
 		   					}
-			   				// $.ajax({
-						   	// 	type : 'POST',
-						   	// 	url : '/webOrder/addr',
-						   	// 	data : {addr_id:addr_id},
-						   	// 	dataType : 'json',
-						   	// 	cache : false,
-						   	// 	success : function(data){
-						   	// 		var eva = eval(data);
-						   	// 		console.log("eva的data:",eva.addr.length);
-						   	// 		if(eva.addr.length <1){
-						   	// 			$("input#addr_idD").attr("value","买家未添加地址信息");
-						   	// 		}
-						   	// 		else{
-						   	// 			var addrInfo = eva.addr[0];
-						   	// 			var str = addrInfo.province+ ','+addrInfo.city+','+ addrInfo.district+', 收货人:'+addrInfo.consigee+' ,电话:'+addrInfo.telephone+' ,邮编:'+addrInfo.postcode;
-						   	// 			$("input#addr_idD").attr("value",str);
-						   	// 		}
-						   	// 	},
-						   	// 	error : function(){
-						   	// 		console.log('删除信息失败');
-						   	// 	}
-					   		// });//ajax
+
+
 			   			});
 			   			$("button.deleteButton").click(function(e){
 			   				if(confirm('是否需要删除?')){
-			   					var cid = $(e.target).attr('wikiid');
+			   					var cid = $(e.target).attr('cardId');
 			   					console.log(cid);
-			   					PostAjax('/webWiki/delete',{wikiid:cid});
+			   					PostAjax('delete',{cardid:cid});
 			   				}
 			   			});
 			   			$("button.updateButton").click(function(e){
 			   				if(confirm('是否需要修改卡信息?')){
-			   					
+			   					var cardid = $(e.target).attr("cardId");
+				   				var describes = $(e.target).attr("describes");
+				   				var pictures = $(e.target).attr('pictures');
+				   				var owner = $(e.target).attr("owner");
+			   					var tr = $(e.target).parent().parent();
+			   					var tds = $(tr).find('td');
+			   					var title = $(tds[1]).text();
+			   					//var describes = $(tds[2]).text();
+			   					var price = $(tds[2]).text();
+			   					var logistic = $(tds[3]).text();
+			   					var category = $(tds[4]).text();
+			   					var brand = $(tds[5]).text();
+			   					var freight = $(tds[6]).text();
+			   					var exchange = $(tds[7]).text();
+			   					//var owner = $(tds[]).text();
+			   					var amount = $(tds[8]).text();
+
+			   					//var	 = $(tds[8]).text();
+			   					console.log(owner,' , ',amount);
 			   					$('div#query').attr('hidden',true);
 			   					$('div#detail').attr('hidden',true);
 			   					$('div#update').attr('hidden',false);
-			   					var tar = $(e.target);
-				   				var tr = tar.parent().parent();
-				   				var tds = $(tr).find('td');
-				   				var wikiid = tar.attr("wikiid");
-				   				var english_name = tar.attr("english_name");
-				   				var series = tar.attr("series");
-				   				var serial_number = tar.attr("serial_number");
-				   				var rarity = tar.attr("rarity");
-				   				var describes = tar.attr("describes");
-				   				var picture = tar.attr("picture");
-				   				var wikiname = $(tds[1]).text();
-				   				var category = $(tds[2]).text();
-				   				var brand = $(tds[3]).text();
-				   				var manufacturer = $(tds[4]).text();
-				   				var price = $(tds[5]).text();
-				   				var contributor = $(tds[6]).text();
-				   				var islock = $(tds[7]).text();
+			   					$('input#cardid').attr('value',cardid);
+			   					$('input#title').attr('value',title);
+			   					$('input#price').attr('value',price);
+			   					$('input#amount').attr('value',amount);
+			   					$('input#freight').attr('value',freight);
+			   					$('#describes').attr('value',describes);
+			   					$('#exchange').remove();
+			   					$('#amountFlag').after(createChange(exchange,"exchange"));
 
-				   				$('input#wikiid').attr({value:wikiid, disabled:true});
-				   				$('input#wikiname').attr("value",wikiname);
-				   				$('input#english_name').attr("value",english_name);
-				   				$('input#series').attr("value",series);
-				   				$('input#serial_number').attr("value",serial_number);
-				   				$('input#rarity').attr("value",rarity);
-				   				$('#describes').attr("value",describes);
-				   				$('input#price').attr("value",price);
-				   				var options = $('#category').find('option');
+			   					var options = $('#category').find('option');
 			   					for (var i = 0; i < options.length; i++) {
 			   						if($(options[i]).text() == category){
 			   							$(options[i]).attr('selected',1);
@@ -1121,24 +1214,28 @@
 			   							$(options[i]).attr('selected',1);
 			   						}
 			   					};
-			   					var options = $('#manufacturer').find('option');
+			   					var options = $('#logistic').find('option');
 			   					for (var i = 0; i < options.length; i++) {
-			   						if($(options[i]).text() == manufacturer){
+			   						if($(options[i]).text() == logistic){
 			   							$(options[i]).attr('selected',1);
 			   						}
 			   					};
-			   					var strs = picture.split(',');
+			   					var strs = pictures.split(',');
 			   					console.log('strs: ',strs[0]);
 			   					//<img src="../0.jpg" height="100" width="100">
-			   					$('#img').empty();
+			   					$('#cardImg').empty();
 			   					if(strs[0] != ''){
 			   						for(var i=0;i<strs.length;i++){
-			   						$('#img').append('<img src="../'+strs[i]+'" height="100" width="100">');
+			   						$('#cardImg').append('<img src="../'+strs[i]+'" height="100" width="100">');
 			   						};
 			   					}
 			   					else{
-			   						$('#img').append('<span class="help-inline">没有图片</span>');
-			   					}
+			   						$('#cardImg').append('<span class="help-inline">没有图片</span>');
+			   					};
+			   					
+			   					//updateAjax('update',{flag:'hahhahah'});
+			   					// var tds = tr.getElementsByTagName('td');
+			   					// console.log(tds.length);
 			   				}
 			   			})
 			   			App.init();
@@ -1150,30 +1247,24 @@
 			   		}
 		   		});    
 			}
-		 	query();
-		 	$('#updateSubmit').click(function(e){
+			$('#updateSubmit').click(function(e){
 				if(confirm('是否确认修改信息?')){
-					$('input#wikiid').removeAttr('disabled');
 					return true;
 				}
 				else{
 					//console.log('点击');
 					$('div#update').attr('hidden',true);
 					$('div#query').attr('hidden',false);
+
 					return false;
 				}
-				
 			});
+		 	query();
 		 	$("#detailBtn").click(function(){
 				$('#checks').each(function(){
 					if(this.checked)
 						alert($(this).val());
 				});
-			});
-			$("button#backButton").click(function(e){
-				$('div#update').attr('hidden',true);
-				$('div#detail').attr('hidden',true);
-			   	$('div#query').attr('hidden',false);
 			});
 
 		});

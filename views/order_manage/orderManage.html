@@ -200,11 +200,16 @@
 					</a>
 
 					<ul class="sub-menu">
-						<li>
-
-							<a href="/webOrder/query">订单查询、删除、修改</a>
-
+						<li class="active">
+							<a href="/webOrder/query">所有订单查询、删除、修改</a>
 						</li>
+						<li>
+							<a href="/webOrder/managerquery">管理员用户订单管理</a>
+						</li>
+						<li>
+							<a href="/webOrder/commonquery">普通用户订单管理</a>
+						</li>
+
 					</ul>
 
 				</li>
@@ -933,7 +938,7 @@
 				   			// 	var tr = trs[i];
 				   			// 	tds = $(tr).find("td");
 				   			// };
-			   				getTeleAjax('/webOrder/gettele',{seller:obj.seller, buyer:obj.buyer},trs[index]);
+			   				getTeleAjax('/webOrder/tele',{seller:obj.seller, buyer:obj.buyer},trs[index]);
 			   			});
 			   			$("button.detailButton").click(function(e){
 			   				$('div#update').attr('hidden',true);
@@ -1043,23 +1048,7 @@
 			   					else{
 			   						$(options[3]).attr("selected",1);
 			   					};
-			   					$('#updateSubmit').click(function(e){
-			   						if(confirm('是否确认修改信息?')){
-			   							$('input#orderid').removeAttr('disabled');
-			   							return true;
-			   						}
-			   						else{
-			   							//console.log('点击');
-			   							$('div#update').attr('hidden',true);
-			   							$('div#query').attr('hidden',false);
-			   							return false;
-			   						}
-			   						
-			   					});
 			   					
-			   					//updateAjax('update',{flag:'hahhahah'});
-			   					// var tds = tr.getElementsByTagName('td');
-			   					// console.log(tds.length);
 			   				}
 			   			})
 			   			App.init();
@@ -1072,6 +1061,19 @@
 		   		});    
 			}
 		 	query();
+		 	$('#updateSubmit').click(function(e){
+				if(confirm('是否确认修改信息?')){
+					$('input#orderid').removeAttr('disabled');
+					return true;
+				}
+				else{
+					//console.log('点击');
+					$('div#update').attr('hidden',true);
+					$('div#query').attr('hidden',false);
+					return false;
+				}
+				
+			});
 		 	$("#detailBtn").click(function(){
 				$('#checks').each(function(){
 					if(this.checked)

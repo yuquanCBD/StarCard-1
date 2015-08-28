@@ -24,7 +24,7 @@ var options = {
 
 router.get('/login', function(req, res, next){
   logger.error('错误错误');
-  res.render('card_manage/login.html');
+  return res.render('card_manage/login.html');
 
 });
 router.get('/test', function(req, res, next){
@@ -42,6 +42,20 @@ router.post('/login', function(req, res, next){
 
   console.log('username: '+username+', password: '+password);
   var sql = 'select * from manager where username="'+username+'" and password="'+password+'"';
+
+  // var sqlTest = "select user.telephone,manager.telephone from user full outer join manager on user.userid = manager.userid";
+  // User.exec(sqlTest, function(err, r){
+  //   if(err){
+  //     console.log(err);
+  //     console.log("测试sql出现错误!");
+  //     return res.render("card_manage/index.html");
+  //   }
+  //   else
+  //     console.log("测试sql执行结果：",r);
+  //     return res.render("card_manage/index.html");
+  // });
+
+
   User.exec(sql, function(err, rows){
     if(err){
       console.log("login error========>",err);
@@ -54,27 +68,22 @@ router.post('/login', function(req, res, next){
     else{
       req.session.username = username;
       req.session.password = password;
-      
+      req.session.userid = rows[0].userid;
+      req.session.starObj = {username:username, password:password, userid:rows[0].userid};
       console.log("rows[0]==========>",rows[0].username);
       return res.render("card_manage/index.html");
     }
+  });
 
-  })
-  // res.sendFile('card_manage/index.html', options, function (err) {
-  //   if (err) {
-  //     console.log(err);
-  //     res.status(err.status).end();
-  //   }
-  //   else {
-  //     console.log('Sent:', 'card_manage/index.html');
-  //     //return res.render('card_manage/CardManage.html');
-  //   }
-  // });
 });
 router.get('/starcardAdd',function(req, res, next){
   res.render('card_manage/StarCardAdd.html');
 });
 router.post('/starcardAdd',function(req, res, next){
+  if(req.session.starObj === undefined){
+    return res.render('card_manage/login.html');
+  };
+  var cid = req.session.starObj.userid; //用户id
   var form = new multiparty.Form();
   form.parse(req, function(err, fields, files){
     if(err){
@@ -82,11 +91,11 @@ router.post('/starcardAdd',function(req, res, next){
       res.json({error:'数据解析错误'});
       return;
     };
-    addInfo(fields, files, res);
+    addInfo(fields, files, res, cid);
   })
 });
 
-function addInfo(fields, files, res){
+function addInfo(fields, files, res, cid){
   var str = "";
   var uId = uuid.v1();
   var title = fields.title[0];
@@ -98,7 +107,7 @@ function addInfo(fields, files, res){
   var freight = fields.freight[0];
   var exchange = fields.exchange[0];
   var describes = fields.describes[0];
-  var owner = 0;
+  var owner = cid;
   //存储图片，得到图片的路径信息
   var filePath = path.join(__dirname, '../public/imgs/card/');
   fs.mkdir(filePath+uId, function(err){
@@ -139,17 +148,51 @@ function addInfo(fields, files, res){
   });
 };
 
-router.get('/query', function(req, res ,next){
-  res.render('card_manage/CardManage.html');
+router.get('/commonquery', function(req, res ,next){
+  if(req.session.starObj === undefined){
+    return res.render('card_manage/login.html');
+  };
+  res.render('card_manage/cCardManage.html');
+});
+router.get('/managerquery', function(req, res ,next){
+  if(req.session.starObj === undefined){
+    return res.render('card_manage/login.html');
+  };
+  res.render('card_manage/mCardManage.html');
 });
 
 router.post('/query', function(req, res, next){
-    Card.query(function(err, cards){
-        if (err)
-            return res.json({error: err});
-        console.log("======================",cards);
-        return res.json(cards);    
-    });         
+  var obj = req.session.starObj;
+  console.log("=============----------------=====================",obj);
+  Card.query(function(err, cards){
+      if (err)
+          return res.json({error: err});
+      //console.log("======================",cards);
+      return res.json(cards);    
+  });         
+});
+router.post('/commonquery', function(req, res, next){
+  var sqlTest = "select * from card inner join user on card.owner = user.userid"
+  User.exec(sqlTest , function(err, rows){
+    if(err){
+      return res.json({error: err});
+    }
+    return res.json(rows);
+  })
+});
+//
+router.post('/managerquery',function(req, res, next){
+  var sqlTest = "select * from card inner join manager on card.owner = manager.userid"
+  User.exec(sqlTest, function(err, rows){
+    if(err){
+      console.log("==============================:",err)
+      return res.json({error:err});
+    }
+    else{
+      console.log("==============================:",rows);
+      return res.json(rows);
+    }
+  })
 });
 //逻辑
 //1.如果用户没有修改图片，那么只需要修改文本信息然后更新数据库
@@ -207,7 +250,7 @@ function updateInfo(fields, files, res){
           if(err){
             return res.json({error:"卡信息修改失败"});
           }
-          return res.render('card_manage/CardManage.html');
+          return res.render('card_manage/mCardManage.html');
         });
         //*******************
      }else{ 
@@ -224,9 +267,8 @@ function updateInfo(fields, files, res){
       if(err){
         return res.json({error:"卡信息修改失败"});
       }
-      return res.render('card_manage/CardManage.html');
-    });
-        
+      return res.render('card_manage/mCardManage.html');
+    });    
   }
 };
 router.post('/update', function(req, res, next){

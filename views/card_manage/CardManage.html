@@ -132,9 +132,16 @@
 					<ul class="sub-menu">
 						<li class="active">
 
-							<a href="/admin/query">
+							<a href="/admin/managerquery">
 
-							信息查询、删除、修改</a>
+							 管理员卡片管理</a>
+
+						</li>
+						<li class="active">
+
+							<a href="/admin/commonquery">
+
+							 普通商家卡片管理</a>
 
 						</li>
 
@@ -312,7 +319,7 @@
 
 							<div class="portlet-title">
 
-								<div class="caption"><i class="icon-user"></i>球星卡信息查询结果</div>
+								<div class="caption"><i class="icon-user"></i>管理员卡片查询结果</div>
 
 								<div class="actions">
 
@@ -347,7 +354,7 @@
 
 									</thead>
 
-									<tbody>
+									<tbody id="bodyM">
 
 									</tbody>
 
@@ -360,13 +367,7 @@
 						<!-- END EXAMPLE TABLE PORTLET-->
 
 					</div>
-
-					
-
 				</div>
-
-				
-
 				<!-- END PAGE CONTENT-->
 				<!-- ************************************************************** -->
 				<!-- BEGIN PAGE CONTENT-->
@@ -1077,8 +1078,8 @@
 			})
 			function query(){
 				$.ajax({
-			   		type : 'POST',
-			   		url : 'query',
+			   		type : 'GET',
+			   		url : 'commonquery',
 			   		data : {pageIndex : 0, pageSize : 20},
 			   		dataType : 'json',
 			   		cache : false,
@@ -1086,11 +1087,10 @@
 			   			var eva = eval(data);
 			   			console.log(eva.length);
 			   			console.log(eva);
-			   			$('tbody').empty();
+			   			$('tbody#bodyM').empty();
 			   			for (var i = 0; i < eva.length; i++) {
 			  				var tr = createTR(eva[i],i+1);
-			   				$('tbody').append(tr);
-			   			};
+			   				$('tbody#bodyM').append(tr);			   			};
 			   			$("button.detailsButton").click(function(e){
 			   				var cardid = $(e.target).attr("cardId");
 			   				var describes = $(e.target).attr("describes");

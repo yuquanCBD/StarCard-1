@@ -59,8 +59,10 @@ app.use(flash());
 app.use(session({
   secret : settings.cookieSecret,
   resave : false,
-  saveUninitialized : true
-}));
+  saveUninitialized : true,
+  cookie: {maxAge: 3600000}
+  //cookie:{maxAge:30000}
+})); //过期时间设置为1h
 
 
 app.get('/chat', function (req, res) {

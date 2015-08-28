@@ -30,8 +30,22 @@ router.get('/query', function(req, res, next){
 	return res.render('order_manage/orderManage.html',{title:"订单查询"});
 })
 
+router.get('/commonquery', function(req, res, next){
+	var obj = req.session.starObj;
+	if(obj === undefined){
+		return res.render("card_manage/login.html");
+	}
+	return res.render("order_manage/cOrderManage.html",{title:"普通商家订单查询"});
+});
+router.get('/managerquery', function(req, res, next){
+	var obj = req.session.starObj;
+	if(obj == undefined){
+		return res.render("card_manage/login.html");
+	}
+	return res.render("order_manage/mOrderManage.html",{title:"管理员订单查询"});
+});
+//查询所有订单
 router.post('/query', function(req, res, next){
-	console.log("*****************************");
 	var sql = "select * from orders";
 	Order.exec(sql, function(err, rows){
 		if(err){
@@ -44,6 +58,27 @@ router.post('/query', function(req, res, next){
 	})
   //res.render('order_manage/orderManage.html',{title:'订单查询'});
 });
+//查询买家为管理员的订单消息
+router.post('/managerquery', function(req,res,next){
+	var sql = "select * from orders inner join manager on orders.seller = manager.userid";
+	Order.exec(sql, function(err, rows){
+		if(err){
+			return res.json({error:"数据库查询错误"});
+		}
+		return res.json(rows);
+	})
+});
+//查询买家为普通商家的订单消息
+router.post('/commonquery', function(req,res,next){
+	var sql = "select * from orders inner join user on orders.seller = user.userid";
+	Order.exec(sql, function(err, rows){
+		if(err){
+			return res.json({error:"数据库查询错误"});
+		}
+		return res.json(rows);
+	})
+});
+// router
 router.post('/delete',function(req, res, next){
 	console.log('*****************delete***************');
 	var sql = 'delete from orders where orderid="'+req.body.orderid+'"';
@@ -82,7 +117,8 @@ router.post('/update', function(req, res, next){
 router.post('/gettele',function(req, res, next){
 	var buyer = req.body.buyer;
 	var seller = req.body.seller;
-
+	console.log("==========buyerid==========",buyer);
+	console.log("==========sellerid===========",seller);
 	var sql1 = 'select * from user where userid="'+seller+'"';
 	var sql2 = 'select * from user where userid="'+buyer+'"';
 
@@ -102,6 +138,53 @@ router.post('/gettele',function(req, res, next){
 			})
 		}
 	})
-})
+});
+
+router.post('/tele', function(req, res, next){
+	var buyer = req.body.buyer;
+	var seller = req.body.seller;
+	console.log("==========buyerid==========",buyer);
+	console.log("==========sellerid===========",seller);
+	var buyerTele,sellerTele;
+	var sql1 = 'select * from user where userid = "'+seller+'"';
+	var sql2 = 'select * from manager where userid = "'+seller+'"';
+	var sql3 = 'select * from user where userid = "'+buyer+'"';
+	var sql4 = 'select * from manager where userid ="'+buyer+'"';
+	var checkManger = function(sqlB1, sqlB2){
+		return Order.exec(sqlB1,function(err,row3){
+			if(err){
+				return res.json({error:err});
+			}
+			if(row3.length > 0){
+				buyerTele = row3[0].telephone;
+				return res.json({buyerTele:buyerTele, sellerTele:sellerTele});
+			}
+			else{
+				Order.exec(sqlB2, function(err,row4){
+					var buyerTele = row4[0].telephone;
+					return res.json({buyerTele:buyerTele, sellerTele:sellerTele});
+				})
+			}
+		})
+	}
+	Order.exec(sql1, function(err, row1){
+		if(err){
+			return res.json({error:err});
+		}
+		if(row1.length > 0){
+			sellerTele = row1[0].telephone;
+			console.log("==============user==============",sellerTele);
+			checkManger(sql3, sql4);
+			//return res.json({buyerTele:"276372673", sellerTele:sellerTele});
+		}
+		else{
+			Order.exec(sql2, function(err, row2){
+				sellerTele = row2[0].telephone;
+				console.log("==============manager==============",sellerTele);
+				checkManger(sql3,sql4);
+			})
+		}
+	});
+});
 
 module.exports = router;
