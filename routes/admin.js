@@ -11,7 +11,6 @@ var exec = require('child_process').exec;
 var router = express.Router();
 var Card = require('../models/card');
 var crypto = require('crypto');
-var logger = require('../helper/logger').logger('admin');
 
 var options = {
 	root: __dirname + '/../views/',
@@ -23,7 +22,6 @@ var options = {
 };
 
 router.get('/login', function(req, res, next){
-  logger.error('错误错误');
   res.render('card_manage/login.html');
 
 });

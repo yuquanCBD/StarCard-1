@@ -2,7 +2,6 @@ var express		= require('express');
 var router 		= express.Router();
 var Address 	= require('../models/address')
 var Order 		= require('../models/order')
-var io			= require('../my_server')
 
 //获取常用收货地址列表
 router.get('/queryAddrList', function(req, res, next){

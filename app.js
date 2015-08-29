@@ -10,8 +10,6 @@ var settings = require("./settings");
 var flash = require("connect-flash");
 var methodOverride = require('method-override');
 var Queue = require('./struct/queue'); // 自动收货订单队列
-var log4js = require('log4js'); // log4j日志
-
 
 
 var index_route = require('./routes/index');            //主路由
@@ -35,7 +33,6 @@ var webWiki_route = require('./routes/webWiki');        //wiki信息管理
 
 var message_route = require('./routes/message');        //消息路由
 
-var io = require('./my_server');
 var app = express();
 
 require('./scheduler/schedule'); //激活定时器
@@ -48,7 +45,7 @@ app.set('view engine', 'html');
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 //app.use(logger('dev'));
-app.use(log4js.connectLogger(require('./helper/logger').logger('normal'), {level:'auto', format:':method :url'}));  
+require('./config/Logger').use(app);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -63,14 +60,6 @@ app.use(session({
 }));
 
 
-app.get('/chat', function (req, res) {
-    setInterval(function() {
-        console.log('-----------------------emit message---------------', io.socket_id);
-        io.emit('message+' + io.socket_id, 'hello')
-    }, 5000);
-
-  res.sendfile(__dirname + '/client/index.html');
-});
 
 //获取状态
 app.use(function(req,res,next){
