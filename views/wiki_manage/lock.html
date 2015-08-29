@@ -113,13 +113,13 @@
 
 			<!-- BEGIN SIDEBAR MENU -->        
 
+			
 			<ul class="page-sidebar-menu">
-
 				<li class="">
 
 					<a href="javascript:;">
-				
-					<i class="icon-th"></i> 
+
+					<i class="icon-table"></i> 
 
 					<span class="title">球星卡管理</span>
 
@@ -130,15 +130,22 @@
 					</a>
 
 					<ul class="sub-menu">
-
 						<li class="">
 
-							<a href="/admin/query">
+							<a href="/admin/managerquery">
 
-							信息查询、删除、修改</a>
+							 管理员卡片管理</a>
 
 						</li>
-						<li >
+						<li class="">
+
+							<a href="/admin/commonquery">
+
+							 普通商家卡片管理</a>
+
+						</li>
+
+						<li class="">
 
 							<a href="/admin/starcardAdd">
 
@@ -146,9 +153,11 @@
 
 						</li>
 
+
 					</ul>
 
 				</li>
+
 				<li class="">
 
 					<a href="javascript:;">
@@ -164,9 +173,9 @@
 					</a>
 
 					<ul class="sub-menu">
-						<li class="">
+						<li>
 
-							<a href="query">人员查询、删除、修改</a>
+							<a href="/webUser/query">人员查询、删除、修改</a>
 
 						</li>
 
@@ -200,9 +209,16 @@
 					</a>
 
 					<ul class="sub-menu">
-						<li class="">
+						<li>
 							<a href="/webOrder/query">订单查询、删除、修改</a>
 						</li>
+						<li>
+							<a href="/webOrder/managerquery">管理员用户订单管理</a>
+						</li>
+						<li>
+							<a href="/webOrder/commonquery">普通用户订单管理</a>
+						</li>
+
 					</ul>
 
 				</li>
@@ -237,10 +253,7 @@
 
 				</li>
 
-
-				
 			</ul>
-
 			<!-- END SIDEBAR MENU -->
 
 		</div>
