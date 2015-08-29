@@ -205,13 +205,12 @@ User.queryMyCard = function(userid, type, offset, capacity, callback){
 		if(err)
 			return callback(err);
 		
-
 		var sql = '';
-		if(type == 0)
+		if(parseInt(type) == 0)
 			sql = 'SELECT a.cardid, a.title, a.pictures, a.describes, a.price, a.logistic, a.category, a.brand, '+
 				'a.freight, a.exchange, a.owner, a.amount, a.time, a.longitude, a.latitude FROM card a  WHERE '+
 				'status = 0 AND owner = "'+ userid +'"';
-		else if(type == 1)
+		else if(parseInt(type) == 1)
 			sql = 'SELECT a.cardid, a.title, a.pictures, a.describes, a.price, a.logistic, a.category, a.brand, '+
 				'a.freight, a.exchange, a.owner, a.amount, a.time, a.longitude, a.latitude FROM card a  WHERE '+
 				'status = 1 AND owner = "'+ userid +'"';
@@ -311,7 +310,10 @@ User.queryTradeByUserid = function(userid, callback){
 				conn.release()
 				callback(err);
 			}
-			in_num = rows[0].in_num;
+			if(rows.length != 0)
+				in_num = rows[0].in_num;
+			else
+				in_num = 0;
 			var sql = 'SELECT COUNT(*) AS out_num FROM orders GROUP BY seller HAVING seller = "' + userid + '"'; //查询卖出卡片数量
 			console.log("SQL:", sql);
 
@@ -320,7 +322,10 @@ User.queryTradeByUserid = function(userid, callback){
 					conn.release();
 					callback(err);
 				}
-				out_num = rows[0].out_num;
+				if(rows.length != 0)
+					out_num = rows[0].out_num;
+				else
+					out_num = 0;
 
 				var sql = 'SELECT username FROM user WHERE userid = "' + userid + '"'; // 查询用户名称
 				console.log("SQL:", sql);

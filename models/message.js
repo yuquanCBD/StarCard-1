@@ -1,5 +1,4 @@
 var mysql = require('./mysql');
-var logger = require('../helper/logger').logger('message');
 
 function Message(){}
 
@@ -39,7 +38,6 @@ Message.insertNewMsg = function(userid, event_id, msg_type, callback){
 			callback(err);
 
 		var sql = 'INSERT INTO message (userid, event_id, msg_type) VALUES(?, ?, ?)';//设置消息已读
-		logger.info('sql: ', sql);
 
 		conn.query(sql, [userid, event_id, msg_type],function(err, results){
 			callback(err, results);

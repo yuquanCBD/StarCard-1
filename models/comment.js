@@ -1,4 +1,6 @@
 var mysql = require('./mysql');
+var Message = require('./message')
+
 
 function Comment(comment){
 	this.cardid = comment.cardid;
@@ -23,7 +25,7 @@ Comment.execSql = function(sql, callback){
 			}
 			var comment_id = result.insertId;
 
-			callback(err, res);
+			callback(err, result);
 
 			//查询评论卡片的卖家
 			var sql = 'SELECT owner From card a left join card_comment b on a.cardid = b.cardid where b.commentid = ?';
@@ -31,7 +33,8 @@ Comment.execSql = function(sql, callback){
 				conn.release();
 				var seller = rows[0].owner;
 				//生成买家的一条消息 
-				Message.insertNewMsg(owner, comment_id, 1, function(err, results){}); // 生成对卖家的一条信息
+				if(comment_id != null && comment_id != '')
+					Message.insertNewMsg(owner, comment_id, 1, function(err, results){}); // 生成对卖家的一条信息
 			});
 
 		})

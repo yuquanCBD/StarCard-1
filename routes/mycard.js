@@ -35,7 +35,10 @@ router.post('/queryCollect', function(req, res, next) {
 router.post('/queryMyCard', function(req, res, next) {
 	var userid = req.body.userid;
 	var type = req.body.type;
-	User.queryMyCard(userid, type, function(err, cards){
+	var offset = req.body.offset;
+	var capacity = req.body.capacity;
+
+	User.queryMyCard(userid, type, offset, capacity, function(err, cards){
 		if(err)
 			return res.json({error : err})
 		return res.json(cards);

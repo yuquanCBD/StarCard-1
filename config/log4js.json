@@ -1,0 +1,14 @@
+{  
+  appenders: [  
+      { type: 'console' }, {  
+          type: 'dateFile',  
+          filename: 'logs/log',  
+          pattern: "_yyyy-MM-dd",  
+          maxLogSize: 1024,  
+          alwaysIncludePattern: false,  
+          backups: 4,  
+          category: 'logger'  
+      }  
+  ],  
+  replaceConsole: true  
+}
