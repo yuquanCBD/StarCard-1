@@ -277,13 +277,13 @@ router.get('/check',function(req, res, next){
 
   return res.render("wiki_manage/check.html");
 });
-//先更新wiki表信息相应记录，然后在删除wiki_pre表中的相应记录
+//先更新wiki表信息相应记录，然后在修改wiki_pre表中的状态
 router.post('/check',function(req, res, next){
   var describes = req.body.describes;
   var wikiid = req.body.wikiid;
   var id = req.body.id;
   var sql1 = 'UPDATE wiki SET describes="'+ describes +'" WHERE wikiid = "'+wikiid+'"';
-  var sql2 = 'delete from wiki_pre where id="'+id+'"';
+  var sql2 = 'update wiki_pre set status = 1 where id="'+id+'"';
   console.log("sql1=======:",sql1);
   console.log("sql2=======:",sql2);
   User.exec(sql1, function(err,r){
@@ -299,8 +299,20 @@ router.post('/check',function(req, res, next){
       })
     }
   });
+});
 
+// 审核未通过，修改状态
+router.post('/uncheck',function(req,res,next){
+  var id = req.body.id;
+  var sql = 'update wiki_pre set status = -1 where id="'+id+'"';
+  User.exec(sql, function(err,r){
+    if(err){
+      return res.json({error:"error"});
+    }
+    return res.json({success:"success"});
+  });
 })
+
 router.post('/checkquery',function(req, res, next){
   var sql = 'select * from wiki_pre';
   User.exec(sql, function(err, r){

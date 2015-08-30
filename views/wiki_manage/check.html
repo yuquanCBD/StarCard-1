@@ -349,8 +349,10 @@
 											<th class="hidden-480">厂商</th>
 											<th class="hidden-480">价格</th>
 											<th class="hidden-480">贡献者</th>
+											<th class="hidden-480">状态</th>
 											<th class="hidden-480">详情</th>
 											<th class="hidden-480">审核通过</th>
+											<th calss="hidden-480">审核未通过</th>
 										</tr>
 
 									</thead>
@@ -609,10 +611,19 @@
 					'<td>'+obj.manufacturer+'</td>'+
 					'<td>'+obj.price+'</td>'+
 					'<td>'+obj.contributor+'</td>';
-
+				if(obj.status == -1){
+					tr += '<td>审核未通过</td>';
+				}
+				else if(obj.status == 1){
+					tr += '<td>审核已通过</td>';
+				}
+				else{
+					tr += '<td>未处理</td>';
+				};
 				
 				tr += '<td><button wikiid="'+obj.wikiid+'" preid="'+obj.id+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="detailButton">详情</button></td>'+
-					  '<td><button wikiid="'+obj.wikiid+'" preid="'+obj.id+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="checkButton">审核通过</button></td></tr>';
+					  '<td><button wikiid="'+obj.wikiid+'" preid="'+obj.id+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="checkButton">审核通过</button></td>'+
+					  '<td><button wikiid="'+obj.wikiid+'" preid="'+obj.id+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="unCheckButton">审核未通过</button></td></tr>';
 		
 				return tr;
 			};
@@ -697,6 +708,15 @@
 			   					var id = $(e.target).attr("preid");
 			   					console.log(cid);
 			   					PostAjax('/webWiki/check',{wikiid:cid, describes:describes, id:id});
+			   				}
+			   			});
+			   			$("button.unCheckButton").click(function(e){
+			   				if(confirm('是否确定未通过?')){
+			   					var cid = $(e.target).attr('wikiid');
+			   					var describes = $(e.target).attr('describes');
+			   					var id = $(e.target).attr("preid");
+			   					console.log(cid);
+			   					PostAjax('/webWiki/uncheck',{wikiid:cid, describes:describes, id:id});
 			   				}
 			   			});
 			   			
