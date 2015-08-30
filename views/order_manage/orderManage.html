@@ -349,9 +349,9 @@
 											<!-- <th class="hidden-480">地址id</th> -->
 											<!-- <th class="hidden-480">支付宝订单</th> -->
 											<!-- <th class="hidden-480">收货时间</th> -->
-											<th class="hidden-480">details</th>
-											<th class="hidden-480">delete</th>
-											<th class="hidden-480">update</th>
+											<th class="hidden-480">详情</th>
+											<th class="hidden-480">删除</th>
+											<th class="hidden-480">修改</th>
 
 										</tr>
 
@@ -867,9 +867,9 @@
 				// 		'<td>'+obj.alipay_id+'</td>'+
 				// 		'<td>'+obj.receive_time+'</td>';
 					//'<td><a href="#" cardId="'+obj.cardId+'" onclick="beSure()">delete</a></td>'+
-				tr += '<td><button orderid="'+obj.orderid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" receive_time="'+obj.receive_time+'" class="detailButton">details</button></td>'+
-					'<td><button orderid="'+obj.orderid+'" class="deleteButton">delete</button></td>'+
-					'<td><button orderid="'+obj.orderid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" receive_time="'+obj.receive_time+'" class="updateButton">update</button></td>'+
+				tr += '<td><button orderid="'+obj.orderid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" receive_time="'+obj.receive_time+'" class="detailButton">详情</button></td>'+
+					'<td><button orderid="'+obj.orderid+'" class="deleteButton">删除</button></td>'+
+					'<td><button orderid="'+obj.orderid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" receive_time="'+obj.receive_time+'" class="updateButton">修改</button></td>'+
 
 					'</tr>';
 				return tr;

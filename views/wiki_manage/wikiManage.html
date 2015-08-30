@@ -349,9 +349,9 @@
 											<th class="hidden-480">价格</th>
 											<th class="hidden-480">贡献者</th>
 											<th class="hidden-480">是否锁定</th>
-											<th class="hidden-480">detail</th>
-											<th class="hidden-480">delete</th>
-											<th class="hidden-480">update</th>
+											<th class="hidden-480">详情</th>
+											<th class="hidden-480">删除</th>
+											<th class="hidden-480">修改</th>
 										</tr>
 
 									</thead>
@@ -948,14 +948,14 @@
 					'<td>'+obj.islock+'</td>';
 
 				if(obj.islock == 0){
-					tr += '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="detailButton">detail</button></td>'+
-						  '<td><button wikiid="'+obj.wikiid+'" class="deleteButton">delete</button></td>'+
-						  '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="updateButton">update</button></td></tr>';
+					tr += '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="detailButton">详情</button></td>'+
+						  '<td><button wikiid="'+obj.wikiid+'" class="deleteButton">删除</button></td>'+
+						  '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="updateButton">修改</button></td></tr>';
 				}	
 				else{
-					tr += '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="detailButton">detail</button></td>'+
-						  '<td><button disabled wikiid="'+obj.wikiid+'" class="deleteButton">delete</button></td>'+
-						  '<td><button disabled wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="updateButton">update</button></td></tr>';
+					tr += '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="detailButton">详情</button></td>'+
+						  '<td><button disabled wikiid="'+obj.wikiid+'" class="deleteButton">删除</button></td>'+
+						  '<td><button disabled wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="updateButton">修改</button></td></tr>';
 				}
 				return tr;
 			};

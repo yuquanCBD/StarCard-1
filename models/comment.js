@@ -21,8 +21,9 @@ Comment.execSql = function(sql, callback){
 			if(err){
 				console.log(err);
 				callback(err);
+				conn.release();
 			}
-			var comment_id = result.insertId
+			var comment_id = result.insertId;
 
 			callback(err, result);
 			if(comment_id != null && comment_id != '') return;

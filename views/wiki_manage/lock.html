@@ -842,12 +842,12 @@
 					'<td>'+obj.contributor+'</td>';
 
 				if(obj.islock == 0){
-					tr += '<td><button wikiid="'+obj.wikiid+'" class="lockButton">lock</button></td>'+
-						  '<td><button disabled wikiid="'+obj.wikiid+'" class="unlockButton">unlock</button></td></tr>';
+					tr += '<td><button wikiid="'+obj.wikiid+'" class="lockButton">锁定</button></td>'+
+						  '<td><button disabled wikiid="'+obj.wikiid+'" class="unlockButton">解除锁定</button></td></tr>';
 				}	
 				else{
-					tr += '<td><button disabled wikiid="'+obj.wikiid+'" class="lockButton">lock</button></td>'+
-						  '<td><button wikiid="'+obj.wikiid+'" class="unlockButton">unlock</button></td></tr>';
+					tr += '<td><button disabled wikiid="'+obj.wikiid+'" class="lockButton">锁定</button></td>'+
+						  '<td><button wikiid="'+obj.wikiid+'" class="unlockButton">解除锁定</button></td></tr>';
 				}
 				return tr;
 			};
