@@ -13,7 +13,7 @@ log4js.configure({
       category: 'normal',
       pattern: "_yyyy-MM-dd", 
       category: 'logger',
-      alwaysIncludePattern: false,  
+      alwaysIncludePattern: false  
     }
   ],
   replaceConsole: true

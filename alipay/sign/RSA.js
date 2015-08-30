@@ -1,6 +1,5 @@
 var base64 = require('base-64');
 var utf8 = require('utf8');
-var NodeRSA = require('node-rsa');
 var crypto = require('crypto');
 
 
@@ -34,6 +33,18 @@ RSA.verify = function(content, sign, ali_public_key){
     verifier.update(utf8.encode(content));
     var bverify = verifier.verify(ali_public_key, sign, signature_format='base64')
     return bverify;
+}
+
+
+/**
+* 解密
+* @param content 密文
+* @param private_key 商户私钥
+* @param input_charset 编码格式
+* @return 解密后的字符串
+*/
+RSA.decrypt = function(content, private_key){
+
 }
 
 var prikey = '-----BEGIN RSA PRIVATE KEY-----\n'+

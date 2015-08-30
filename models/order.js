@@ -2,6 +2,8 @@ var mysql = require('./mysql');
 var uuid = require('node-uuid');
 var Message = require('./message')
 var queue = require('../struct/queue');
+var pay 		= require('../pingpp/pay'); //ping＋＋支付接口
+
 
 
 function Order(){}
@@ -42,35 +44,55 @@ Order.checkOrder = function(cardid, cardnum, seller, buyer, card_price, logistic
 };
 
 //订单付款，待发货
-Order.payOrder = function(orderid, alipay_id, callback){
+Order.payOrder = function(orderid, amount, client_ip, callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
 			return callback(err);
 
-		var sql = 'UPDATE orders SET status = 1, alipay_id = "'+alipay_id+'" WHERE orderid = "' + orderid + '"';
+		/* ping＋＋支付 */
+		pay.pingpp.charges.create({
+		      subject: "starcard trade",
+		      body: "starcard trade pay",
+		      amount: amount,
+		      order_no: orderid,
+		      channel: pay.CHANNEL,
+		      currency: "cny",
+		      client_ip: client_ip,
+		      app: {id: pay.APP_ID}
+		  }, function(err, charge) {
+		      console.log(err, charge);
+		      callback(err, charge);
 
-		console.log('payOrder_SQL: '+ sql);
-		conn.query(sql, function(err, results){
-			if(err)
-				return callback(err);
+		});
 
-			callback(err, results);
 
-			var sql = 'SELECT seller FROM orders WHERE orderid = ?';//根据订单号查询卖家的userid
-			conn.query(sql, [orderid], function(err, rows){
-				conn.release();
-				var seller = rows[0].seller;
-				//生成卖家的一条消息 
-				Message.insertNewMsg(seller, orderid, 2, function(err, results){});
-			});
-
-        });
 
 	});
-};
+}
+
+Order.payOrderSuccess = function(orderid, transaction_no, callback){
+	var sql = 'UPDATE orders SET status = 1, alipay_id = "'+transaction_no+'" WHERE orderid = "' + orderid + '"';
+
+	console.log('payOrder_SQL: '+ sql);
+	conn.query(sql, function(err, results){
+		if(err)
+			return callback(err);
+
+		callback(err, results);
+
+		var sql = 'SELECT seller FROM orders WHERE orderid = ?';//根据订单号查询卖家的userid
+		conn.query(sql, [orderid], function(err, rows){
+			conn.release();
+			var seller = rows[0].seller;
+			//生成卖家的一条消息 
+			Message.insertNewMsg(seller, orderid, 2, function(err, results){});
+		});
+
+    });
+}
 
 //订单发货，待收货
-Order.deliverOrder = function(orderid, logistic, logistic_no, callback){
+Order.deliverOrder = function(orderid, logistic, logistic_no, logistic_code, callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
 			return callback(err);
@@ -78,7 +100,7 @@ Order.deliverOrder = function(orderid, logistic, logistic_no, callback){
 		date.setDate(date.getDate() + 7); //默认设置7天后自动收货
 		var receive_time = date.getTime()/60000; //收货时间点精确到分钟
 
-		var sql = 'UPDATE orders SET status = 2, logistic = "'+logistic+'",  logistic_no = "'+logistic_no+'", receive_time = '+receive_time+' WHERE orderid = "' + orderid + '"';
+		var sql = 'UPDATE orders SET status = 2, logistic = "'+logistic+'",  logistic_no = "'+logistic_no+'", receive_time = '+receive_time+', logistic_code = '+ logistic_code +' WHERE orderid = "' + orderid + '"';
 
 		console.log('deliverOrder_SQL: '+ sql);
 		conn.query(sql, function(err, results){

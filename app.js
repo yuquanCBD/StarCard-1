@@ -5,7 +5,6 @@ var favicon = require('serve-favicon');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require("express-session");
-var MongoStore = require("connect-mongo")(session);
 var settings = require("./settings");
 var flash = require("connect-flash");
 var methodOverride = require('method-override');
@@ -32,6 +31,7 @@ var webOrder_route = require('./routes/webOrder');      //web订单管理
 var webWiki_route = require('./routes/webWiki');        //wiki信息管理
 
 var message_route = require('./routes/message');        //消息路由
+var pingpp_route = require('./routes/pingpp');          //支付webhooks路由
 
 var app = express();
 
@@ -95,6 +95,7 @@ app.use('/webUser',webUser_route);
 app.use('/message', message_route);
 app.use('/webOrder', webOrder_route);
 app.use('/webWiki', webWiki_route);
+app.use('/pingpp', pingpp_route);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

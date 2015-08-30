@@ -66,9 +66,9 @@ router.post('/checkOrder', function(req, res, next){
 //订单付款
 router.post('/payOrder', function(req, res, next){
 	var orderid = req.body.orderid;
-	var alipay_id = req.body.alipay_id;
+	var amount = req.body.amount;
 
-	Order.payOrder(orderid, alipay_id, function(err, results){
+	Order.payOrder(orderid, amount, req.ip, function(err, results){
 		if(err)
 			return res.json({error : err});
 		return res.json({success : '支付成功'});
@@ -80,8 +80,9 @@ router.post('/deliverOrder', function(req, res, next){
 	var orderid = req.body.orderid;
 	var logistic = req.body.logistic;
 	var logistic_no = req.body.logistic.no;
+	var logistic_code = req.body.logistic_code;
 
-	Order.deliverOrder(orderid, logistic, logistic_no, function(err, results){
+	Order.deliverOrder(orderid, logistic, logistic_no, logistic_code, function(err, results){
 		if(err)
 			return res.json({error : err});
 		return res.json({success : '发货成功'});	
