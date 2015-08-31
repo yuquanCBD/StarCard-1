@@ -39,28 +39,29 @@ router.post('/addComment',function(req,res,next){
 	var userid = req.body.userid;
 	var commentto = req.body.commentto;
 	var content = req.body.content;
-	var sql = 'insert into card_comment(cardid, userid, commentto, content) values';
-    sql = sql + '("'+cardid+'","'+userid+'","'+commentto+'","'+content+'")';
-    Comment.execSql(sql,function(err, r){
-    	if(err){
-    		return res.json({error:'error'});
-    	}
-    	return res.json({success:'success'});
-    });
-    console.log(sql);
-});
+    var username = req.body.username;//评论人的名字
+    var user_pic = req.body.user_pic;//评论人的头像路径
+    var to_username = req.body.to_username;//被评论人的名字
+
+    Comment.addComment(cardid, userid, commentto, content, username, user_pic, to_username, function(err, results){
+        if(err)
+          return res.json({error:"评论失败"});
+        
+        return res.json({success:'评论成功'});
+    })
+
+})
+
+
 //通过cardid拿到对应评论信息
 router.get('/getComment',function(req,res,next){
 	var cardid = req.query.cardid;
-	var sql = 'select * from card_comment where cardid = "'+ cardid +'"';
-	Comment.execSql(sql, function(err, r){
-		if(err){
-			return res.json({error:'error'});
-		}
-		else{
-			return res.json(r);
-		}
-	});
-});
+
+    Comment.showCardComments(cardid, function(err, rows){
+        if (err) 
+            return res.json({error : err});
+        return res.json(rows);
+    })
+})
 
 module.exports = router;
