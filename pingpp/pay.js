@@ -24,6 +24,7 @@ var crypto = require('crypto');
 var order_no = crypto.createHash('md5')
               .update(new Date().getTime().toString())
               .digest('hex').substr(0, 16);
+              /*
 pingpp.charges.create({
       subject: "Your Subject",
       body: "Your Body",
@@ -36,7 +37,7 @@ pingpp.charges.create({
   }, function(err, charge) {
       console.log(err, charge);
 });
-
+*/
 exports.pingpp = pingpp;
 exports.APP_ID = APP_ID;
 exports.API_KEY = API_KEY;

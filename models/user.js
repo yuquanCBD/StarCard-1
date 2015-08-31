@@ -230,10 +230,9 @@ User.queryMyCard = function(userid, type, offset, capacity, callback){
 //更新用户资料
 User.updateUserInfo = function(userid, username, tel, gender, province, city, district, address, postcode, IDCardNo, files, callback){
 	mysql.getConnection(function(err, conn){
-		if(err){
-			conn.release()
+		if(err)
 			callback(err);
-		}
+		
 		var sql0 = 'SELECT IDCardNo FROM user WHERE userid = "' + userid + '"';
 		var sql1 = 'UPDATE user SET username  = "'+username+'", telephone = "'+tel+'", gender ='+gender+'  WHERE userid = "'+userid+'"';
 		var sql2 = 'UPDATE address SET province  = "'+province+'", city = "'+city+'", district = "'+district+'",'+
@@ -337,6 +336,7 @@ User.queryTradeByUserid = function(userid, callback){
 					}
 					username = rows[0].username;
 					callback(err, in_num, out_num, username);
+					conn.release()
 				});
 			});
 		});
@@ -344,18 +344,73 @@ User.queryTradeByUserid = function(userid, callback){
 };
 
 
+
 User.findUserById = function(userid, callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
 			return callback(err);
 
-		var sql = 'SELECT userid, username, email, create_time, telephone, IDCardNo, score, gender, portrait FROM user WHERE userid = ?';
+		var sql = 'SELECT userid, username, email, create_time, telephone, IDCardNo, score, gender, portrait, sell_cnt, buy_cnt FROM user WHERE userid = ?';
 		conn.query(sql, [userid], function(err, rows){
 			conn.release();
 			callback(err, rows[0]);
 		});
 
 	});
+}
+
+
+User.identification = function(userid, files, callback){
+	//存储图片，得到图片的路径信息
+    var filePath = path.join(__dirname, '../public/imgs/identification/');
+
+    if(fs.existsSync(filePath + userid)){//如果存在文件夹，则删除
+        var dirList = fs.readdirSync(filePath + userid);
+        dirList.forEach(function(fileName){
+          fs.unlinkSync(filePath+userid+'/'+fileName);
+        });
+
+    	fs.rmdirSync(filePath + userid);
+    }
+
+    //创建文件夹
+    fs.mkdir(filePath + userid, function(err){
+	    if(err)
+      		return callback(err);
+
+    	var str = '';
+        for (var i  in files.imgs) {
+	        if(i > 1) break; //最多2张
+	        var file = files.imgs[i];
+	        if(file.originalFilename.length == 0) break; //没有上传图片
+	        
+	        var types = file.originalFilename.split('.');
+	        var p = "imgs/identification/"+userid+'/'+i+'.'+String(types[types.length-1]);
+	        if(str === ""){
+	          str += p;
+	        }
+	        else{
+	          str += (','+p);
+	        }
+	        fs.renameSync(file.path, filePath+userid+'/'+i+'.'+String(types[types.length-1]));
+    	}//for end
+    	console.log('身份证照片上传成功');
+
+		mysql.getConnection(function(err, conn){
+			if(err)
+				return callback(err);
+
+			var sql = 'UPDATE user SET identificated = 1 WHERE userid = ?';
+			console.log(sql, userid);
+			conn.query(sql, [userid], function(err, results){
+				conn.release();
+				callback(err, results);
+			});
+
+		})//sql end
+
+    })
+
 }
 
 module.exports = User;

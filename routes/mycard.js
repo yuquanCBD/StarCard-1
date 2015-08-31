@@ -21,7 +21,7 @@ router.post('/queryCollect', function(req, res, next) {
 	var userid = req.body.userid;
 	var offset = req.body.offset;
 	var capacity = req.body.capacity;
-
+	console.log('1111--------------------queryCollect', offset, capacity);
 	User.queryCollect(userid, offset, capacity,function(err, cards){
 		if(err)
 			return res.json({error : err});

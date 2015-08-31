@@ -45,29 +45,21 @@ Order.checkOrder = function(cardid, cardnum, seller, buyer, card_price, logistic
 
 //订单付款，待发货
 Order.payOrder = function(orderid, amount, client_ip, callback){
-	mysql.getConnection(function(err, conn){
-		if(err)
-			return callback(err);
-
-		/* ping＋＋支付 */
-		pay.pingpp.charges.create({
-		      subject: "starcard trade",
-		      body: "starcard trade pay",
-		      amount: amount,
-		      order_no: orderid,
-		      channel: pay.CHANNEL,
-		      currency: "cny",
-		      client_ip: client_ip,
-		      app: {id: pay.APP_ID}
-		  }, function(err, charge) {
-		      console.log(err, charge);
-		      callback(err, charge);
-
-		});
-
-
-
+	/* ping＋＋支付 */
+	pay.pingpp.charges.create({
+	      subject: "starcard trade",
+	      body: "starcard trade pay",
+	      amount: amount,
+	      order_no: orderid,
+	      channel: pay.CHANNEL,
+	      currency: "cny",
+	      client_ip: client_ip,
+	      app: {id: pay.APP_ID}
+	  }, function(err, charge) {
+	      console.log(err, charge);
+	      callback(err, charge);
 	});
+
 }
 
 Order.payOrderSuccess = function(orderid, transaction_no, callback){

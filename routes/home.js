@@ -43,7 +43,7 @@ router.post('/showCardsOfOwner', function(req, res, next){
     });
 });
 
-//userid、返回用户名字、购买和售出的卡片
+//userid、返回用户名字、购买和售出的卡片deprecated!!!
 router.post('/showTradeInfo', function(req, res, next){
     var userid = req.body.userid;
     User.queryTradeByUserid(userid, function(err, in_num, out_num, username){

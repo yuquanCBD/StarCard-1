@@ -32,6 +32,7 @@ var webWiki_route = require('./routes/webWiki');        //wiki信息管理
 
 var message_route = require('./routes/message');        //消息路由
 var pingpp_route = require('./routes/pingpp');          //支付webhooks路由
+var userCenter_route = require('./routes/userCenter');  //用户中心路由
 
 var app = express();
 
@@ -96,6 +97,7 @@ app.use('/message', message_route);
 app.use('/webOrder', webOrder_route);
 app.use('/webWiki', webWiki_route);
 app.use('/pingpp', pingpp_route);
+app.use('/usercenter', userCenter_route);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

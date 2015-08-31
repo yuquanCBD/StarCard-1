@@ -68,10 +68,10 @@ router.post('/payOrder', function(req, res, next){
 	var orderid = req.body.orderid;
 	var amount = req.body.amount;
 
-	Order.payOrder(orderid, amount, req.ip, function(err, results){
+	Order.payOrder(orderid, amount, req.ip, function(err, charge){
 		if(err)
 			return res.json({error : err});
-		return res.json({success : '支付成功'});
+		return res.json(charge);
 	});
 });
 

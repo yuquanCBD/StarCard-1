@@ -11,7 +11,7 @@ log4js.configure({
       maxLogSize: 1024,
       backups:4,
       category: 'normal',
-      pattern: "_yyyy-MM-dd", 
+      pattern: "-yyyy-MM-dd", 
       category: 'logger',
       alwaysIncludePattern: false  
     }
