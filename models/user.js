@@ -413,4 +413,52 @@ User.identification = function(userid, files, callback){
 
 }
 
+
+//收藏wiki查询
+User.queryWikiCollect = function(userid, offset, capacity, callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			callback(err);
+
+		var sql = 'SELECT a.wikiid, a.wikiname, a.english_name, a.category, a.manufacturer, a.series, a.serial_number, a.rarity,'
+				+'a.describes, a.price, a.contributor, a.picture, a.brand, a.islock FROM wiki a '
+				+'LEFT JOIN wiki_collect b ON a.wikiid = b.wikiid where b.userid = ? ';
+
+       	offset = parseInt(offset) * parseInt(capacity);
+        sql += 'LIMIT ' + offset + ', ' + capacity;  //分页查询
+
+		console.log('SQL: '+ sql);
+		conn.query(sql, [userid], function(err, rows){
+			callback(err,rows);
+			conn.release();
+		})
+	})
+}
+
+
+//收藏wiki查询
+User.addWikiCollect = function(userid, wikiid, callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			callback(err);
+
+		var sql = 'INSERT INTO wiki_collect(userid, wikiid) VALUES(?, ?)';
+
+		console.log('SQL: '+ sql);
+		conn.query(sql, [userid, wikiid], function(err, results){
+			callback(err, results);
+			conn.release();
+		})
+	})
+}
+
+
 module.exports = User;
+
+
+
+
+
+
+
+
