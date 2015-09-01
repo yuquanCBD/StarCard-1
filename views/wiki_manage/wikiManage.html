@@ -345,7 +345,7 @@
 											<th class="hidden-480">中文名称</th>
 											<th class="hidden-480">类别</th>
 											<th class="hidden-480">品牌</th>
-											<th class="hidden-480">厂商</th>
+											
 											<th class="hidden-480">价格</th>
 											<th class="hidden-480">贡献者</th>
 											<th class="hidden-480">是否锁定</th>
@@ -477,27 +477,7 @@
 													</div>
 
 												</div>
-												<div class="control-group">
-
-													<label class="control-label">厂商:</label>
-
-													<div class="controls">
-
-														<select id="manufacturer" class="small m-wrap" tabindex="1" name="manufacturer">
-
-															<option value="Topps">Topps</option>
-
-															<option value="Panini">Panini</option>
-
-															<option value="Futera">Futera</option>
-
-															<option value="其他品牌">其他品牌</option>
-
-														</select>
-
-													</div>
-
-												</div>
+												
 												<div class="control-group">
 
 													<label class="control-label">品牌:</label>
@@ -721,16 +701,7 @@
 													</div>
 
 												</div>
-												<div class="control-group">
-
-													<label class="control-label" >厂商:</label>
-
-													<div class="controls">
-
-														<input disabled id='manufacturerD' type="text" class="m-wrap medium" name="manufacturer" />
-													</div>
-
-												</div>
+												
 												<div class="control-group">
 
 													<label class="control-label" >价格:</label>
@@ -942,7 +913,6 @@
 					'<td>'+obj.wikiname+'</td>'+
 					'<td>'+obj.category+'</td>'+
 					'<td>'+obj.brand+'</td>'+
-					'<td>'+obj.manufacturer+'</td>'+
 					'<td>'+obj.price+'</td>'+
 					'<td>'+obj.contributor+'</td>'+
 					'<td>'+obj.islock+'</td>';
@@ -1018,10 +988,10 @@
 			   				var wikiname = $(tds[1]).text();
 			   				var category = $(tds[2]).text();
 			   				var brand = $(tds[3]).text();
-			   				var manufacturer = $(tds[4]).text();
-			   				var price = $(tds[5]).text();
-			   				var contributor = $(tds[6]).text();
-			   				var islock = $(tds[7]).text();
+			   				//var manufacturer = $(tds[4]).text();
+			   				var price = $(tds[4]).text();
+			   				var contributor = $(tds[5]).text();
+			   				var islock = $(tds[6]).text();
 			   				$("input#wikiidD").attr({value:wikiid});
 			   				$("input#english_nameD").attr({value:english_name});
 			   				$("input#seriesD").attr({value:series});
@@ -1031,7 +1001,7 @@
 			   				$("input#wikinameD").attr({value:wikiname});
 			   				$("input#categoryD").attr({value:category});
 			   				$("input#brandD").attr({value:brand});
-			   				$("input#manufacturerD").attr({value:manufacturer});
+			   				//$("input#manufacturerD").attr({value:manufacturer});
 			   				$("input#priceD").attr({value:price});
 			   				$("input#contributorD").attr({value:contributor});
 			   				$("input#islockD").attr({value:islock});
@@ -1096,10 +1066,10 @@
 				   				var wikiname = $(tds[1]).text();
 				   				var category = $(tds[2]).text();
 				   				var brand = $(tds[3]).text();
-				   				var manufacturer = $(tds[4]).text();
-				   				var price = $(tds[5]).text();
-				   				var contributor = $(tds[6]).text();
-				   				var islock = $(tds[7]).text();
+				   				//var manufacturer = $(tds[4]).text();
+				   				var price = $(tds[4]).text();
+				   				var contributor = $(tds[5]).text();
+				   				var islock = $(tds[6]).text();
 
 				   				$('input#wikiid').attr({value:wikiid, disabled:true});
 				   				$('input#wikiname').attr("value",wikiname);
@@ -1121,12 +1091,7 @@
 			   							$(options[i]).attr('selected',1);
 			   						}
 			   					};
-			   					var options = $('#manufacturer').find('option');
-			   					for (var i = 0; i < options.length; i++) {
-			   						if($(options[i]).text() == manufacturer){
-			   							$(options[i]).attr('selected',1);
-			   						}
-			   					};
+			   					
 			   					var strs = picture.split(',');
 			   					console.log('strs: ',strs[0]);
 			   					//<img src="../0.jpg" height="100" width="100">

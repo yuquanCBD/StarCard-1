@@ -27,7 +27,7 @@ router.get('/',function(req, res, next){
 });
 
 router.get('/query', function(req, res, next){
-	return res.render('order_manage/orderManage.html',{title:"订单查询"});
+	return res.render('order_manage/orderManage.html',{title:"订单查询",status:4});
 })
 
 router.get('/commonquery', function(req, res, next){
@@ -46,31 +46,57 @@ router.get('/managerquery', function(req, res, next){
 });
 //查询所有订单
 router.post('/query', function(req, res, next){
-	var sql = "select * from orders";
-	Order.exec(sql, function(err, rows){
-		if(err){
-			console.log("err ===========>",err);
-			return res.json({'error':"数据库查询错误"});
-		}
-		//console.log("========================***********=========",rows);
-
-		return res.json(rows);
-	})
-  //res.render('order_manage/orderManage.html',{title:'订单查询'});
+	var status = req.body.status[0];
+	console.log("=========shhdhksd=====:",status);
+    res.render('order_manage/orderManage.html',{title:'订单查询',status:status});
 });
-//查询买家为管理员的订单消息
-router.post('/managerquery', function(req,res,next){
-	var sql = "select * from orders inner join manager on orders.seller = manager.userid";
+// router.post('/query', function(req, res, next){
+// 	var status = req.body.status;
+// 	var sql = 'select * from orders where status="'+status+'"';
+// 	Order.exec(sql, function(err, rows){
+// 		if(err){
+// 			console.log("err ===========>",err);
+// 			return res.json({'error':"数据库查询错误"});
+// 		}
+// 		return res.json(rows);
+// 	})
+//   //res.render('order_manage/orderManage.html',{title:'订单查询'});
+// });
+//根据订单状态查询订单信息
+router.post('/queryByStatus', function(req, res, next){
+	var status = req.body.status;
+	//console.log("测试form=-=-=-=-=-=-=-=-=-=====================",status);
+	var sql;
+	if(status == 4){
+		sql ='select * from orders'; 
+	}
+	else{
+		sql = 'select * from orders where status="'+status+'"';
+	}
+	console.log(sql);
 	Order.exec(sql, function(err, rows){
 		if(err){
 			return res.json({error:"数据库查询错误"});
 		}
+		
+		return res.json(rows);
+		//return res.render("order_manage/mOrderManage.html",{title:"管理员订单查询"});
+	})
+});
+//查询买家为管理员的订单消息
+router.post('/managerquery', function(req,res,next){
+	var sql = "select * from manager inner join orders on orders.seller = manager.userid";
+	Order.exec(sql, function(err, rows){
+		if(err){
+			return res.json({error:"数据库查询错误"});
+		}
+		console.log("=========",rows);
 		return res.json(rows);
 	})
 });
 //查询买家为普通商家的订单消息
 router.post('/commonquery', function(req,res,next){
-	var sql = "select * from orders inner join user on orders.seller = user.userid";
+	var sql = "select * from user inner join orders on orders.seller = user.userid";
 	Order.exec(sql, function(err, rows){
 		if(err){
 			return res.json({error:"数据库查询错误"});
@@ -107,18 +133,19 @@ router.post('/update', function(req, res, next){
 	var logistic_price = req.body.logistic_price;
 	var card_num = req.body.card_num;
 	var sql = 'update orders set message="'+message+'", status="'+status+'", card_num="'+card_num+'", card_price="'+card_price+'", logistic_price="'+logistic_price+'" where orderid="'+orderid+'"';
+	console.log("=====================================================update sql==========",sql);
 	Order.exec(sql, function(err, r){
 		if(err){
 			return res.json({error:"数据库发生错误"});
 		}
-		return res.render('order_manage/orderManage.html',{title:"订单查询"});
+		return res.render('order_manage/orderManage.html',{title:"订单查询",status:4});
 	})
 });
 router.post('/gettele',function(req, res, next){
 	var buyer = req.body.buyer;
 	var seller = req.body.seller;
-	console.log("==========buyerid==========",buyer);
-	console.log("==========sellerid===========",seller);
+	//console.log("==========buyerid==========",buyer);
+	//console.log("==========sellerid===========",seller);
 	var sql1 = 'select * from user where userid="'+seller+'"';
 	var sql2 = 'select * from user where userid="'+buyer+'"';
 
@@ -143,8 +170,8 @@ router.post('/gettele',function(req, res, next){
 router.post('/tele', function(req, res, next){
 	var buyer = req.body.buyer;
 	var seller = req.body.seller;
-	console.log("==========buyerid==========",buyer);
-	console.log("==========sellerid===========",seller);
+	//console.log("==========buyerid==========",buyer);
+	//console.log("==========sellerid===========",seller);
 	var buyerTele,sellerTele;
 	var sql1 = 'select * from user where userid = "'+seller+'"';
 	var sql2 = 'select * from manager where userid = "'+seller+'"';
@@ -173,18 +200,30 @@ router.post('/tele', function(req, res, next){
 		}
 		if(row1.length > 0){
 			sellerTele = row1[0].telephone;
-			console.log("==============user==============",sellerTele);
+			//console.log("==============user==============",sellerTele);
 			checkManger(sql3, sql4);
 			//return res.json({buyerTele:"276372673", sellerTele:sellerTele});
 		}
 		else{
 			Order.exec(sql2, function(err, row2){
 				sellerTele = row2[0].telephone;
-				console.log("==============manager==============",sellerTele);
+				//console.log("==============manager==============",sellerTele);
 				checkManger(sql3,sql4);
 			})
 		}
 	});
+});
+
+//更新订单备注信息
+router.post('/extra',function(req, res, next){
+	var orderid=req.body.orderid;
+	var extra = req.body.extra;
+	Order.updateExtra(orderid, extra, function(err, results){
+		if(err){
+			return res.json({error:"数据库操作错误"});
+		}
+		return res.json({success:"success"});
+	})
 });
 
 module.exports = router;

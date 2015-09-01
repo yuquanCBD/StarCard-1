@@ -324,22 +324,8 @@
 								</div>
 
 							</div>
-							<form id='formQueryByStatus' action="/webOrder/query" method="post" class="form-horizontal">
-									
-									<div class="form-actions" style="padding-left:0">
-										<label  class="control-label" style="margin-right:0,margin-left:0">根据订单状态查询:</label>
-										<select style="float:left" id='statusQ' class="" name="status" style="margin-left:0px">
-											<option value="4">全部</option>
-											<option value="0">待付款</option>
-											<option value="1">待发货</option>
-											<option value="2">待收货</option>
-											<option value="3">交易完成</option>
-										</select>
-										<button style="margin-left:5%" type="submit" class="btn blue"><i class="icon-ok"></i> 订单信息查询</button>
-										<!-- <button type="button" class="btn">取消</button> -->
-									</div>
-								</form>
-							<div  class="portlet-body">
+
+							<div id="ordertable" status=<%= title %>  class="portlet-body">
 
 								<table class="table table-striped table-bordered table-hover" id="sample_2">
 
@@ -366,7 +352,6 @@
 											<th class="hidden-480">详情</th>
 											<th class="hidden-480">删除</th>
 											<th class="hidden-480">修改</th>
-											<th class="hidden-480">备注信息</th>
 
 										</tr>
 
@@ -375,9 +360,8 @@
 									<tbody>
 
 									</tbody>
-									<!-- <button>测试</button> -->
+
 								</table>
-								<button>测试</button>
 								<!-- <label class="control-label" >运单状态查询:</label>
 								<select id='statusQ' class="small m-wrap"  name="statusQ">
 									<option value="-1">全部</option>
@@ -388,7 +372,17 @@
 
 								</select>
 								<button style="margin-left:10%">查询</button> -->
-								
+									<label  class="">根据订单状态查询:</label>
+
+									<select style="float:left" id='statusQ' class="">
+										<option value="-1">全部</option>
+										<option value="0">待付款</option>
+										<option value="1">待发货</option>
+										<option value="2">待收货</option>
+										<option value="3">交易完成</option>
+
+									</select>
+									<button id="queryByStatus" style="margin-left:5%">查询</button>
 								
 							</div>
 
@@ -860,13 +854,14 @@
 		// 列表中展示的<!--index cardid seller buyer status card_price logistic_price ordertype -->
 		// <!--列表中未展示 orderid logistic  logistic_no alipay_id   card_num message  addr_id receive_time-->
 
-		jQuery(document).ready(function() {  
-			var statusQuery = <%= status %>; 
-			console.log("=====",statusQuery);  
+		jQuery(document).ready(function() { 
+			var ssss = $("ordertable").attr("status");
+			var status111 = <%= title %>;
+			console.log("=======",status111);    
 			function createTR(obj,index){
 				var tr = '<tr class="odd gradeX">'+
 					//'<td><input type="checkbox" class="checkboxes" value="1" name="checks"/></td>'+
-					'<td><input type="checkbox"></td>'+
+					'<td>'+index+'</td>'+
 					'<td>'+obj.orderid+'</td>'+
 					'<td>'+''+'</td>'+
 					'<td>'+''+'</td>';
@@ -901,7 +896,7 @@
 				tr += '<td><button  orderid="'+obj.orderid+'" cardid="'+obj.cardid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" create_time="'+obj.create_time+'" class="detailButton">详情</button></td>'+
 					'<td><button orderid="'+obj.orderid+'" class="deleteButton">删除</button></td>'+
 					'<td><button orderid="'+obj.orderid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" create_time="'+obj.create_time+'" class="updateButton">修改</button></td>'+
-					'<td><input type="text" style="width:70px" class="extraInfo" orderid="'+obj.orderid+'" value="'+obj.extra+'"></td>'
+
 					'</tr>';
 				return tr;
 			};
@@ -946,30 +941,12 @@
 			   			alert('获取手机号码失败！');
 			   		}
 		   		});
-			};
-			function setExtraAjax(url, obj){
-				console.log(url);
-				console.log(obj);
-				$.ajax({
-			   		type : 'POST',
-			   		url : url,
-			   		data : obj,
-			   		dataType : 'json',
-			   		cache : false,
-			   		success : function(data){
-			   			console.log("保存成功");
-			   		},
-			   		error : function(){
-			   			alert("备注信息添加失败");
-			   		}
-		   		});
-			};
+			}
 			function query(){
-				console.log(statusQuery);
 				$.ajax({
 			   		type : 'POST',
-			   		url : '/webOrder/queryByStatus',
-			   		data : {status:statusQuery},
+			   		url : '/webOrder/query',
+			   		data : {status:0},
 			   		dataType : 'json',
 			   		cache : false,
 			   		success : function(data){
@@ -1064,15 +1041,6 @@
 			   					PostAjax('/webOrder/delete',{orderid:cid});
 			   				}
 			   			});
-			   			$("input.extraInfo").blur(function(){
-							//$("input#username").css("background-color","#D6d6ef");
-							var orderid = $(this).attr("orderid");
-							var extra = $(this).attr("value");
-							//Ajax("/webUser/userCheck",{username:username});
-							console.log("===-----%%%%%",orderid);
-							console.log("===-----",extra);
-							setExtraAjax("/webOrder/extra", {orderid:orderid,extra:extra});
-						});
 			   			/*index  username  gender  email  telephone  score  IDCardNo*/
 			   			$("button.updateButton").click(function(e){
 			   				if(confirm('是否需要修改卡信息?')){
@@ -1162,20 +1130,24 @@
 					}
 				};
 				$.ajax({
-			   		type : 'GET',
-			   		url : '/webOrder/queryByStatus?status='+sta,
-			   		//data : {status:sta},
+			   		type : 'POST',
+			   		url : '/webOrder/queryByStatus',
+			   		data : {status:sta},
 			   		dataType : 'json',
 			   		cache : false,
 			   		success : function(data){
-			   			var eva = eval(data);
+			   			//var eva = eval(data);
+			   			// $('tbody').empty();
+			   			// for (var i = 0; i < eva.length; i++) {
+			  				// var tr = createTR(eva[i],i+1);
+			   			// 	$('tbody').append(tr);
+			   			// };
 			   		},
 			   		error : function(){
 			   			alert('查询信息失败');
 			   		}
 		   		});    
 			})//click
-			
 
 		});
 
