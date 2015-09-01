@@ -175,6 +175,23 @@ User.queryScore = function(userid, callback){
 	});
 };
 
+//收藏卡片
+User.addCardCollect = function(userid, cardid, callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			callback(err);
+
+		var sql = 'INSERT INTO collect(userid, cardid) VALUES(?, ?)';
+
+		console.log('SQL: '+ sql);
+		conn.query(sql, [userid, cardid], function(err, results){
+			callback(err, results);
+			conn.release();
+		})
+
+	})
+}
+
 
 //查询用户收藏的卡片
 User.queryCollect = function(userid, offset, capacity, callback){

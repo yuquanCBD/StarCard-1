@@ -22,9 +22,9 @@ router.post('/addNewAddr', function(req, res, next){
 	var postcode = req.body.postcode;
 	var address = req.body.address;
 	var telephone = req.body.telephone;
-	var consigee = req.body.consigee;
+	var consignee = req.body.consignee;
 
-	Address.add(userid, province, city, district, postcode, address, telephone, consigee, function(err, result){
+	Address.add(userid, province, city, district, postcode, address, telephone, consignee, function(err, result){
 		if(err)
 			return res.json({error : err});
 		return res.json({success : '新地址添加成功'});
@@ -43,6 +43,21 @@ router.post('/delAddr', function(req, res, next){
 	});
 });
 
+//根据地址id查询地址详情
+router.post('/queryAddrById', function(req, res, next){
+	var addrid = req.body.addrid;
+
+	Address.queryAddrById(addrid, function(err, rows){
+		if(err)
+			return res.json({error : err});
+		if(rows.length == 0)
+			return res.json(null);
+		else
+			return res.json(rows[0]);
+	})
+
+})
+
 //确认订单，未付款
 router.post('/checkOrder', function(req, res, next){
 	var cardid = req.body.cardid;
@@ -52,12 +67,13 @@ router.post('/checkOrder', function(req, res, next){
 	var card_price = req.body.card_price;
 	var logistic_price = req.body.logistic_price;
 	var addrid = req.body.addrid;
+	var card_pic = req.body.card_pic;
+	var card_name = req.body.card_name;
+	var card_desc = req.body.card_desc;
 
-	Order.checkOrder(cardid, cardnum, seller, buyer, card_price, logistic_price, addrid, function(err, orderid){
+	Order.checkOrder(cardid, cardnum, seller, buyer, card_price, logistic_price, addrid, card_pic, card_name, card_desc, function(err, orderid){
 		if(err)
 			return res.json({error : err});
-
-		io.emit('order-' + seller, '您的卡片已有买家购买');//发送消息给卖家
 
 		return res.json({orderid : orderid});
 	});
@@ -92,8 +108,10 @@ router.post('/deliverOrder', function(req, res, next){
 //订单收货
 router.post('/receiveOrder', function(req, res, next){
 	var orderid = req.body.orderid;
+	var seller = req.body.seller;
+	var buyer = req.body.buyer;
 
-	Order.receiveOrder(orderid, function(err, results){
+	Order.receiveOrder(orderid, seller, buyer, function(err, results){
 		if(err)
 			return res.json({error : err});
 		return res.json({success : '收货成功'});

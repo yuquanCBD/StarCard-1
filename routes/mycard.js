@@ -15,6 +15,16 @@ router.post('/queryScore', function(req, res, next) {
 	});
 });
 
+router.post('/addCardCollect', function(req, res, next){
+	var userid = req.body.userid;
+	var cardid = req.body.cardid;
+	User.addCardCollect(userid, cardid, function(err, results){
+		if(err)
+			return res.json({error : err});
+		return res.json({success : '卡片收藏成功'});
+	})
+})
+
 
 //收藏卡片查询
 router.post('/queryCollect', function(req, res, next) {

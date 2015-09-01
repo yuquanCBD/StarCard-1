@@ -8,26 +8,28 @@ var pay 		= require('../pingpp/pay'); //ping＋＋支付接口
 
 function Order(){}
 
-function Order(orderid, receive_time){
+function Order(orderid, seller, buyer, receive_time){
 	this.orderid = orderid;
+	this.seller = seller;
+	this.buyer = buyer;
 	this.receive_time = receive_time;
 }
 
 
 //确认订单，待付款
-Order.checkOrder = function(cardid, cardnum, seller, buyer, card_price, logistic_price, addr_id, callback){
+Order.checkOrder = function(cardid, cardnum, seller, buyer, card_price, logistic_price, addr_id, card_pic, card_name, card_desc, callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
 			return callback(err);
 
 		var orderid = uuid.v1();
-		var sql1 = 'INSERT INTO orders (orderid, cardid, card_num, seller, buyer, status, card_price, logistic_price, addr_id) '+
-				'VALUES("'+orderid+'", "'+cardid+'", '+cardnum+', "'+seller+'", "'+buyer+'", 0,'+card_price+' ,'+logistic_price+' ,'+addr_id+' )';
+		var sql1 = 'INSERT INTO orders (orderid, cardid, card_num, seller, buyer, card_price, logistic_price, addr_id, card_pic, card_name, card_desc) '+
+				'VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
 		var sql2 = 'UPDATE card SET status = -1 WHERE cardid = "' + cardid + '"';
 
 		console.log('Order_Add_SQL: '+ sql1);
-		conn.query(sql1, function(err, results){
+		conn.query(sql1, [orderid, cardid, cardnum, seller, buyer, card_price, logistic_price, addr_id, card_pic, card_name, card_desc], function(err, results){
 			if(err)
 				return callback(err);
 
@@ -117,7 +119,7 @@ Order.deliverOrder = function(orderid, logistic, logistic_no, logistic_code, cal
 };
 
 //订单收货， 交易成功
-Order.receiveOrder = function(orderid, callback){
+Order.receiveOrder = function(orderid, seller, buyer, callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
 			return callback(err);
@@ -126,23 +128,30 @@ Order.receiveOrder = function(orderid, callback){
 
 		console.log('receiveOrder_SQL: '+ sql);
 		conn.query(sql, function(err, results){
-			callback(err, results);
+			if(err)
+				return callback(err);
 
-			queue.pops(orderid);//从自动收货队列中删除元素
-			//生成消息
-			var sql = 'SELECT seller FROM orders WHERE orderid = ?';//根据订单号查询买家的userid
-			conn.query(sql, [orderid], function(err, rows){
-				conn.release();
-				if(rows.length ==0) return;
-				var seller = rows[0].seller;
-				//生成买家的一条消息 
-				Message.insertNewMsg(seller, orderid, 2, function(err, results){});
-			});
+			//更新卖家信息
+			var sql = 'UPDATE user SET sell_cnt = sell_cnt + 1 WHERE userid = ?';
+			conn.query(sql, [seller], function(err, results){
+				if(err)
+					return callback(err);
+				//更新买家信息
+				var sql = 'UPDATE user SET buy_cnt = buy_cnt + 1 WHERE userid = ?';
+				conn.query(sql, [buyer], function(err, results){
+					if(err)
+						return callback(err);
+					callback(err, results);
+					conn.release();
+					queue.pops(orderid);//从自动收货队列中删除元素
+					Message.insertNewMsg(seller, orderid, 2, function(err, results){});//生成卖家的消息
+				})
+			})
 			
-        });
+        })
 
-	});
-};
+	})
+}
 
 //延长收货
 Order.prolongOrder = function(orderid, callback){
@@ -204,9 +213,10 @@ Order.queryOrderList = function(userid, tag, usertype,callback){
 			return callback(err);
 		var sql = '';
 		if(usertype == 1)
-			sql = 'SELECT orderid, cardid, seller, buyer, logistic, logistic_no, status, card_price, logistic_price, addr_id, card_num, alipay_id, receive_time FROM orders WHERE buyer = "'+userid+'" AND status = ' + tag; 
+			sql = 'SELECT orderid, cardid, seller, buyer, logistic, logistic_no, status, card_price, logistic_price, addr_id, card_num, alipay_id, receive_time,  card_pic, card_name, card_desc FROM orders WHERE buyer = "'+userid+'" AND status = ' + tag; 
+
 		else
-			sql = 'SELECT orderid, cardid, seller, buyer, logistic, logistic_no, status, card_price, logistic_price, addr_id, card_num, alipay_id, receive_time FROM orders WHERE seller = "'+userid+'" AND status = ' + tag; 
+			sql = 'SELECT orderid, cardid, seller, buyer, logistic, logistic_no, status, card_price, logistic_price, addr_id, card_num, alipay_id, receive_time, card_pic, card_name, card_desc FROM orders WHERE seller = "'+userid+'" AND status = ' + tag; 
 		console.log('SQL: '+ sql);
 		conn.query(sql, function(err, rows){
 			if(err)

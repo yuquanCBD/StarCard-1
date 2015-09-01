@@ -8,7 +8,7 @@ Address.list = function(userid, callback){
 		if(err)
 			return callback(err);
 		
-		var sql = 'SELECT addr_id, province, city, district, postcode, address, telephone, consigee, tag FROM address WHERE userid = "'+ userid +'"';
+		var sql = 'SELECT addr_id, userid,province, city, district, postcode, address, telephone, consignee, tag FROM address WHERE userid = "'+ userid +'"';
 		console.log('addressList_SQL: '+ sql);
 
 		conn.query(sql, function(err, results){
@@ -19,13 +19,13 @@ Address.list = function(userid, callback){
 };
 
 //添加新地址并设置为默认地址
-Address.add = function(userid, province, city, district, postcode, address, telephone, consigee, callback){
+Address.add = function(userid, province, city, district, postcode, address, telephone, consignee, callback){
 	mysql.getConnection(function(err, conn){
 		var sql1 = 'UPDATE address SET tag = 0 WHERE userid = "'+userid+'" AND tag = 1';//取消原来的默认收获地址
 
 		//设置新的默认收获地址
-		var sql2 = 'INSERT INTO address (userid, province, city, district, postcode, address, telephone, consigee, tag) '+
-		'VALUES("'+userid+'", "'+province+'", "'+city+'", "'+district+'", "'+postcode+'", "'+address+'", "'+telephone+'", "'+consigee
+		var sql2 = 'INSERT INTO address (userid, province, city, district, postcode, address, telephone, consignee, tag) '+
+		'VALUES("'+userid+'", "'+province+'", "'+city+'", "'+district+'", "'+postcode+'", "'+address+'", "'+telephone+'", "'+consignee
 			+'", 1)';
 
 		console.log('sql1: '+ sql1);
@@ -55,7 +55,24 @@ Address.del = function(userid, addrid, callback){
             callback(err, results);
             conn.release();
         });
-	});};
+	})
+}
+
+//根据地址id查询地址详情
+Address.queryAddrById = function(addrid, callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			return callback(err)
+
+		var sql = 'SELECT addr_id, userid,province, city, district, postcode, address, telephone, consignee, tag FROM address WHERE addr_id = ?';
+		console.log('SQL: '+ sql);
+
+		conn.query(sql, [addrid], function(err, rows){
+            conn.release();
+            callback(err, rows);
+        });
+	})
+}
 
 
 
