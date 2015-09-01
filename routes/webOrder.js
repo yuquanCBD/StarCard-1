@@ -228,9 +228,15 @@ router.post('/extra',function(req, res, next){
 //批量更改完成打款字段
 router.post('/paid',function(req, res, next){
 	var orderids = req.body.orderid;
-	console.log("####################  orderids  ###################",orderids);
-	return res.json({success:"success"});
-});
+	var orders = new Array();
+	orders = orderids.split(',');
+	Order.batchPaid(orders, function(err){
+		if(err)
+			return res.json({error : err});
+	 	return res.json({success:"success"});
+	})
+
+})
 
 
 module.exports = router;

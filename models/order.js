@@ -2,6 +2,7 @@ var mysql = require('./mysql');
 var uuid = require('node-uuid');
 var Message = require('./message')
 var queue = require('../struct/queue');
+var async = require('async');
 var pay 		= require('../pingpp/pay'); //ping＋＋支付接口
 
 
@@ -312,6 +313,26 @@ Order.exec = function(sql, callback){
 } //exec
 
 //update,更新备注信息
+
+//批量修改打款状态
+Order.batchPaid = function(orders, callback){
+	async.each(orders, function(orderid, callback1){
+		mysql.getConnection(function(err, conn){
+			if(err)
+				return callback1(err);
+
+			var sql = 'UPDATE orders SET paid_tag = 1 WHERE orderid = ?';
+			conn.query(sql, [orderid], function(err, rows){
+				if(err)
+					return callback1(err);
+				conn.release();
+				callback1();
+			})
+		})
+	}, function(err){
+		callback(err);
+	})
+}
 
 
 module.exports = Order;
