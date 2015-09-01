@@ -24,25 +24,29 @@ Comment.addComment = function(cardid, userid, commentto, content, username, user
 			var comment_id = results.insertId;
 
 			callback(err, results);
-			if(comment_id != null && comment_id != '') return;
+			if(comment_id == null || comment_id == '') return;
 
 			//查询评论卡片的卖家
-			var sql = 'SELECT owner From card a left join card_comment b on a.cardid = b.cardid where b.commentid = ?';
+			var sql = 'SELECT a.owner, a.title, a.describes, a.pictures From card a left join card_comment b on a.cardid = b.cardid where b.commentid = ?';
+			console.log(sql);
 			conn.query(sql, [comment_id], function(err, rows){
 				conn.release();
 				if(rows.length == 0)
 					return;
 				var seller = rows[0].owner;
+				var title = rows[0].title;
+				var describes = rows[0].describes;
+				var pictures = rows[0].pictures;
 				//生成买家的一条消息 
-				if(comment_id != null && comment_id != '')
-					Message.insertNewMsg(owner, comment_id, 1, function(err, results){}); // 生成对卖家的一条信息
+				Message.insertNewMsg(seller, comment_id, 1, title, describes, pictures, function(err, results){ if(err) console.log(err);}); // 生成对卖家的一条信息
 			})
 
         })    
     })
 
 }
-//
+
+//显示卡片评论列表
 Comment.showCardComments = function(cardid, callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
@@ -57,39 +61,5 @@ Comment.showCardComments = function(cardid, callback){
 	})
 }
 
-Comment.execSql = function(sql, callback){
-	mysql.getConnection(function(err, conn){
-		if(err){
-			console.log("POOL ==>" + err);
-			callback(err);
-			conn.release();
-		};
-
-		conn.query(sql, function(err, result){
-			if(err){
-				console.log(err);
-				callback(err);
-				conn.release();
-			}
-			var comment_id = result.insertId;
-
-			callback(err, result);
-			if(comment_id != null && comment_id != '') return;
-
-			//查询评论卡片的卖家
-			var sql = 'SELECT owner From card a left join card_comment b on a.cardid = b.cardid where b.commentid = ?';
-			conn.query(sql, [comment_id], function(err, rows){
-				conn.release();
-				if(rows.length == 0)
-					return;
-				var seller = rows[0].owner;
-				//生成买家的一条消息 
-				if(comment_id != null && comment_id != '')
-					Message.insertNewMsg(owner, comment_id, 1, function(err, results){}); // 生成对卖家的一条信息
-			});
-
-		})
-	})
-};
 
 module.exports = Comment;

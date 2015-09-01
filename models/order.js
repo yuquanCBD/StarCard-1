@@ -38,7 +38,7 @@ Order.checkOrder = function(cardid, cardnum, seller, buyer, card_price, logistic
 				callback(err, orderid);
 				conn.release();
 				//生成卖家的一条消息 
-				Message.insertNewMsg(seller, orderid, 2, function(err, results){});
+				Message.insertNewMsg(seller, orderid, 2, card_name, card_desc, card_pic, function(err, results){});
 			});
         });
 
@@ -74,12 +74,17 @@ Order.payOrderSuccess = function(orderid, transaction_no, callback){
 
 		callback(err, results);
 
-		var sql = 'SELECT seller FROM orders WHERE orderid = ?';//根据订单号查询卖家的userid
+		var sql = 'SELECT seller, card_name, card_desc, card_pic FROM orders WHERE orderid = ?';//根据订单号查询卖家的userid
 		conn.query(sql, [orderid], function(err, rows){
 			conn.release();
+			if(rows.length == 0) return;
+
 			var seller = rows[0].seller;
+			var card_name = rows[0].card_name;
+			var card_desc = rows[0].card_desc;
+			var card_pic = rows[0].card_pic;
 			//生成卖家的一条消息 
-			Message.insertNewMsg(seller, orderid, 2, function(err, results){});
+			Message.insertNewMsg(seller, orderid, 2, card_name, card_desc, card_pic, function(err, results){if(err) console.log(err);});
 		});
 
     });
@@ -101,16 +106,24 @@ Order.deliverOrder = function(orderid, logistic, logistic_no, logistic_code, cal
 			if(err)
 				return callback(err);
 
-			queue.push(new Order(orderid, receive_time));//向自动收货队列中插入一条数据
+			callback(err, results);//回调返回
 
-			callback(err, results);
 
-			var sql = 'SELECT buyer FROM orders WHERE orderid = ?';//根据订单号查询买家的userid
+			var sql = 'SELECT seller, buyer, card_name, card_desc, card_pic FROM orders WHERE orderid = ?';//根据订单号查询买家的userid
 			conn.query(sql, [orderid], function(err, rows){
 				conn.release();
+				if(rows.length == 0) return;
+
+				var seller = rows[0].seller;
 				var buyer = rows[0].buyer;
-				//生成买家的一条消息 
-				Message.insertNewMsg(buyer, orderid, 2, function(err, results){});
+				var card_name = rows[0].card_name;
+				var card_desc = rows[0].card_desc;
+				var card_pic = rows[0].card_pic;
+				//生成卖家的一条消息 
+				Message.insertNewMsg(buyer, orderid, 2, card_name, card_desc, card_pic, function(err, results){if(err) console.log(err);});
+
+				queue.push(new Order(orderid, seller, buyer, receive_time));//向自动收货队列中插入一条数据
+
 			});
 
         });
@@ -142,9 +155,23 @@ Order.receiveOrder = function(orderid, seller, buyer, callback){
 					if(err)
 						return callback(err);
 					callback(err, results);
-					conn.release();
 					queue.pops(orderid);//从自动收货队列中删除元素
-					Message.insertNewMsg(seller, orderid, 2, function(err, results){});//生成卖家的消息
+
+					//生成对买家和卖家的消息
+					var sql = 'SELECT card_name, card_desc, card_pic FROM orders WHERE orderid = ?';//根据订单号查询买家的userid
+					conn.query(sql, [orderid], function(err, rows){
+						conn.release();
+						if(rows.length == 0) return;
+
+						var card_name = rows[0].card_name;
+						var card_desc = rows[0].card_desc;
+						var card_pic = rows[0].card_pic;
+						//生成对买家和卖家的消息
+						Message.insertNewMsg(buyer, orderid, 2, card_name, card_desc, card_pic, function(err, results){if(err) console.log(err);});
+						Message.insertNewMsg(seller, orderid, 2, card_name, card_desc, card_pic, function(err, results){if(err) console.log(err);});
+					});
+
+
 				})
 			})
 			
@@ -169,13 +196,22 @@ Order.prolongOrder = function(orderid, callback){
 		conn.query(sql, function(err, results){
 			callback(err, results);
 			
-			queue.refresh(new Order(orderid, receive_time)); //更新自动收货队列
-			var sql = 'SELECT seller FROM orders WHERE orderid = ?';//根据订单号查询买家的userid
+
+			var sql = 'SELECT seller, buyer, card_name, card_desc, card_pic FROM orders WHERE orderid = ?';
 			conn.query(sql, [orderid], function(err, rows){
 				conn.release();
+				if(rows.length == 0) return;
+
 				var seller = rows[0].seller;
-				//生成买家的一条消息 
-				Message.insertNewMsg(seller, orderid, 2, function(err, results){});
+				var buyer = rows[0].buyer;
+				var card_name = rows[0].card_name;
+				var card_desc = rows[0].card_desc;
+				var card_pic = rows[0].card_pic;
+				//生成卖家的一条消息 
+				Message.insertNewMsg(seller, orderid, 2, card_name, card_desc, card_pic, function(err, results){if(err) console.log(err);});
+			
+				queue.refresh(new Order(orderid, seller, buyer, receive_time)); //更新自动收货队列
+
 			});
 
         });
@@ -195,18 +231,24 @@ Order.cancleOrder = function(orderid, callback){
 		conn.query(sql, function(err, results){
 			callback(err, results);
 			
-			var sql = 'SELECT seller FROM orders WHERE orderid = ?';//根据订单号查询买家的userid
+			var sql = 'SELECT seller, card_name, card_desc, card_pic FROM orders WHERE orderid = ?';//根据订单号查询卖家的userid
 			conn.query(sql, [orderid], function(err, rows){
 				conn.release();
+				if(rows.length == 0) return;
+
 				var seller = rows[0].seller;
-				//生成买家的一条消息 
-				Message.insertNewMsg(seller, orderid, 2, function(err, results){});
+				var card_name = rows[0].card_name;
+				var card_desc = rows[0].card_desc;
+				var card_pic = rows[0].card_pic;
+				//生成卖家的一条消息 
+				Message.insertNewMsg(seller, orderid, 2, card_name, card_desc, card_pic, function(err, results){if(err) console.log(err);});
 			});
 			
         });
 	});
 };
 
+//查询订单列表
 Order.queryOrderList = function(userid, tag, usertype,callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
@@ -226,6 +268,7 @@ Order.queryOrderList = function(userid, tag, usertype,callback){
         });
 	});
 };
+
 Order.exec = function(sql, callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
