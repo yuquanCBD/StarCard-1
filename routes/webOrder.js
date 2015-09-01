@@ -218,7 +218,6 @@ router.post('/tele', function(req, res, next){
 router.post('/extra',function(req, res, next){
 	var orderid=req.body.orderid;
 	var extra = req.body.extra;
-	console.log("@@@@@@@@@@@@  ",orderid,'   ,    ',extra);
 	Order.updateExtra(orderid, extra, function(err, results){
 		if(err){
 			return res.json({error:"数据库操作错误"});

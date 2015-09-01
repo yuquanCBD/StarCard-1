@@ -218,7 +218,6 @@ Order.cancleOrder = function(orderid, callback){
 //update,更新备注信息
 Order.updateExtra = function(orderid, extra, callback){
 	var sql = 'update orders set extra ="'+extra+'" where orderid="'+orderid+'"';
-	console.log("updateExtra@@@@",sql);
 	mysql.getConnection(function(err, conn){
 		if(err){
 			conn.release();
