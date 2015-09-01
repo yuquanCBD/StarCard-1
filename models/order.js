@@ -75,8 +75,11 @@ Order.payOrderSuccess = function(orderid, transaction_no, callback){
 
 	console.log('payOrder_SQL: '+ sql);
 	conn.query(sql, function(err, results){
-		if(err)
+		if(err){
+			conn.release();
 			return callback(err);
+		}
+			
 
 		callback(err, results);
 
@@ -94,8 +97,11 @@ Order.payOrderSuccess = function(orderid, transaction_no, callback){
 //订单发货，待收货
 Order.deliverOrder = function(orderid, logistic, logistic_no, logistic_code, callback){
 	mysql.getConnection(function(err, conn){
-		if(err)
+		if(err){
+			conn.release();
 			return callback(err);
+		}
+			
 		var date = new Date();
 		date.setDate(date.getDate() + 7); //默认设置7天后自动收货
 		var receive_time = date.getTime()/60000; //收货时间点精确到分钟
@@ -104,8 +110,11 @@ Order.deliverOrder = function(orderid, logistic, logistic_no, logistic_code, cal
 
 		console.log('deliverOrder_SQL: '+ sql);
 		conn.query(sql, function(err, results){
-			if(err)
+			if(err){
+				conn.release();
 				return callback(err);
+			}
+				
 
 			queue.push(new Order(orderid, receive_time));//向自动收货队列中插入一条数据
 
@@ -205,7 +214,25 @@ Order.cancleOrder = function(orderid, callback){
         });
 	});
 };
-
+//update,更新备注信息
+Order.updateExtra = function(orderid, extra, callback){
+	var sql = 'update orders set extra ="'+extra+'" where orderid="'+orderid+'"';
+	console.log("updateExtra@@@@",sql);
+	mysql.getConnection(function(err, conn){
+		if(err){
+			conn.release();
+			return callback(err);
+		}
+			
+		conn.query(sql, function(err, results){
+			conn.release();
+			if(err){
+				return callback(err);
+			}
+			return callback(err, results);
+		})
+	})
+};
 Order.queryOrderList = function(userid, tag, usertype,callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
@@ -236,6 +263,8 @@ Order.exec = function(sql, callback){
 		});
 	});
 } //exec
+
+//update,更新备注信息
 
 
 module.exports = Order;

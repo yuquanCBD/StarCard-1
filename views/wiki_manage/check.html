@@ -346,7 +346,7 @@
 											<th class="hidden-480">中文名称</th>
 											<th class="hidden-480">类别</th>
 											<th class="hidden-480">品牌</th>
-											<th class="hidden-480">厂商</th>
+											
 											<th class="hidden-480">价格</th>
 											<th class="hidden-480">贡献者</th>
 											<th class="hidden-480">状态</th>
@@ -467,16 +467,7 @@
 													</div>
 
 												</div>
-												<div class="control-group">
-
-													<label class="control-label" >厂商:</label>
-
-													<div class="controls">
-
-														<input disabled id='manufacturerD' type="text" class="m-wrap medium" name="manufacturer" />
-													</div>
-
-												</div>
+												
 												<div class="control-group">
 
 													<label class="control-label">百科描述:</label>
@@ -608,7 +599,6 @@
 					'<td>'+obj.wikiname+'</td>'+
 					'<td>'+obj.category+'</td>'+
 					'<td>'+obj.brand+'</td>'+
-					'<td>'+obj.manufacturer+'</td>'+
 					'<td>'+obj.price+'</td>'+
 					'<td>'+obj.contributor+'</td>';
 				if(obj.status == -1){
@@ -681,12 +671,12 @@
 			   				var serial_number = tar.attr("serial_number");
 			   				var rarity = tar.attr("rarity");
 			   				var describes = tar.attr("describes");
-			   				console.log(describes);
+			   				
 			   				var picture = tar.attr("picture");
 			   				var wikiname = $(tds[1]).text();
 			   				var category = $(tds[2]).text();
 			   				var brand = $(tds[3]).text();
-			   				var manufacturer = $(tds[4]).text();
+			   				
 			   				var price = $(tds[5]).text();
 			   				var contributor = $(tds[6]).text();
 			   				
@@ -699,7 +689,7 @@
 			   				$("input#wikinameD").attr({value:wikiname});
 			   				$("input#categoryD").attr({value:category});
 			   				$("input#brandD").attr({value:brand});
-			   				$("input#manufacturerD").attr({value:manufacturer});
+			   				
 			   			});
 			   			$("button.checkButton").click(function(e){
 			   				if(confirm('是否审查通过?')){

@@ -335,7 +335,7 @@
 											<!-- cardid seller buyer status card_price logistic_price ordertype  -->
 											<!--列表中未展示 logistic  logistic_no alipay_id   card_num message  addr_id receive_time-->
 											<th class="hidden-480">序号</th>
-											<th class="hidden-480">卡号</th>
+											<th class="hidden-480">订单号</th>
 											<th class="hidden-480">卖家手机号</th>
 											<th class="hidden-480">买家手机号</th>
 											<!-- <th class="hidden-480">物流</th>  -->
@@ -614,6 +614,17 @@
 
 												<div class="control-group">
 
+													<label class="control-label" >交易日期:</label>
+
+													<div class="controls">
+
+														<input disabled id='create_timeD' type="text" class="m-wrap medium" name="receive_time" />
+													</div>
+
+												</div>
+
+												<div class="control-group">
+
 													<label class="control-label" >卡片总价:</label>
 
 													<div class="controls">
@@ -708,16 +719,7 @@
 													</div>
 
 												</div>
-												<div class="control-group">
-
-													<label class="control-label" >收货时间:</label>
-
-													<div class="controls">
-
-														<input disabled id='receive_timeD' type="text" class="m-wrap medium" name="receive_time" />
-													</div>
-
-												</div>
+												
 											
 												<button id="backButton" type="button" class="btn blue" style="margin-left:25%">返回</button>
 											</form>
@@ -836,7 +838,7 @@
 				var tr = '<tr class="odd gradeX">'+
 					//'<td><input type="checkbox" class="checkboxes" value="1" name="checks"/></td>'+
 					'<td>'+index+'</td>'+
-					'<td>'+obj.cardid+'</td>'+
+					'<td>'+obj.orderid+'</td>'+
 					'<td>'+''+'</td>'+
 					'<td>'+''+'</td>';
 					//'<td>'+obj.logistic+'</td>';
@@ -867,9 +869,9 @@
 				// 		'<td>'+obj.alipay_id+'</td>'+
 				// 		'<td>'+obj.receive_time+'</td>';
 					//'<td><a href="#" cardId="'+obj.cardId+'" onclick="beSure()">delete</a></td>'+
-				tr += '<td><button orderid="'+obj.orderid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" receive_time="'+obj.receive_time+'" class="detailButton">详情</button></td>'+
+				tr += '<td><button orderid="'+obj.orderid+'" cardid="'+obj.cardid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" create_time="'+obj.create_time+'" class="detailButton">详情</button></td>'+
 					'<td><button orderid="'+obj.orderid+'" class="deleteButton">删除</button></td>'+
-					'<td><button orderid="'+obj.orderid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" receive_time="'+obj.receive_time+'" class="updateButton">修改</button></td>'+
+					'<td><button orderid="'+obj.orderid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" create_time="'+obj.create_time+'" class="updateButton">修改</button></td>'+
 
 					'</tr>';
 				return tr;
@@ -934,14 +936,15 @@
 			   				var tr = tar.parent().parent();
 			   				var tds = $(tr).find('td');
 			   				var orderid = tar.attr("orderid");
+			   				var cardid = tar.attr("cardid");
 			   				var logistic = tar.attr("logistic");
 			   				var logistic_no = tar.attr("logistic_no");
 			   				var alipay_id = tar.attr("alipay_id");
 			   				var card_num = tar.attr("card_num");
 			   				var message = tar.attr("message");
 			   				var addr_id = tar.attr("addr_id");
-			   				var receive_time = tar.attr("receive_time");
-			   				var cardid = $(tds[1]).text();
+			   				var create_time = tar.attr("create_time");
+			   				//var cardid = $(tds[1]).text();
 			   				var seller = $(tds[2]).text();
 			   				var buyer = $(tds[3]).text();
 			   				var status = $(tds[4]).text();
@@ -955,7 +958,15 @@
 			   				$("input#card_numD").attr({value:card_num});
 			   				$("input#messageD").attr({value:message});
 			   				$("input#addr_idD").attr({value:addr_id});
-			   				$("input#receive_timeD").attr({value:receive_time});
+			   				var date = new Date(create_time);
+			   				var year = date.getFullYear();
+			   				var month = date.getMonth()+1;
+			   				var day = date.getDate();
+			   				var hour = date.getHours();
+			   				var minute = date.getMinutes();
+			   				var str = year+"-"+month+"-"+day+"   "+hour+":"+minute;
+			   				console.log(str);
+			   				$("input#create_timeD").attr({value:str});
 			   				$("input#cardidD").attr({value:cardid});
 			   				$("input#sellerD").attr({value:seller});
 			   				$("input#buyerD").attr({value:buyer});
@@ -1007,8 +1018,8 @@
 				   				var card_num = tar.attr("card_num");
 				   				var message = tar.attr("message");
 				   				var addr_id = tar.attr("addr_id");
-				   				var receive_time = tar.attr("receive_time");
-				   				var cardid = $(tds[1]).text();
+				   				//var receive_time = tar.attr("receive_time");
+				   				//var cardid = $(tds[1]).text();
 				   				var seller = $(tds[2]).text();
 				   				var buyer = $(tds[3]).text();
 				   				var status = $(tds[4]).text();
