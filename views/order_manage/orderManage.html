@@ -377,7 +377,8 @@
 									</tbody>
 									<!-- <button>测试</button> -->
 								</table>
-								<button>测试</button>
+								<input id="wholeCheck" type="checkbox">
+								<button id="batchPay">勾选批量打款</button>
 								<!-- <label class="control-label" >运单状态查询:</label>
 								<select id='statusQ' class="small m-wrap"  name="statusQ">
 									<option value="-1">全部</option>
@@ -866,9 +867,13 @@
 			function createTR(obj,index){
 				var tr = '<tr class="odd gradeX">'+
 					//'<td><input type="checkbox" class="checkboxes" value="1" name="checks"/></td>'+
-					'<td><input type="checkbox"></td>'+
-					'<td>'+obj.orderid+'</td>'+
-					'<td>'+''+'</td>'+
+					'<td><input type="checkbox"></td>';
+				if(obj.paid_tag == 0)
+					tr += '<td style="background-color:rgb(182,194,154)">'+obj.orderid+'</td>';
+				else{
+					tr += '<td>'+obj.orderid+'</td>';
+				}
+				tr +='<td>'+''+'</td>'+
 					'<td>'+''+'</td>';
 					//'<td>'+obj.logistic+'</td>';
 				if(obj.status == 0){
@@ -1064,13 +1069,10 @@
 			   					PostAjax('/webOrder/delete',{orderid:cid});
 			   				}
 			   			});
+			   			//当input输入完毕就执行数据库的添加
 			   			$("input.extraInfo").blur(function(){
-							//$("input#username").css("background-color","#D6d6ef");
 							var orderid = $(this).attr("orderid");
 							var extra = $(this).attr("value");
-							//Ajax("/webUser/userCheck",{username:username});
-							console.log("===-----%%%%%",orderid);
-							console.log("===-----",extra);
 							setExtraAjax("/webOrder/extra", {orderid:orderid,extra:extra});
 						});
 			   			/*index  username  gender  email  telephone  score  IDCardNo*/
@@ -1174,8 +1176,60 @@
 			   			alert('查询信息失败');
 			   		}
 		   		});    
-			})//click
-			
+			});//click
+			$("button#batchPay").click(function(e){
+				//var tbody = $(tbody);
+				var trs = $("tbody").find("tr");
+				console.log("tr的数量:",trs.length);
+				var arr = [];
+				//var str ='';
+				for (var i = 0; i < trs.length; i++) {
+					var tr = trs[i];
+					var check = $(tr).find('input')[0];
+					if($(check).attr('checked')){
+						var tds = $(tr).find('td');
+						arr.push($(tds[1]).text());
+					}
+				};
+				var str = arr.join(',');
+				$.ajax({
+			   		type : 'POST',
+			   		url : '/webOrder/paid',
+			   		data : {orderid:str},
+			   		dataType : 'json',
+			   		cache : false,
+			   		success : function(data){
+			   			location.reload();
+			   		},
+			   		error : function(){
+			   			alert('查询信息失败');
+			   		}
+		   		}); 
+				//console.log(arr);
+			});
+			$("input#wholeCheck").click(function(e){
+				if($("#wholeCheck").attr("checked")){
+					console.log("全选");
+					var trs = $("tbody").find("tr");
+					console.log(trs.length);
+					for (var i = 0; i < trs.length; i++) {
+						var tr = trs[i];
+						// var tds = $(tr).find('td');
+						// var checks = $(tds[0]).find('input');
+						// var check = checks[0];
+						var check = $(tr).find('input')[0];
+						if($(check).attr('checked')){
+							$(check).removeAttr("checked");
+						}
+						else{
+							$(check).attr("checked",true);
+						}
+					};
+				}
+				else{
+					console.log("反选");
+				}
+			});
 
 		});
 

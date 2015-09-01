@@ -225,5 +225,12 @@ router.post('/extra',function(req, res, next){
 		return res.json({success:"success"});
 	})
 });
+//批量更改完成打款字段
+router.post('/paid',function(req, res, next){
+	var orderids = req.body.orderid;
+	console.log("####################  orderids  ###################",orderids);
+	return res.json({success:"success"});
+});
+
 
 module.exports = router;
