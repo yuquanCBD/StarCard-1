@@ -4,7 +4,8 @@ var pool = mysql.createPool({
     user: 'root',
     password: '123456',
     database: 'starcard',
-    port: 3306
+    port: 3306,
+    connectionLimit : 50
 });
 
 module.exports = pool;

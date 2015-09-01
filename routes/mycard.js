@@ -15,13 +15,22 @@ router.post('/queryScore', function(req, res, next) {
 	});
 });
 
+router.post('/addCardCollect', function(req, res, next){
+	var userid = req.body.userid;
+	var cardid = req.body.cardid;
+	User.addCardCollect(userid, cardid, function(err, results){
+		if(err)
+			return res.json({error : err});
+		return res.json({success : '卡片收藏成功'});
+	})
+})
+
 
 //收藏卡片查询
 router.post('/queryCollect', function(req, res, next) {
 	var userid = req.body.userid;
 	var offset = req.body.offset;
 	var capacity = req.body.capacity;
-
 	User.queryCollect(userid, offset, capacity,function(err, cards){
 		if(err)
 			return res.json({error : err});
@@ -92,6 +101,29 @@ router.get('/getScoreRule', function(req, res, next){
         return res.json(rule);
     });
 });
+
+//收藏wiki查询
+router.post('/queryWikiCollect', function(req, res, next) {
+	var userid = req.body.userid;
+	var offset = req.body.offset;
+	var capacity = req.body.capacity;
+	User.queryWikiCollect(userid, offset, capacity,function(err, cards){
+		if(err)
+			return res.json({error : err});
+		return res.json(cards);
+	});
+});
+
+//收藏wiki
+router.post('/addWikiCollect', function(req, res, next){
+	var userid = req.body.userid;
+	var wikiid = req.body.wikiid;
+	User.addWikiCollect(userid, wikiid, function(err, results){
+		if(err)
+			return res.json({error : err});
+		return res.json({success : '百科收藏成功'});
+	})
+})
 
 
 

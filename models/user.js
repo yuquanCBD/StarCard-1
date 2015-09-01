@@ -175,6 +175,23 @@ User.queryScore = function(userid, callback){
 	});
 };
 
+//收藏卡片
+User.addCardCollect = function(userid, cardid, callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			callback(err);
+
+		var sql = 'INSERT INTO collect(userid, cardid) VALUES(?, ?)';
+
+		console.log('SQL: '+ sql);
+		conn.query(sql, [userid, cardid], function(err, results){
+			callback(err, results);
+			conn.release();
+		})
+
+	})
+}
+
 
 //查询用户收藏的卡片
 User.queryCollect = function(userid, offset, capacity, callback){
@@ -230,10 +247,9 @@ User.queryMyCard = function(userid, type, offset, capacity, callback){
 //更新用户资料
 User.updateUserInfo = function(userid, username, tel, gender, province, city, district, address, postcode, IDCardNo, files, callback){
 	mysql.getConnection(function(err, conn){
-		if(err){
-			conn.release()
+		if(err)
 			callback(err);
-		}
+		
 		var sql0 = 'SELECT IDCardNo FROM user WHERE userid = "' + userid + '"';
 		var sql1 = 'UPDATE user SET username  = "'+username+'", telephone = "'+tel+'", gender ='+gender+'  WHERE userid = "'+userid+'"';
 		var sql2 = 'UPDATE address SET province  = "'+province+'", city = "'+city+'", district = "'+district+'",'+
@@ -337,6 +353,7 @@ User.queryTradeByUserid = function(userid, callback){
 					}
 					username = rows[0].username;
 					callback(err, in_num, out_num, username);
+					conn.release()
 				});
 			});
 		});
@@ -344,12 +361,13 @@ User.queryTradeByUserid = function(userid, callback){
 };
 
 
+
 User.findUserById = function(userid, callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
 			return callback(err);
 
-		var sql = 'SELECT userid, username, email, create_time, telephone, IDCardNo, score, gender, portrait FROM user WHERE userid = ?';
+		var sql = 'SELECT userid, username, email, create_time, telephone, IDCardNo, score, gender, portrait, sell_cnt, buy_cnt FROM user WHERE userid = ?';
 		conn.query(sql, [userid], function(err, rows){
 			conn.release();
 			callback(err, rows[0]);
@@ -358,4 +376,106 @@ User.findUserById = function(userid, callback){
 	});
 }
 
+
+User.identification = function(userid, files, callback){
+	//存储图片，得到图片的路径信息
+    var filePath = path.join(__dirname, '../public/imgs/identification/');
+
+    if(fs.existsSync(filePath + userid)){//如果存在文件夹，则删除
+        var dirList = fs.readdirSync(filePath + userid);
+        dirList.forEach(function(fileName){
+          fs.unlinkSync(filePath+userid+'/'+fileName);
+        });
+
+    	fs.rmdirSync(filePath + userid);
+    }
+
+    //创建文件夹
+    fs.mkdir(filePath + userid, function(err){
+	    if(err)
+      		return callback(err);
+
+    	var str = '';
+        for (var i  in files.imgs) {
+	        if(i > 1) break; //最多2张
+	        var file = files.imgs[i];
+	        if(file.originalFilename.length == 0) break; //没有上传图片
+	        
+	        var types = file.originalFilename.split('.');
+	        var p = "imgs/identification/"+userid+'/'+i+'.'+String(types[types.length-1]);
+	        if(str === ""){
+	          str += p;
+	        }
+	        else{
+	          str += (','+p);
+	        }
+	        fs.renameSync(file.path, filePath+userid+'/'+i+'.'+String(types[types.length-1]));
+    	}//for end
+    	console.log('身份证照片上传成功');
+
+		mysql.getConnection(function(err, conn){
+			if(err)
+				return callback(err);
+
+			var sql = 'UPDATE user SET identificated = 1 WHERE userid = ?';
+			console.log(sql, userid);
+			conn.query(sql, [userid], function(err, results){
+				conn.release();
+				callback(err, results);
+			});
+
+		})//sql end
+
+    })
+
+}
+
+
+//收藏wiki查询
+User.queryWikiCollect = function(userid, offset, capacity, callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			callback(err);
+
+		var sql = 'SELECT a.wikiid, a.wikiname, a.english_name, a.category, a.manufacturer, a.series, a.serial_number, a.rarity,'
+				+'a.describes, a.price, a.contributor, a.picture, a.brand, a.islock FROM wiki a '
+				+'LEFT JOIN wiki_collect b ON a.wikiid = b.wikiid where b.userid = ? ';
+
+       	offset = parseInt(offset) * parseInt(capacity);
+        sql += 'LIMIT ' + offset + ', ' + capacity;  //分页查询
+
+		console.log('SQL: '+ sql);
+		conn.query(sql, [userid], function(err, rows){
+			callback(err,rows);
+			conn.release();
+		})
+	})
+}
+
+
+//收藏wiki查询
+User.addWikiCollect = function(userid, wikiid, callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			callback(err);
+
+		var sql = 'INSERT INTO wiki_collect(userid, wikiid) VALUES(?, ?)';
+
+		console.log('SQL: '+ sql);
+		conn.query(sql, [userid, wikiid], function(err, results){
+			callback(err, results);
+			conn.release();
+		})
+	})
+}
+
+
 module.exports = User;
+
+
+
+
+
+
+
+

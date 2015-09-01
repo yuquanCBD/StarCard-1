@@ -148,7 +148,7 @@ Card.searchByCond = function(cond, category, brand, offset, capacity, order, lon
         var flag1 = false;
         var flag2 = false;
 
-		var sql = 'SELECT cardid, title, pictures, describes, price, logistic, category, brand, freight, exchange, owner, amount, time, longitude, latitude FROM card ';
+		var sql = 'SELECT cardid, title, pictures, describes, price, logistic, category, brand, freight, exchange, owner, ownername, amount, time, longitude, latitude FROM card ';
         if (cond) {
             sql += ' WHERE (title = "'+ cond +'" OR brand = "'+cond+'") ';
             flag1 = true;

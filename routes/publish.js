@@ -198,6 +198,7 @@ function addInfo(fields, files, res){
   var longitude = fields.longitude[0];
   var latitude = fields.latitude[0];
   var owner = fields.owner[0];
+  var ownername = fields.ownername[0];
   //存储图片，得到图片的路径信息
   var filePath = path.join(__dirname, '../public/imgs/card/');
   fs.mkdir(filePath+uId, function(err){
@@ -225,8 +226,8 @@ function addInfo(fields, files, res){
       console.log('图片信息添加成功');
       console.log(str);
       //将路径和卡片信息存入数据库
-      var sql = 'insert into card(cardid, title, describes, price, logistic, category, brand, freight, exchange, owner, amount, pictures, longitude, latitude) values';
-      sql = sql + '("'+uId+'","'+title+'","'+describes+'","'+price+'","'+logistic+'","'+category+'","'+brand+'","'+freight+'","'+exchange+'","'+owner+'","'+amount+'","'+str+'","'+longitude+'","'+latitude+'")';
+      var sql = 'insert into card(cardid, title, describes, price, logistic, category, brand, freight, exchange, owner, amount, pictures, longitude, latitude, ownername) values';
+      sql = sql + '("'+uId+'","'+title+'","'+describes+'","'+price+'","'+logistic+'","'+category+'","'+brand+'","'+freight+'","'+exchange+'","'+owner+'","'+amount+'","'+str+'","'+longitude+'","'+latitude+'", "'+ ownername +'")';
       console.log(sql);
       Card.add(sql, function(err, user){
         if(err){

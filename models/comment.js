@@ -7,7 +7,55 @@ function Comment(comment){
 	this.userid = comment.userid;
 	this.commentto = comment.commentto;
 	this.content = comment.content;
-};
+}
+
+
+//发表评论
+Comment.addComment = function(cardid, userid, commentto, content, username, user_pic, to_username, callback){
+	mysql.getConnection(function(err, conn){
+		var sql = 'insert into card_comment(cardid, userid, commentto, content, username, user_pic, to_username) values' + 
+            '(?, ?, ?, ?, ?, ?, ?)';
+
+        conn.query(sql, [cardid, userid, commentto, content, username, user_pic, to_username], function(err, results){
+        	if(err){
+        		conn.release();
+        		return callback(err);
+        	}
+			var comment_id = results.insertId;
+
+			callback(err, results);
+			if(comment_id != null && comment_id != '') return;
+
+			//查询评论卡片的卖家
+			var sql = 'SELECT owner From card a left join card_comment b on a.cardid = b.cardid where b.commentid = ?';
+			conn.query(sql, [comment_id], function(err, rows){
+				conn.release();
+				if(rows.length == 0)
+					return;
+				var seller = rows[0].owner;
+				//生成买家的一条消息 
+				if(comment_id != null && comment_id != '')
+					Message.insertNewMsg(owner, comment_id, 1, function(err, results){}); // 生成对卖家的一条信息
+			})
+
+        })    
+    })
+
+}
+//
+Comment.showCardComments = function(cardid, callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			return callback(err);
+
+		var sql = 'SELECT * FROM card_comment WHERE cardid = ?';
+		conn.query(sql, [cardid], function(err, rows){
+			conn.release();
+			callback(err, rows);
+		});
+
+	})
+}
 
 Comment.execSql = function(sql, callback){
 	mysql.getConnection(function(err, conn){
