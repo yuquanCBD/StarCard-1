@@ -158,6 +158,23 @@ User.exec = function(sql, callback){
 		})
 	})
 };
+//根据用户id更新禁言状态
+User.updateShutup = function(userid, shutup, callback){
+	mysql.getConnection(function(err, conn){
+		if(err){
+			console.log("POOL: ==> " + err);
+			return callback(err);
+		}
+		var sql = 'update user set shutup="'+ shutup +'" where userid="'+userid+'"';
+		conn.query(sql, function(err, rows){
+			if(err){
+				return callback(err, null);
+			}
+			conn.release();
+			return callback(err, rows);
+		});
+	});
+};
 /*
 ----------------------------------------我的卡圈 start --------------------------------------------
 */

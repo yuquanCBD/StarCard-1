@@ -61,5 +61,23 @@ Comment.showCardComments = function(cardid, callback){
 	})
 }
 
+//删除评论信息
+Comment.delcomment = function(commentid, callback){
+	mysql.getConnection(function(err, conn){
+		if(err){
+			return callback(err);
+		}
+		var sql = 'delete from card_comment where commentid = "'+commentid+'"';
+		conn.query(sql, function(err, r){
+			if(err){
+				conn.release();
+				return callback(err);
+			}
+			conn.release();
+			return callback(err, r);
+		})
+	})
+}
+
 
 module.exports = Comment;

@@ -356,6 +356,7 @@
 											<th class="hidden-100">详情</th>
 											<th class="hidden-480">删除</th>
 											<th class="hidden-480">修改</th>
+											<th class="hidden-480">查看评论</th>
 										</tr>
 
 									</thead>
@@ -1002,7 +1003,7 @@
 					'<td><button cardId="'+obj.cardid+'" owner="'+obj.owner+'" pictures="'+obj.pictures+'" describes="'+obj.describes+'" class="detailsButton">详情</button></td>'+
 					'<td><button cardId="'+obj.cardid+'" class="deleteButton">删除</button></td>'+
 					'<td><button cardId="'+obj.cardid+'" owner="'+obj.owner+'" pictures="'+obj.pictures+'" describes="'+obj.describes+'" class="updateButton">修改</button></td>'+
-					//'<td><button cardId="'+obj.cardid+'"class="updateButton">修改</button></td>'+
+					'<td><button cardId="'+obj.cardid+'" class="queryComment">查看评论</button></td>'+
 					//'<td><a href="StarCardAdd.html?hsjsh">ceshi</a></td>'
 					//'<td><button cardId="'+obj.cardid+'" class="updateButton">修改</button></td>'+
 
@@ -1170,6 +1171,12 @@
 			   					PostAjax('delete',{cardid:cid});
 			   				}
 			   			});
+			   			$("button.queryComment").click(function(e){
+			   				if(confirm('是否查看评论?')){
+			   					var cardid = $(this).attr("cardId");
+			   					window.location.href = "/admin/queryComment?cardid="+cardid;
+			   				}
+			   			})
 			   			$("button.updateButton").click(function(e){
 			   				if(confirm('是否需要修改卡信息?')){
 			   					var cardid = $(e.target).attr("cardId");
