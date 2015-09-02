@@ -5,6 +5,8 @@ var queue = require('../struct/queue');
 var async = require('async');
 var pay 		= require('../pingpp/pay'); //ping＋＋支付接口
 
+var BUYER_TAG = -1;
+var SELLER_TAG = 1;
 
 
 function Order(){}
@@ -39,7 +41,7 @@ Order.checkOrder = function(cardid, cardnum, seller, buyer, card_price, logistic
 				callback(err, orderid);
 				conn.release();
 				//生成卖家的一条消息 
-				Message.insertNewMsg(seller, orderid, 2, card_name, card_desc, card_pic, cardid, function(err, results){});
+				Message.insertOrderMsg(seller, orderid, 2, card_name, card_desc, card_pic, cardid, SELLER_TAG, 0, function(err, results){});
 			});
         });
 
@@ -89,7 +91,7 @@ Order.payOrderSuccess = function(orderid, transaction_no, callback){
 			var card_pic = rows[0].card_pic;
 			var cardid = rows[0].cardid;
 			//生成卖家的一条消息 
-			Message.insertNewMsg(seller, orderid, 2, card_name, card_desc, card_pic, cardid, function(err, results){if(err) console.log(err);});
+			Message.insertOrderMsg(seller, orderid, 2, card_name, card_desc, card_pic, cardid, SELLER_TAG, 1, function(err, results){if(err) console.log(err);});
 		});
 
     });
@@ -132,7 +134,7 @@ Order.deliverOrder = function(orderid, logistic, logistic_no, logistic_code, cal
 				var card_pic = rows[0].card_pic;
 				var cardid = rows[0].cardid;
 				//生成卖家的一条消息 
-				Message.insertNewMsg(buyer, orderid, 2, card_name, card_desc, card_pic, cardid, function(err, results){if(err) console.log(err);});
+				Message.insertOrderMsg(buyer, orderid, 2, card_name, card_desc, card_pic, cardid, BUYER_TAG, 2, function(err, results){if(err) console.log(err);});
 
 				queue.push(new Order(orderid, seller, buyer, receive_time));//向自动收货队列中插入一条数据
 
@@ -180,8 +182,8 @@ Order.receiveOrder = function(orderid, seller, buyer, callback){
 						var card_pic = rows[0].card_pic;
 						var cardid = rows[0].cardid;
 						//生成对买家和卖家的消息
-						Message.insertNewMsg(buyer, orderid, 2, card_name, card_desc, card_pic, cardid, function(err, results){if(err) console.log(err);});
-						Message.insertNewMsg(seller, orderid, 2, card_name, card_desc, card_pic, cardid, function(err, results){if(err) console.log(err);});
+						Message.insertOrderMsg(buyer, orderid, 2, card_name, card_desc, card_pic, cardid, BUYER_TAG, 3, function(err, results){if(err) console.log(err);});
+						Message.insertOrderMsg(seller, orderid, 2, card_name, card_desc, card_pic, cardid, SELLER_TAG, 3, function(err, results){if(err) console.log(err);});
 					});
 
 
@@ -223,7 +225,7 @@ Order.prolongOrder = function(orderid, callback){
 				var cardid = rows[0].cardid;
 
 				//生成卖家的一条消息 
-				Message.insertNewMsg(seller, orderid, 2, card_name, card_desc, card_pic, cardid, function(err, results){if(err) console.log(err);});
+				Message.insertOrderMsg(seller, orderid, 2, card_name, card_desc, card_pic, cardid, SELLER_TAG, 2, function(err, results){if(err) console.log(err);});
 			
 				queue.refresh(new Order(orderid, seller, buyer, receive_time)); //更新自动收货队列
 
@@ -257,7 +259,7 @@ Order.cancleOrder = function(orderid, callback){
 				var card_pic = rows[0].card_pic;
 				var cardid = rows[0].cardid;
 				//生成卖家的一条消息 
-				Message.insertNewMsg(seller, orderid, 2, card_name, card_desc, card_pic, cardid, function(err, results){if(err) console.log(err);});
+				Message.insertOrderMsg(seller, orderid, 2, card_name, card_desc, card_pic, cardid, SELLER_TAG, -1, function(err, results){if(err) console.log(err);});
 			});
 			
         });

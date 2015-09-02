@@ -367,7 +367,7 @@ User.findUserById = function(userid, callback){
 		if(err)
 			return callback(err);
 
-		var sql = 'SELECT userid, username, email, create_time, telephone, IDCardNo, score, gender, portrait, sell_cnt, buy_cnt FROM user WHERE userid = ?';
+		var sql = 'SELECT userid, username, email, create_time, telephone, IDCardNo, score, gender, portrait, sell_cnt, buy_cnt, identificated, shutup FROM user WHERE userid = ?';
 		conn.query(sql, [userid], function(err, rows){
 			conn.release();
 			callback(err, rows[0]);
