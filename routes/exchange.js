@@ -90,11 +90,12 @@ router.post('/changeStatus',function(req, res, next){
     var card_pic = req.body.card_pic;
     var card_name = req.body.card_name;
     var card_desc = req.body.card_desc;
+    var scardid = req.body.scardid;
 
   	if(status != -1 && status != 1)
   		  status = 0;
   	
-    Exchange.changeStatus(id, status, refuseInfo, buserid, card_pic, card_name, card_desc, function(err, results){
+    Exchange.changeStatus(id, status, refuseInfo, buserid, card_pic, card_name, card_desc, scardid, function(err, results){
         if(err)
             res.json({error : err});
         res.json({success : '换卡申请处理成功'});

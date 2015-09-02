@@ -38,7 +38,7 @@ Comment.addComment = function(cardid, userid, commentto, content, username, user
 				var describes = rows[0].describes;
 				var pictures = rows[0].pictures;
 				//生成买家的一条消息 
-				Message.insertNewMsg(seller, comment_id, 1, title, describes, pictures, function(err, results){ if(err) console.log(err);}); // 生成对卖家的一条信息
+				Message.insertNewMsg(seller, comment_id, 1, title, describes, pictures, cardid, function(err, results){ if(err) console.log(err);}); // 生成对卖家的一条信息
 			})
 
         })    
@@ -61,5 +61,28 @@ Comment.showCardComments = function(cardid, callback){
 	})
 }
 
+//根据评论编号拉去评论详情
+Comment.getCommentByCid = function(cid, callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			return callback(err);
+
+		var sql = 'SELECT cardid, userid, commentto, content, username, user_pic, to_username, ctime FROM card_comment WHERE commentid = ?';
+		console.log(sql);
+		conn.query(sql, [cid], function(err, rows){
+			conn.release();
+			callback(err, rows);
+		});
+
+	})
+}
+
 
 module.exports = Comment;
+
+
+
+
+
+
+

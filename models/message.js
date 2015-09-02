@@ -32,14 +32,14 @@ Message.markRead = function(msg_id, callback){
 };
 
 //msg :1. 评论消息 2. 订单消息 3. 系统消息， 4. 换卡消息
-Message.insertNewMsg = function(userid, event_id, msg_type, title, description, card_pic, callback){
+Message.insertNewMsg = function(userid, event_id, msg_type, title, description, card_pic, cardid, callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
 			callback(err);
-		console.log('--------------insertNewMsg', userid, event_id, msg_type, title, description, card_pic);
-		var sql = 'INSERT INTO message (userid, event_id, msg_type, title, description, card_pic) VALUES(?, ?, ?, ?, ?, ?)';
+		console.log('--------------insertNewMsg', userid, event_id, msg_type, title, description, card_pic, cardid);
+		var sql = 'INSERT INTO message (userid, event_id, msg_type, title, description, card_pic, cardid) VALUES(?, ?, ?, ?, ?, ?, ?)';
 
-		conn.query(sql, [userid, event_id, msg_type, title, description, card_pic], function(err, results){
+		conn.query(sql, [userid, event_id, msg_type, title, description, card_pic, cardid], function(err, results){
 			callback(err, results);
 			conn.release();
 		});
@@ -52,7 +52,7 @@ Message.showAllMessages = function(userid, callback){
 		if(err)
 			callback(err);
 
-		var sql = 'SELECT msg_id, event_id, status, time, msg_type, title, description, card_pic FROM message WHERE userid = "' + userid + '" ORDER BY time DESC';
+		var sql = 'SELECT msg_id, event_id, status, time, msg_type, title, description, card_pic, cardid FROM message WHERE userid = "' + userid + '" ORDER BY time DESC';
 		conn.query(sql,function(err, rows){
 			callback(err, rows);
 			conn.release();
