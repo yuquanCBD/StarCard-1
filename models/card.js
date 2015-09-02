@@ -56,24 +56,20 @@ Card.prototype.save = function(callback){
         	callback(err,res);
 		});
 	});
-};
+}
+
 Card.add = function(sql, callback){
 	mysql.getConnection(function(err, conn){
-		if(err){
-			console.log("POOL ==>" + err);
+		if(err)
 			callback(err);
-		};
 
 		conn.query(sql, function(err, res){
-			if(err){
-				console.log(err);
-				callback(err);
-			}
 			conn.release();
 			callback(err, res);
 		})
 	})
-};
+}
+
 Card.query = function(callback){
 	mysql.getConnection(function(err, conn){
 		if (err) 

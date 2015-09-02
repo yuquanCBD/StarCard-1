@@ -66,7 +66,6 @@ app.use(session({
 
 //获取状态
 app.use(function(req,res,next){
-    console.log('%s', new Date());
     var error = req.flash('error');
     res.locals.error = error.length?error:null;
 

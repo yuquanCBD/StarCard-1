@@ -44,15 +44,19 @@ router.get('/',function(req,res,next){
     res.writeHead(200, {"Content-Type": "text/html"}); 
     res.write(body); 
     res.end();
-});
+})
+
+
 //买家添加交互卡片信息
 router.post('/',function(req,res,next){
 	//存储卡片照片，依据cardid在public/imgs/card目录下创建同名目录，图片存储在此目录中
 	var form = new multiparty.Form();
 	form.parse(req, function(err, fields, files){
 		addInfo(fields, files, res);
-	});
-});
+	})
+})
+
+
 //买家通过自己的用户id找到交换自己对应的交换纪录,这接口用于消息模块
 router.get('/buyer',function(req, res, next){
 	var buserid = req.query.userid;
@@ -66,7 +70,8 @@ router.get('/buyer',function(req, res, next){
 		}
 	});
 
-});
+})
+
 //卖家通过自己的用户id找到交换自己对应的交换纪录,这接口用于消息模块
 router.get('/seller',function(req, res, next){
 	var suserid = req.query.userid;
@@ -80,7 +85,8 @@ router.get('/seller',function(req, res, next){
 		}
 	});
 
-});
+})
+
 //卖家通过换卡记录id可以修改状态，status＝0表示未处理，1表示同意，－1表示回绝
 router.post('/changeStatus',function(req, res, next){
   	var id = req.body.id; //交换纪录的id
@@ -140,18 +146,32 @@ function addInfo(fields, files, res){
           fs.renameSync(file.path, filePath+uId+'/'+i+'.'+String(types[types.length-1]));
       }
 
-      console.log('图片信息添加成功');
+      console.log('图片信息添加成功', str);
       //将路径和卡片信息存入数据库
 
       Exchange.addExchange(uId, buserid, scardid, suserid, describes, card_pic, card_name, card_desc, str,function(err, results){
           if(err)
-              res.json({error : err});
-          res.json({success : '交换申请提交成功'});
+              return res.json({error : err});
+          return res.json({success : '交换申请提交成功'});
       })
 
 
   });
 }
 
+//根据id查询换卡申请详情
+router.get('getExchangeInfoById', function(req, res, next){
+    var id = req.query.id;
+
+    Exchange.getExchangeInfoById(id, function(err, rows){
+        if(err)
+          return res.json({error : err});
+        if(rows.length == 0)
+          return res.json(null);
+        else
+          return res.json(rows);
+    })
+
+})
 
 module.exports = router;
