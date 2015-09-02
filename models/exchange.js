@@ -31,13 +31,13 @@ Exchange.addExchange = function(id, buserid, scardid, suserid, describes, card_p
 				return callback(err);
 
 			callback(err, results);
-			Message.insertNewMsg(suserid, id, 2, card_name, card_desc, card_pic, function(err, results){if(err) console.log(err)});
+			Message.insertNewMsg(suserid, id, 2, card_name, card_desc, card_pic, scardid, function(err, results){if(err) console.log(err)});
 		})
 	})
 }
 
 //处理换卡请求
-Exchange.changeStatus = function(id, status, refuseInfo, buserid, card_pic, card_name, card_desc, callback){
+Exchange.changeStatus = function(id, status, refuseInfo, buserid, card_pic, card_name, card_desc, scardid, callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
 			callback(err);
@@ -49,7 +49,7 @@ Exchange.changeStatus = function(id, status, refuseInfo, buserid, card_pic, card
 				return callback(err);
 
 			callback(err, results);
-			Message.insertNewMsg(buserid, id, 2, card_name, card_desc, card_pic, function(err, results){ if(err) console.log(err)});
+			Message.insertNewMsg(buserid, id, 2, card_name, card_desc, card_pic, scardid, function(err, results){ if(err) console.log(err)});
 		})
 	})
 

@@ -153,6 +153,19 @@ router.post('/queryOrderList', function(req, res, next){
 	});
 });
 
+//通过订单号查询订单详情
+router.post('/queryOrderByOrderid', function(req, res, next){
+	var orderid = req.body.orderid;
+
+	Order.queryOrderByOrderid(orderid, function(err, rows){
+        if(err)
+            return res.json({error : err});
+        if(rows.length == 0)
+            return res.json(null);
+        else
+            return res.json(rows[0]);
+	})
+})
 
 module.exports = router;
 

@@ -64,5 +64,19 @@ router.get('/getComment',function(req,res,next){
     })
 })
 
+//根据评论编号拉去评论详情
+router.post('/getCommentByCid', function(req, res, next){
+    var cid = req.body.cid;
+
+    Comment.getCommentByCid(cid, function(err, rows){
+        if(err)
+            return res.json({error : err});
+        if(rows.length == 0)
+            return res.json(null);
+        else
+            return res.json(rows[0]);
+    })
+
+})
 
 module.exports = router;
