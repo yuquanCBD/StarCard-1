@@ -14,7 +14,8 @@ var APPKEY = '02lp0im7ud7BWPVVvdmtR7';
 var MASTERSECRET = 'UiNeSu2Jti5wMAeU516iw8';
 var CID = '289cf3a73ee6e37e456faa4582e96b2e';
 var CID2 = '3e170b169630706f82baf94c8a2b8923';
-var DEVICETOKEN = '21a95fe90f39cff4a135e96f86955ee7fe0fe4c2be10a055c76da1e395c072be';
+//var DEVICETOKEN = '21a95fe90f39cff4a135e96f86955ee7fe0fe4c2be10a055c76da1e395c072be';
+var DEVICETOKEN = '455806063838d010aa6298fe988111b3e3ccbdf5e6a81ac5f08679bc924b15b8';
 var gt = new GeTui(HOST, APPKEY, MASTERSECRET);
 
 
@@ -66,7 +67,6 @@ function pushAPN(title, body, device_token) {
    alertMsg.title = title;
    alertMsg.titleLocKey = "dddddd";
    alertMsg.titleLocArgs = Array("");
-   alertMsg.message_id = '我是消息id';
 
    payload.alertMsg=alertMsg;
    payload.badge=5;
@@ -78,7 +78,7 @@ function pushAPN(title, body, device_token) {
 
     var message = new SingleMessage();
     message.setData(template);
-    gt.pushAPNMessageToSingle(APPID, device_token || DEVICETOKEN, message, function (err, res) {
+        gt.pushAPNMessageToSingle(APPID, device_token || DEVICETOKEN, message, function (err, res) {
         console.log(res);
         //process.exit(0);
     });

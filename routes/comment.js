@@ -46,9 +46,11 @@ router.post('/addComment',function(req,res,next){
     var user_pic = req.body.user_pic;//评论人的头像路径
     var to_username = req.body.to_username;//被评论人的名字
 
+    console.log(cardid, userid, commentto, content, username, user_pic, to_username);
+
     Comment.addComment(cardid, userid, commentto, content, username, user_pic, to_username, function(err, results){
         if(err)
-          return res.json({error:"评论失败"});
+          return res.json({error: err});
         
         return res.json({success:'评论成功'});
     })

@@ -18,13 +18,14 @@ Comment.addComment = function(cardid, userid, commentto, content, username, user
             '(?, ?, ?, ?, ?, ?, ?)';
 
         console.log(sql);
+        console.log(cardid, userid, commentto, content, username, user_pic, to_username);
         conn.query(sql, [cardid, userid, commentto, content, username, user_pic, to_username], function(err, results){
         	if(err){
         		conn.release();
         		return callback(err);
         	}
 			var comment_id = results.insertId;
-
+			console.log('----------------', comment_id);
 			callback(err, results);
 			if(comment_id == null || comment_id == '') return;
 
