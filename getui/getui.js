@@ -18,7 +18,7 @@ var DEVICETOKEN = '21a95fe90f39cff4a135e96f86955ee7fe0fe4c2be10a055c76da1e395c07
 var gt = new GeTui(HOST, APPKEY, MASTERSECRET);
 
 
-function pushAPNMessageToList(title, body, device_tokens) {
+function pushAPNMessageToList(title, body, extra, device_tokens) {
    var template = new APNTemplate();
    var payload = new APNPayload();
    var alertMsg = new DictionaryAlertMsg();
@@ -31,7 +31,7 @@ function pushAPNMessageToList(title, body, device_tokens) {
    alertMsg.title = title;
    alertMsg.titleLocKey = "dddddd";
    alertMsg.titleLocArgs = Array("");
-   alertMsg.message_id = '我是消息id';
+   alertMsg.extra = extra;
 
     payload.alertMsg=alertMsg;
     payload.badge=5;
@@ -83,13 +83,15 @@ function pushAPN(title, body, device_token) {
     });
 }
 
+//单推接口
 exports.push = function(title, body, device_token){
     gt.connect(function () {
         pushAPN(title, body);
     })
 }
 
-exports.pushToList = function(title, body, device_tokens){
+//群推接口device_tokens 是数组, extra为json对象
+exports.pushToList = function(title, body, extra, device_tokens){
     gt.connect(function () {
         pushAPNMessageToList(title, body, device_tokens)
     })
