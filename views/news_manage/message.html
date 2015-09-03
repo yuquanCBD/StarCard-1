@@ -241,7 +241,7 @@
 
 				</li>
 
-				<li class="active">
+				<li class="">
 
 					<a href="javascript:;">
 
@@ -256,7 +256,7 @@
 					</a>
 
 					<ul class="sub-menu">
-						<li class="active">
+						<li class="">
 							<a href="/webWiki/add">新闻增加</a>
 						</li>
 						<li>
@@ -265,6 +265,28 @@
 					</ul>
 
 				</li>
+				<li class="active">
+
+					<a href="javascript:;">
+
+						<i class="icon-table"></i> 
+
+						<span class="title">消息推送</span>
+
+						<!-- <span class="selected"></span> -->
+
+						<span class="arrow open"></span>
+
+					</a>
+
+					<ul class="sub-menu">
+						<li class="active">
+							<a href="/webNews/message">消息推送</a>
+						</li>
+					</ul>
+
+				</li>
+
 
 			</ul>
 
@@ -379,7 +401,7 @@
 
 													<div class="controls">
 
-														<textarea name="content" class="large m-wrap" rows="3"></textarea>
+														<textarea id="content" name="content" class="large m-wrap" rows="3"></textarea>
 
 													</div>
 
@@ -517,8 +539,8 @@
 		jQuery(document).ready(function() {   
 		   $('#messageAdd').click(function(e){
 		   		var title = $("input#title").val();
-		   		var content = $("#content").attr("value");
-		   		alert(title,'    ,     'content);
+		   		var content = $("#content").val();
+		   		alert(title+'    ,     '+content);
 		   		if(confirm('是否需要添加？')){
 		   			return true;
 		   		}

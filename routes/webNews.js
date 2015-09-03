@@ -85,18 +85,21 @@ router.post("/uploadImg", function(req, res, next){
 router.get("/message", function(req, res, next){
 	return res.render("news_manage/message.html");
 })
-router.post("message",function(req, res, next){
+router.post("/message",function(req, res, next){
 	var title = req.body.title;
 	var content = req.body.content;
 	console.log("#######content:",content,'   $$$$$$$$$$title:',title);
 	User.getDevice_token(function(err, rows){
-		console.log(rows);
+		
+		var device = [];
+		for (var i = 0; i < rows.length; i++) {
+			device.push(rows[i].device_token);
+		};
+		console.log(device);
+		getui.pushToList(title, content, device);
 		return res.render("news_manage/message.html");
 	})
-	//getui.pushToList('title', 'body');
-
-	
-})
+});
 
 
 
