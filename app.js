@@ -29,6 +29,7 @@ var webUser_route = require('./routes/webUser');        //web用户以及管理�
 var admin_route = require('./routes/admin');            //web卡片管理
 var webOrder_route = require('./routes/webOrder');      //web订单管理
 var webWiki_route = require('./routes/webWiki');        //wiki信息管理
+var webNews_route = require('./routes/webNews');        //news信息管理
 
 var message_route = require('./routes/message');        //消息路由
 var pingpp_route = require('./routes/pingpp');          //支付webhooks路由
@@ -98,6 +99,7 @@ app.use('/webOrder', webOrder_route);
 app.use('/webWiki', webWiki_route);
 app.use('/pingpp', pingpp_route);
 app.use('/usercenter', userCenter_route);
+app.use('/webNews',webNews_route);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -12,7 +12,7 @@
 
 	<meta charset="utf-8" />
 
-	<title>球星卡后台管理</title>
+	<title>新闻添加</title>
 
 	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
@@ -62,7 +62,7 @@
 
 				<!-- BEGIN LOGO -->
 
-				<a class="brand" href="index.html">
+				<a class="brand" href="query">
 
 				<img src="media/image/logo.png" alt="logo" />
 
@@ -100,6 +100,8 @@
 
 			<!-- BEGIN SIDEBAR MENU -->        
 
+			
+			
 			<ul class="page-sidebar-menu">
 				<li class="">
 
@@ -238,7 +240,8 @@
 					</ul>
 
 				</li>
-				<li class="">
+
+				<li class="active">
 
 					<a href="javascript:;">
 
@@ -253,8 +256,8 @@
 					</a>
 
 					<ul class="sub-menu">
-						<li>
-							<a href="/webNews/add">新闻增加</a>
+						<li class="active">
+							<a href="/webWiki/add">新闻增加</a>
 						</li>
 						<li>
 							<a href="/webWiki/query">新闻查询、删除、修改</a>
@@ -299,7 +302,154 @@
 
 			<!-- BEGIN PAGE CONTAINER-->
 
-			<div class="container-fluid">       
+			<div class="container-fluid">
+
+				<!-- BEGIN PAGE HEADER-->   
+
+				<div class="row-fluid">
+
+					<div class="span12">
+
+						
+						<h3 class="page-title">
+
+							新闻信息添加
+						</h3>
+
+					</div>
+
+				</div>
+
+				<!-- END PAGE HEADER-->
+
+				<!-- BEGIN PAGE CONTENT-->
+
+				<div class="row-fluid">
+
+					<div class="span12">
+
+						<!-- BEGIN SAMPLE FORM PORTLET-->   
+
+						<div class="portlet box blue tabbable">
+
+							<div class="portlet-title">
+
+								<div class="caption">
+
+									<i class="icon-reorder"></i>
+
+									<span class="hidden-480">信息添加</span>
+
+								</div>
+
+							</div>
+
+							<div class="portlet-body form">
+
+								<div class="tabbable portlet-tabs">
+
+									<ul class="nav nav-tabs">
+
+										<li><a href="">信息添加</a></li>
+
+									</ul>
+
+									<div class="tab-content">
+
+										<div class="tab-pane active" id="portlet_tab1">
+
+											<!-- BEGIN FORM-->
+
+											<form action="/webNews/add" enctype="multipart/form-data" method="post" class="form-horizontal">
+
+												<div class="control-group">
+
+													<label class="control-label" >标题:</label>
+
+													<div class="controls">
+
+														<input id="title" type="text" class="m-wrap meduium" name="title" />
+
+													</div>
+
+												</div>
+
+												<div class="control-group">
+
+													<label class="control-label">新闻来源:</label>
+
+													<div class="controls">
+
+														<input id="source" type="text"  class="m-wrap medium" name="source" />
+														
+														<!-- <span class="help-inline">Some hint here</span> -->
+
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label">新闻发表时间:</label>
+
+													<div class="controls">
+
+														<input id="create_time" type="text"  class="m-wrap medium" name="create_time" />
+														
+														<span class="help-inline">("2015-09-01 09:20:17" 或者 "2015-09-01 09:20")</span>
+
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label">新闻正文</label>
+
+													<div class="controls">
+
+														<textarea name="describes" class="large m-wrap" rows="3" placeholder="少于50字"></textarea>
+
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label">新闻图片:</label>
+
+													<div class="controls">
+														<input class="medium m-wrap" type="file" name="imgs" multiple="multiple">
+														<!-- <span class="help-inline">(最多一张)</span> -->
+													</div>
+
+												</div>
+
+												<div class="form-actions">
+
+													<button id='userAdd' type="submit" class="btn blue"><i class="icon-ok"></i> 新闻信息添加</button>
+
+													<!-- <button type="button" class="btn">取消</button> -->
+												</div>
+
+											</form>
+
+											<!-- END FORM-->  
+
+										</div>
+
+									</div>
+
+								</div>
+
+							</div>
+
+						</div>
+
+						<!-- END SAMPLE FORM PORTLET-->
+
+					</div>
+
+				</div>
+
+				<!-- END PAGE CONTENT-->         
 
 			</div>
 
@@ -372,10 +522,67 @@
 	<script src="media/js/app.js"></script>     
 
 	<script>
-
+		
 		jQuery(document).ready(function() {   
-
+			function Ajax(url, obj){
+				console.log(url);
+				console.log(obj);
+				$.ajax({
+			   		type : 'POST',
+			   		url : url,
+			   		data : obj,
+			   		dataType : 'json',
+			   		cache : false,
+			   		success : function(data){
+			   			console.log(data);
+			   			if(data.success === true){
+			   				$("#usernameCheck").text(obj.username+"已经存在");
+			   				$("input#username").attr("flag",1);
+			   			}
+			   			if(data.error !== undefined){
+			   				$("#usernameCheck").text(data.error);
+			   				$("input#username").attr("flag",2);
+			   			}
+			   			if(data.success === false && data.error === undefined)
+			   			{
+			   				$("#usernameCheck").text("");
+			   				$("input#username").attr("flag",0); //flag为0表示可以插入数据库
+			   			}
+			   			
+			   		},
+			   		error : function(){
+			   			alert('检查用户名信息失败');
+			   		}
+		   		});
+			};
 		   // initiate layout and plugins
+		   $('#userAdd').click(function(e){
+		   		var password1 = $('input#password1').attr("value");
+		   		var password2 = $('input#password2').attr("value");
+		   		var IDCardNo = $("input#cardNo").attr("value");
+		   		if(password1 !== password2 && password1 !== ""){
+		   			alert("密码输入不一致");
+		   			$('input#password1').attr("value","");
+		   			$('input#password2').attr("value","");
+		   			return false;
+		   		}
+		   		if(IDCardNo.length !== 4){
+		   			alert("身份证信息格式错误");
+		   			$("input#cardNo").attr("value","");
+		   			return false;
+		   		}
+		   		var flag = $("input#username").attr("flag");
+		   		if(flag != 0){
+		   			alert("用户名验证失败 请稍候再试");
+		   			return false;
+		   		}
+		   		if(confirm('是否需要添加？')){
+		   			return true;
+		   		}
+		   		else{
+		   			return false;
+		   		}
+		   })
 
 		   App.init();
 
