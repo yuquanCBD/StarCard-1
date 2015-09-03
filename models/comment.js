@@ -1,5 +1,6 @@
 var mysql = require('./mysql');
 var Message = require('./message')
+var getui = require('../models/comment');
 
 
 function Comment(comment){
@@ -16,6 +17,7 @@ Comment.addComment = function(cardid, userid, commentto, content, username, user
 		var sql = 'insert into card_comment(cardid, userid, commentto, content, username, user_pic, to_username) values' + 
             '(?, ?, ?, ?, ?, ?, ?)';
 
+        console.log(sql);
         conn.query(sql, [cardid, userid, commentto, content, username, user_pic, to_username], function(err, results){
         	if(err){
         		conn.release();
@@ -38,6 +40,7 @@ Comment.addComment = function(cardid, userid, commentto, content, username, user
 				var describes = rows[0].describes;
 				var pictures = rows[0].pictures;
 				//生成买家的一条消息 
+				getui.push('评论消息', '有人对您发布的卡片发表了评论～');
 				Message.insertNewMsg(seller, comment_id, 1, title, describes, pictures, cardid, function(err, results){ if(err) console.log(err);}); // 生成对卖家的一条信息
 			})
 

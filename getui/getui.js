@@ -17,18 +17,52 @@ var CID2 = '3e170b169630706f82baf94c8a2b8923';
 var DEVICETOKEN = '21a95fe90f39cff4a135e96f86955ee7fe0fe4c2be10a055c76da1e395c072be';
 var gt = new GeTui(HOST, APPKEY, MASTERSECRET);
 
-function pushAPN(title, body, device_token) {
-    var template = new APNTemplate();
 
+function pushAPNMessageToList(title, body, device_tokens) {
+   var template = new APNTemplate();
    var payload = new APNPayload();
    var alertMsg = new DictionaryAlertMsg();
-   alertMsg.body = "bbbbb";
+   alertMsg.body = body;
    alertMsg.actionLocKey = "";
    alertMsg.locKey = "ccccccc";
    alertMsg.locArgs = Array("dddddd");
    alertMsg.launchImage = "";
    //ios8.2以上版本支持
-   alertMsg.title = "aaa";
+   alertMsg.title = title;
+   alertMsg.titleLocKey = "dddddd";
+   alertMsg.titleLocArgs = Array("");
+   alertMsg.message_id = '我是消息id';
+
+    payload.alertMsg=alertMsg;
+    payload.badge=5;
+    payload.contentAvailable =1;
+    payload.category="";
+    payload.sound="";
+    payload.customMsg.payload1="payload";
+    template.setApnInfo(payload);
+    var message = new ListMessage();
+    message.setData(template);
+    gt.getAPNContentId(APPID, message, function(err, res) {
+        var contentId = res;
+        gt.pushAPNMessageToList(APPID, contentId, device_tokens || [DEVICETOKEN], function (err, res) {
+            console.log(res);
+            process.exit(0);
+        });
+    })
+}
+
+function pushAPN(title, body, device_token) {
+    var template = new APNTemplate();
+
+   var payload = new APNPayload();
+   var alertMsg = new DictionaryAlertMsg();
+   alertMsg.body = body;
+   alertMsg.actionLocKey = "";
+   alertMsg.locKey = "ccccccc";
+   alertMsg.locArgs = Array("dddddd");
+   alertMsg.launchImage = "";
+   //ios8.2以上版本支持
+   alertMsg.title = title;
    alertMsg.titleLocKey = "dddddd";
    alertMsg.titleLocArgs = Array("");
    alertMsg.message_id = '我是消息id';
@@ -45,6 +79,7 @@ function pushAPN(title, body, device_token) {
     message.setData(template);
     gt.pushAPNMessageToSingle(APPID, device_token || DEVICETOKEN, message, function (err, res) {
         console.log(res);
+        process.exit(0);
     });
 }
 
@@ -52,5 +87,10 @@ exports.push = function(title, body, device_token){
     gt.connect(function () {
         pushAPN(title, body);
     })
+}
 
+exports.pushToList = function(title, body, device_tokens){
+    gt.connect(function () {
+        pushAPNMessageToList(title, body, device_tokens)
+    })
 }

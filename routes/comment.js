@@ -23,6 +23,9 @@ router.get('/',function(req,res,next){
     'userid<input type="text" name="userid" value="card1" /></br>'+
     'commentto<input type="text" name="commentto" value="1.0" /></br>'+
     'content<input type="text" name="content" value="此卡真心不错!" /></br>'+
+    'username<input type="text" name="username" value="u1" /></br>'+
+    'user_pic<input type="text" name="user_pic" value="pic!" /></br>'+
+    'to_username<input type="text" name="to_username" value="u2" /></br>'+
     '<input type="submit" value="add" />'+ 
     '</form>'+ 
     '</body>'+ 
