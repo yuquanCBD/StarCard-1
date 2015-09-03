@@ -395,7 +395,7 @@
 
 														<input id="create_time" type="text"  class="m-wrap medium" name="create_time" />
 														
-														<span class="help-inline">("2015-09-01 09:20:17" 或者 "2015-09-01 09:20")</span>
+														<span class="help-inline">(形如"2015-09-01 09:20:17" 或者 "2015-09-01 09:20")</span>
 
 													</div>
 
@@ -406,7 +406,7 @@
 
 													<div class="controls">
 
-														<textarea name="describes" class="large m-wrap" rows="3" placeholder="少于50字"></textarea>
+														<textarea name="content" class="large m-wrap" rows="3"></textarea>
 
 													</div>
 
@@ -424,7 +424,7 @@
 
 												<div class="form-actions">
 
-													<button id='userAdd' type="submit" class="btn blue"><i class="icon-ok"></i> 新闻信息添加</button>
+													<button id='newsAdd' type="submit" class="btn blue"><i class="icon-ok"></i> 新闻信息添加</button>
 
 													<!-- <button type="button" class="btn">取消</button> -->
 												</div>
@@ -556,26 +556,7 @@
 		   		});
 			};
 		   // initiate layout and plugins
-		   $('#userAdd').click(function(e){
-		   		var password1 = $('input#password1').attr("value");
-		   		var password2 = $('input#password2').attr("value");
-		   		var IDCardNo = $("input#cardNo").attr("value");
-		   		if(password1 !== password2 && password1 !== ""){
-		   			alert("密码输入不一致");
-		   			$('input#password1').attr("value","");
-		   			$('input#password2').attr("value","");
-		   			return false;
-		   		}
-		   		if(IDCardNo.length !== 4){
-		   			alert("身份证信息格式错误");
-		   			$("input#cardNo").attr("value","");
-		   			return false;
-		   		}
-		   		var flag = $("input#username").attr("flag");
-		   		if(flag != 0){
-		   			alert("用户名验证失败 请稍候再试");
-		   			return false;
-		   		}
+		   $('#newsAdd').click(function(e){
 		   		if(confirm('是否需要添加？')){
 		   			return true;
 		   		}

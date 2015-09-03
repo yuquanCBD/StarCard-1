@@ -147,8 +147,8 @@ function addInfo(fields, files, res){
   var email = fields.email[0];
   var md5 = crypto.createHash('md5');
 	password = md5.update(password).digest('base64');
-  console.log("username:",username," password:",password," gender:",gender);
-  
+  //console.log("username:",username," password:",password," gender:",gender);
+  console.log("$$$$$$$$$$$$################@@@@@@@@@@@@@@@@@  ",files);
   //存储图片，得到图片的路径信息
   var filePath = path.join(__dirname, '../public/imgs/user/');
   fs.mkdir(filePath+uId, function(err){

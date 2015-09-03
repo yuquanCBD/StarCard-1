@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+
+<!-- BEGIN HEAD -->
+
+<head>
+
+	<meta charset="utf-8" />
+
+	<title>新闻添加</title>
+
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+	<meta content="" name="description" />
+
+	<meta content="" name="author" />
+
+	<!-- BEGIN GLOBAL MANDATORY STYLES -->
+
+	<link href="/webNews/media/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+
+	<link href="/webNews/media/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+
+	<link href="/webNews/media/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+
+	<link href="/webNews/media/css/style-metro.css" rel="stylesheet" type="text/css"/>
+
+	<link href="/webNews/media/css/style.css" rel="stylesheet" type="text/css"/>
+
+	<link href="/webNews/media/css/style-responsive.css" rel="stylesheet" type="text/css"/>
+
+	<link href="/webNews/media/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
+
+	<link href="/webNews/media/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+
+	<!-- END GLOBAL MANDATORY STYLES -->
+
+	<link rel="shortcut icon" href="/webNews/media/image/favicon.ico" />
+	<link rel="stylesheet" href="../themes/default/default.css" />
+    <script charset="utf-8" src="../kindeditor-min.js"></script>
+    <script charset="utf-8" src="../lang/zh_CN.js"></script>
+
+</head>
+
+<!-- END HEAD -->
+
+<!-- BEGIN BODY -->
+
+<body class="page-header-fixed">
+
+	<!-- BEGIN HEADER -->
+
+	<div class="header navbar navbar-inverse navbar-fixed-top">
+
+		<!-- BEGIN TOP NAVIGATION BAR -->
+
+		<div class="navbar-inner">
+
+			<div class="container-fluid">
+
+				<!-- BEGIN LOGO -->
+
+				<a class="brand" href="query">
+
+				<img src="/webNews/media/image/logo.png" alt="logo" />
+
+				</a>
+
+				<!-- END LOGO -->
+
+				<!-- BEGIN RESPONSIVE MENU TOGGLER -->
+
+				<a href="/query" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
+
+				<img src="media/image/menu-toggler.png" alt="" />
+
+				</a>          
+
+				<!-- END RESPONSIVE MENU TOGGLER -->  
+
+			</div>
+
+		</div>
+
+		<!-- END TOP NAVIGATION BAR -->
+
+	</div>
+
+	<!-- END HEADER -->
+
+	<!-- BEGIN CONTAINER -->
+
+	<div class="page-container row-fluid">
+
+		<!-- BEGIN SIDEBAR -->
+
+		<div class="page-sidebar nav-collapse collapse">
+
+			<!-- BEGIN SIDEBAR MENU -->        
+
+			
+			
+			<ul class="page-sidebar-menu">
+				<li class="">
+
+					<a href="javascript:;">
+
+					<i class="icon-table"></i> 
+
+					<span class="title">球星卡管理</span>
+
+					<span class="selected"></span>
+
+					<span class="arrow open"></span>
+
+					</a>
+
+					<ul class="sub-menu">
+						<li class="">
+
+							<a href="/admin/managerquery">
+
+							 管理员卡片管理</a>
+
+						</li>
+						<li class="">
+
+							<a href="/admin/commonquery">
+
+							 普通商家卡片管理</a>
+
+						</li>
+
+						<li class="">
+
+							<a href="/admin/starcardAdd">
+
+							信息添加</a>
+
+						</li>
+
+
+					</ul>
+
+				</li>
+
+				<li class="">
+
+					<a href="javascript:;">
+
+						<i class="icon-table"></i> 
+
+						<span class="title">人员管理</span>
+
+						<!-- <span class="selected"></span> -->
+
+						<span class="arrow open"></span>
+
+					</a>
+
+					<ul class="sub-menu">
+						<li>
+
+							<a href="/webUser/query">人员查询、删除、修改</a>
+
+						</li>
+
+						<li class="">
+
+							<a href="/webUser/add">人员增加</a>
+
+						</li>
+						<li class="">
+
+							<a href="/webUser/getmanager">管理员管理</a>
+
+						</li>
+
+
+					</ul>
+
+				</li>
+				<li class="">
+
+					<a href="javascript:;">
+
+						<i class="icon-table"></i> 
+
+						<span class="title">订单管理</span>
+
+						<!-- <span class="selected"></span> -->
+
+						<span class="arrow open"></span>
+
+					</a>
+
+					<ul class="sub-menu">
+						<li>
+							<a href="/webOrder/query">订单查询、删除、修改</a>
+						</li>
+						<li>
+							<a href="/webOrder/managerquery">管理员用户订单管理</a>
+						</li>
+						<li>
+							<a href="/webOrder/commonquery">普通用户订单管理</a>
+						</li>
+
+					</ul>
+
+				</li>
+				<li class="">
+
+					<a href="javascript:;">
+
+						<i class="icon-table"></i> 
+
+						<span class="title">百科管理</span>
+
+						<!-- <span class="selected"></span> -->
+
+						<span class="arrow open"></span>
+
+					</a>
+
+					<ul class="sub-menu">
+						<li>
+							<a href="/webWiki/add">百科增加</a>
+						</li>
+						<li>
+							<a href="/webWiki/query">百科查询、删除、修改</a>
+						</li>
+						<li>
+							<a href="/webWiki/check">百科审核</a>
+						</li>
+						<li>
+							<a href="/webWiki/lock">百科锁定</a>
+						</li>
+					</ul>
+
+				</li>
+
+				<li class="active">
+
+					<a href="javascript:;">
+
+						<i class="icon-table"></i> 
+
+						<span class="title">新闻管理</span>
+
+						<!-- <span class="selected"></span> -->
+
+						<span class="arrow open"></span>
+
+					</a>
+
+					<ul class="sub-menu">
+						<li class="active">
+							<a href="/webWiki/add">新闻增加</a>
+						</li>
+						<li>
+							<a href="/webWiki/query">新闻查询、删除、修改</a>
+						</li>
+					</ul>
+
+				</li>
+
+			</ul>
+
+			<!-- END SIDEBAR MENU -->
+
+		</div>
+
+		<!-- END SIDEBAR -->
+
+		<!-- BEGIN PAGE -->  
+
+		<div class="page-content">
+
+			<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+
+			<div id="portlet-config" class="modal hide">
+
+				<div class="modal-header">
+
+					<button data-dismiss="modal" class="close" type="button"></button>
+
+					<h3>portlet Settings</h3>
+
+				</div>
+
+				<div class="modal-body">
+
+					<p>Here will be a configuration form</p>
+
+				</div>
+
+			</div>
+
+			<!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+
+			<!-- BEGIN PAGE CONTAINER-->
+
+			<div class="container-fluid">
+
+				<!-- BEGIN PAGE HEADER-->   
+
+				<div class="row-fluid">
+
+					<div class="span12">
+
+						
+						<h3 class="page-title">
+
+							新闻信息添加
+						</h3>
+
+					</div>
+
+				</div>
+
+				<!-- END PAGE HEADER-->
+
+				<!-- BEGIN PAGE CONTENT-->
+
+				<div class="row-fluid">
+
+					<div class="span12">
+
+						<!-- BEGIN SAMPLE FORM PORTLET-->   
+
+						<div class="portlet box blue tabbable">
+
+							<div class="portlet-title">
+
+								<div class="caption">
+
+									<i class="icon-reorder"></i>
+
+									<span class="hidden-480">信息添加</span>
+
+								</div>
+
+							</div>
+
+							<div class="portlet-body form">
+
+								<div class="tabbable portlet-tabs">
+
+									<ul class="nav nav-tabs">
+
+										<li><a href="">信息添加</a></li>
+
+									</ul>
+
+									<div class="tab-content">
+
+										<div class="tab-pane active" id="portlet_tab1">
+
+											<!-- BEGIN FORM-->
+
+											<form action="/webNews/add" method="post" class="form-horizontal">
+
+												<div class="control-group">
+
+													<label class="control-label" >标题:</label>
+
+													<div class="controls">
+
+														<input id="title" type="text" class="m-wrap meduium" name="title" />
+
+													</div>
+
+												</div>
+
+												<div class="control-group">
+
+													<label class="control-label">新闻来源:</label>
+
+													<div class="controls">
+
+														<input id="source" type="text"  class="m-wrap medium" name="source" />
+														
+														<!-- <span class="help-inline">Some hint here</span> -->
+
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label">新闻发表时间:</label>
+
+													<div class="controls">
+
+														<input id="create_time" type="text"  class="m-wrap medium" name="create_time" value="2015-09-01 09:20:17" />
+														
+														<span class="help-inline">(形如"2015-09-01 09:20:17" 或者 "2015-09-01 09:20")</span>
+
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label">新闻正文</label>
+
+													<div class="controls">
+
+														<textarea id="editor" name="content" style="width:400px;height:300px;">
+        													
+    													</textarea>
+
+													</div>
+
+												</div>
+
+												<div class="form-actions">
+
+													<button id='newsAdd' type="submit" class="btn blue"><i class="icon-ok"></i> 新闻信息添加</button>
+
+													<!-- <button type="button" class="btn">取消</button> -->
+												</div>
+
+											</form>
+
+											<!-- END FORM-->  
+
+										</div>
+
+									</div>
+
+								</div>
+
+							</div>
+
+						</div>
+
+						<!-- END SAMPLE FORM PORTLET-->
+
+					</div>
+
+				</div>
+
+				<!-- END PAGE CONTENT-->         
+
+			</div>
+
+			<!-- END PAGE CONTAINER-->
+
+		</div>
+
+		<!-- END PAGE -->  
+
+	</div>
+
+	<!-- END CONTAINER -->
+
+	<!-- BEGIN FOOTER -->
+
+	<div class="footer">
+
+		<div class="footer-inner">
+
+			2013 &copy; Metronic by keenthemes.
+
+		</div>
+
+		<div class="footer-tools">
+
+			<span class="go-top">
+
+			<i class="icon-angle-up"></i>
+
+			</span>
+
+		</div>
+
+	</div>
+
+	<!-- END FOOTER -->
+
+	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+
+	<!-- BEGIN CORE PLUGINS -->
+
+	<script src="/webNews/media/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+
+	<script src="/webNews/media/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+
+	<!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
+
+	<script src="/webNews/media/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>      
+
+	<script src="/webNews/media/js/bootstrap.min.js" type="text/javascript"></script>
+
+	<!--[if lt IE 9]>
+
+	<script src="media/js/excanvas.min.js"></script>
+
+	<script src="media/js/respond.min.js"></script>  
+
+	<![endif]-->   
+
+	<script src="/webNews/media/js/jquery.slimscroll.min.js" type="text/javascript"></script>
+
+	<script src="/webNews/media/js/jquery.blockui.min.js" type="text/javascript"></script>  
+
+	<script src="/webNews/media/js/jquery.cookie.min.js" type="text/javascript"></script>
+
+	<script src="/webNews/media/js/jquery.uniform.min.js" type="text/javascript" ></script>
+
+	<!-- END CORE PLUGINS -->
+
+	<script src="/webNews/media/js/app.js"></script>     
+
+	<script>
+		var options = {
+	          uploadJson: '/webNews/uploadImg'
+	      };
+	    var editor = KindEditor.ready(function(K) {
+	          window.editor = K.create('#editor', options);
+	      });
+
+		jQuery(document).ready(function() {   
+			function Ajax(url, obj){
+				console.log(url);
+				console.log(obj);
+				$.ajax({
+			   		type : 'POST',
+			   		url : url,
+			   		data : obj,
+			   		dataType : 'json',
+			   		cache : false,
+			   		success : function(data){
+			   			console.log(data);
+			   			if(data.success === true){
+			   				$("#usernameCheck").text(obj.username+"已经存在");
+			   				$("input#username").attr("flag",1);
+			   			}
+			   			if(data.error !== undefined){
+			   				$("#usernameCheck").text(data.error);
+			   				$("input#username").attr("flag",2);
+			   			}
+			   			if(data.success === false && data.error === undefined)
+			   			{
+			   				$("#usernameCheck").text("");
+			   				$("input#username").attr("flag",0); //flag为0表示可以插入数据库
+			   			}
+			   			
+			   		},
+			   		error : function(){
+			   			alert('检查用户名信息失败');
+			   		}
+		   		});
+			};
+		   // initiate layout and plugins
+		   $('#newsAdd').click(function(e){
+		   		if(confirm('是否需要添加？')){
+		   			KindEditor.sync('#editor');
+		   			alert($('#editor').val());
+		   			return true;
+		   		}
+		   		else{
+		   			return false;
+		   		}
+		   })
+
+		   App.init();
+
+		});
+
+	</script>
+
+	<!-- END JAVASCRIPTS -->   
+
+<script type="text/javascript">  var _gaq = _gaq || [];  _gaq.push(['_setAccount', 'UA-37564768-1']);  _gaq.push(['_setDomainName', 'keenthemes.com']);  _gaq.push(['_setAllowLinker', true]);  _gaq.push(['_trackPageview']);  (function() {    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();</script></body>
+
+<!-- END BODY -->
+
+</html>

@@ -39,7 +39,7 @@ User.get = function get(username, callback){
 }
 
 User.save = function save(user,callback){
-		mysql.getConnection(function(err, conn){
+	mysql.getConnection(function(err, conn){
 		if (err) {
 			console.log("POOL ==> " + err);
 			callback(err);
@@ -59,7 +59,22 @@ User.save = function save(user,callback){
 		});
 	});
 }
-
+User.getDevice_token = function(callback){
+	mysql.getConnection(function(err, conn){
+		if(err){
+			return callback(err);
+		}
+		var sql = "select device_token from user";
+		conn.query(sql, function(err, rows){
+			if(err){
+				conn.release();
+				return callback(err);
+			}
+			conn.release();
+			return callback(err, rows);
+		}) 
+	})
+}
 User.getUserByTel = function getUserByTel(tel, callback){
 		mysql.getConnection(function(err, conn){
 		if (err) {

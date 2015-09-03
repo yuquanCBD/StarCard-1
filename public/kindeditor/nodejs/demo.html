@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Acker</title>
+    <link rel="stylesheet" href="../themes/default/default.css" />
+    <script charset="utf-8" src="../kindeditor-min.js"></script>
+    <script charset="utf-8" src="../lang/zh_CN.js"></script>
+      <script>
+          var options = {
+              uploadJson: '/webNews/uploadImg'
+          };
+          KindEditor.ready(function(K) {
+              window.editor = K.create('#editor', options);
+          });
+      </script>
+  </head>
+  <body>
+    <textarea id="editor" name="content" style="width:700px;height:300px;">
+        <strong>HTML内容</strong>
+    </textarea>
+  </body>
+</html>
