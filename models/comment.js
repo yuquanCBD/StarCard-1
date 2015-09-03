@@ -61,6 +61,24 @@ Comment.showCardComments = function(cardid, callback){
 	})
 }
 
+//删除评论信息
+Comment.delcomment = function(commentid, callback){
+	mysql.getConnection(function(err, conn){
+		if(err){
+			return callback(err);
+		}
+		var sql = 'delete from card_comment where commentid = "'+commentid+'"';
+		conn.query(sql, function(err, r){
+			if(err){
+				conn.release();
+				return callback(err);
+			}
+			conn.release();
+			return callback(err, r);
+		})
+	})
+}
+
 //根据评论编号拉去评论详情
 Comment.getCommentByCid = function(cid, callback){
 	mysql.getConnection(function(err, conn){
@@ -79,10 +97,4 @@ Comment.getCommentByCid = function(cid, callback){
 
 
 module.exports = Comment;
-
-
-
-
-
-
 

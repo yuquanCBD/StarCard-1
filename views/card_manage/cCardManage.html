@@ -255,6 +255,7 @@
 				</li>
 
 			</ul>
+
 			<!-- END SIDEBAR MENU -->
 
 		</div>
@@ -324,7 +325,7 @@
 
 							<div class="portlet-title">
 
-								<div class="caption"><i class="icon-user"></i>管理员卡片查询结果</div>
+								<div class="caption"><i class="icon-user"></i>普通用户卡片查询结果</div>
 
 								<div class="actions">
 
@@ -342,7 +343,7 @@
 
 										<tr>
 											<th>序号</th>
-											<th class="hidden-480">名称</th>
+											<th class="hidden-480">标题</th>
 											<!-- <th class="hidden-480">describes</th> -->
 											<th class="hidden-480">价格</th>
 											<th class="hidden-480">物流</th>
@@ -355,6 +356,7 @@
 											<th class="hidden-100">详情</th>
 											<th class="hidden-480">删除</th>
 											<th class="hidden-480">修改</th>
+											<th class="hidden-480">查看评论</th>
 										</tr>
 
 									</thead>
@@ -610,7 +612,7 @@
 												<div class="form-actions">
 
 													<button id="updateSubmit" type="submit" class="btn blue"><i class="icon-ok"></i> 修改</button>
-													<!-- <button id="updateBack" type="button" class="btn">返回</button> -->
+													<!-- <button type="button" class="btn">取消</button> -->
 
 												</div>
 
@@ -1001,7 +1003,7 @@
 					'<td><button cardId="'+obj.cardid+'" owner="'+obj.owner+'" pictures="'+obj.pictures+'" describes="'+obj.describes+'" class="detailsButton">详情</button></td>'+
 					'<td><button cardId="'+obj.cardid+'" class="deleteButton">删除</button></td>'+
 					'<td><button cardId="'+obj.cardid+'" owner="'+obj.owner+'" pictures="'+obj.pictures+'" describes="'+obj.describes+'" class="updateButton">修改</button></td>'+
-					//'<td><button cardId="'+obj.cardid+'"class="updateButton">修改</button></td>'+
+					'<td><button cardId="'+obj.cardid+'" class="queryComment">查看评论</button></td>'+
 					//'<td><a href="StarCardAdd.html?hsjsh">ceshi</a></td>'
 					//'<td><button cardId="'+obj.cardid+'" class="updateButton">修改</button></td>'+
 
@@ -1169,6 +1171,12 @@
 			   					PostAjax('delete',{cardid:cid});
 			   				}
 			   			});
+			   			$("button.queryComment").click(function(e){
+			   				if(confirm('是否查看评论?')){
+			   					var cardid = $(this).attr("cardId");
+			   					window.location.href = "/admin/queryComment?cardid="+cardid;
+			   				}
+			   			})
 			   			$("button.updateButton").click(function(e){
 			   				if(confirm('是否需要修改卡信息?')){
 			   					var cardid = $(e.target).attr("cardId");
@@ -1231,7 +1239,9 @@
 			   					}
 			   					else{
 			   						$('#cardImg').append('<span class="help-inline">没有图片</span>');
-			   					};
+			   					}
+			   					
+			   					
 			   					
 			   					//updateAjax('update',{flag:'hahhahah'});
 			   					// var tds = tr.getElementsByTagName('td');
@@ -1247,6 +1257,13 @@
 			   		}
 		   		});    
 			}
+		 	query();
+		 	$("#detailBtn").click(function(){
+				$('#checks').each(function(){
+					if(this.checked)
+						alert($(this).val());
+				});
+			});
 			$('#updateSubmit').click(function(e){
 				if(confirm('是否确认修改信息?')){
 					return true;
@@ -1258,13 +1275,7 @@
 
 					return false;
 				}
-			});
-		 	query();
-		 	$("#detailBtn").click(function(){
-				$('#checks').each(function(){
-					if(this.checked)
-						alert($(this).val());
-				});
+				
 			});
 
 		});

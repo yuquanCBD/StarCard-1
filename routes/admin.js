@@ -1,9 +1,10 @@
 /*
- * web部分
+ * web部分，卡片
 */
 var express = require('express');
 var uuid = require('node-uuid');
 var User = require('../models/user.js');
+var Comment = require('../models/comment');
 var multiparty = require('multiparty');
 var path = require('path');
 var fs = require('fs');
@@ -299,7 +300,7 @@ router.post('/delete', function(req, res, next){
           }
           else{
             console.log('删除图片文件夹成功');
-            return res.json({sucess:r});
+            return res.json({success:r});
           }
         });
         //return res.json({sucess:r});
@@ -319,6 +320,48 @@ router.post('/detail', function(req, res, next){
 router.get("/userAdd",function(req, res, next){
   res.render("card_manage/userAdd.html");
 });
+
+
+/*****************       用户评论模块   *******************/
+router.post('/delcomment',function(req, res, next){
+  var commentid = req.body.commentid;
+  Comment.delcomment(commentid, function(err, r){
+    if(err){
+      return res.json({err:"数据库错误"});
+    }
+    else{
+      return res.json({success:"success"});
+    }
+  })
+});
+router.get('/querycomment',function(req, res, next){
+  var cardid = "b2ac5370-5136-11e5-aa92-93f9048adb9b";
+  var cardid = req.query.cardid;
+  // Comment.showCardComments(cardid, function(err, rows){
+  //   if(err){
+  //     return res.json({err:"数据库操作错误"});
+  //   }
+  //   else{
+  //     console.log(rows);
+  //     //return res.json(rows);
+  //     return res.render("card_manage/comment.html",{cardid:cardid,rows:rows});
+  //   }
+  // })
+  return res.render("card_manage/comment.html",{cardid:cardid});
+});
+router.post('/querycomment',function(req, res, next){
+  var cardid = req.body.cardid;
+  Comment.showCardComments(cardid, function(err, rows){
+    if(err){
+      return res.json({err:"数据库操作错误"});
+    }
+    else{
+      console.log(rows);
+      return res.json(rows);
+    }
+  })
+});
+
 
 module.exports = router;
 

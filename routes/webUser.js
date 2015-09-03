@@ -217,7 +217,7 @@ router.get('/query', function(req, res ,next){
 });
 
 router.post('/query', function(req, res, next){
-  var sql = "select * from user";
+  var sql = "select * from user card order by create_time DESC";
   User.exec(sql, function(err, rows){
     if(err){
       console.log("======>",err);
@@ -498,5 +498,17 @@ function MupdateInfo(fields, files, res){
         
   }
 };
+
+//禁言与解除禁言处理
+router.post('/shutup',function(req,res,next){
+  var userid = req.body.userid;
+  var shutup = req.body.shutup;
+  User.updateShutup(userid, shutup, function(err, r){
+    if(err){
+      return res.json({err:"数据库错误"});
+    }
+    return res.json({success:"success"});
+  })
+});
 
 module.exports = router;

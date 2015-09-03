@@ -112,7 +112,7 @@
 		<div class="page-sidebar nav-collapse collapse">
 
 			<!-- BEGIN SIDEBAR MENU -->        
-<ul class="page-sidebar-menu">
+			<ul class="page-sidebar-menu">
 				<li class="">
 
 					<a href="javascript:;">
@@ -128,11 +128,18 @@
 					</a>
 
 					<ul class="sub-menu">
-						<li>
+						<li class="">
 
-							<a href="/admin/query">
+							<a href="/admin/managerquery">
 
-							信息查询、删除、修改</a>
+							 管理员卡片管理</a>
+
+						</li>
+						<li class="">
+
+							<a href="/admin/commonquery">
+
+							 普通商家卡片管理</a>
 
 						</li>
 
@@ -201,7 +208,7 @@
 
 					<ul class="sub-menu">
 						<li class="active">
-							<a href="/webOrder/query">所有订单查询、删除、修改</a>
+							<a href="/webOrder/query">订单查询、删除、修改</a>
 						</li>
 						<li>
 							<a href="/webOrder/managerquery">管理员用户订单管理</a>
@@ -245,7 +252,6 @@
 				</li>
 
 			</ul>
-
 			<!-- END SIDEBAR MENU -->
 
 		</div>
@@ -377,7 +383,7 @@
 									</tbody>
 									<!-- <button>测试</button> -->
 								</table>
-								<input id="wholeCheck" type="checkbox">
+								<!-- <input id="wholeCheck" type="checkbox"> -->
 								<button id="batchPay">勾选批量打款</button>
 								<!-- <label class="control-label" >运单状态查询:</label>
 								<select id='statusQ' class="small m-wrap"  name="statusQ">
