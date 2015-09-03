@@ -9,8 +9,9 @@ router.post('/', function(req, res, next){
 	//生成口令的散列值
 	var md5 = crypto.createHash('md5');
 	var password = md5.update(req.body.password).digest('base64');
+	var device_token = req.body.device_token;//用户设备唯一标识符
 	
-	User.get(username,function(err, user){
+	User.login(username, device_token, function(err, user){
 		if(!user){
 			return res.json({error: '用户不存在'});
 		}

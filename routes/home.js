@@ -13,7 +13,9 @@ router.get('/showList', function(req, res, next) {
     var order = req.query.order;
     var longitude = req.query.longitude;
     var latitude = req.query.latitude;
-    Card.searchByCond(cond, category, brand, offset, capacity, order, longitude, latitude, function(err, rows){
+    var userid = req.session.user.userid;
+
+    Card.searchByCond(userid, cond, category, brand, offset, capacity, order, longitude, latitude, function(err, rows){
         if(err){
             return res.json({error: err});
         }

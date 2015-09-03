@@ -160,7 +160,7 @@ function addInfo(fields, files, res){
 }
 
 //根据id查询换卡申请详情
-router.get('getExchangeInfoById', function(req, res, next){
+router.get('/getExchangeInfoById', function(req, res, next){
     var id = req.query.id;
 
     Exchange.getExchangeInfoById(id, function(err, rows){
@@ -169,7 +169,7 @@ router.get('getExchangeInfoById', function(req, res, next){
         if(rows.length == 0)
           return res.json(null);
         else
-          return res.json(rows);
+          return res.json(rows[0]);
     })
 
 })

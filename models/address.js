@@ -74,6 +74,22 @@ Address.queryAddrById = function(addrid, callback){
 	})
 }
 
+//查询默认收货地址
+Address.getDefaultAddr = function(userid, callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			return callback(err)
+
+		var sql = 'SELECT addr_id, userid,province, city, district, postcode, address, telephone, consignee, tag FROM address WHERE userid = ? AND tag = 1';
+		console.log('SQL: '+ sql);
+
+		conn.query(sql, [userid], function(err, rows){
+            conn.release();
+            callback(err, rows);
+        });
+	})
+}
+
 
 
 module.exports = Address;

@@ -34,6 +34,8 @@ var message_route = require('./routes/message');        //消息路由
 var pingpp_route = require('./routes/pingpp');          //支付webhooks路由
 var userCenter_route = require('./routes/userCenter');  //用户中心路由
 
+var test_route = require('./routes/test');//测试路由
+
 var app = express();
 
 require('./scheduler/schedule'); //激活定时器
@@ -97,6 +99,7 @@ app.use('/webOrder', webOrder_route);
 app.use('/webWiki', webWiki_route);
 app.use('/pingpp', pingpp_route);
 app.use('/usercenter', userCenter_route);
+app.use('/test', test_route);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
