@@ -46,9 +46,10 @@ function pushAPNMessageToList(title, body, extra, device_tokens) {
         var contentId = res;
         gt.pushAPNMessageToList(APPID, contentId, device_tokens || [DEVICETOKEN], function (err, res) {
             console.log(res);
-            process.exit(0);
+            //process.exit(0);
         });
     })
+  return;
 }
 
 function pushAPN(title, body, device_token) {
@@ -79,7 +80,7 @@ function pushAPN(title, body, device_token) {
     message.setData(template);
     gt.pushAPNMessageToSingle(APPID, device_token || DEVICETOKEN, message, function (err, res) {
         console.log(res);
-        process.exit(0);
+        //process.exit(0);
     });
 }
 
