@@ -56,24 +56,20 @@ Card.prototype.save = function(callback){
         	callback(err,res);
 		});
 	});
-};
+}
+
 Card.add = function(sql, callback){
 	mysql.getConnection(function(err, conn){
-		if(err){
-			console.log("POOL ==>" + err);
+		if(err)
 			callback(err);
-		};
 
 		conn.query(sql, function(err, res){
-			if(err){
-				console.log(err);
-				callback(err);
-			}
 			conn.release();
 			callback(err, res);
 		})
 	})
-};
+}
+
 Card.query = function(callback){
 	mysql.getConnection(function(err, conn){
 		if (err) 
@@ -140,7 +136,7 @@ Card.queryByID = function(cardid, callback){
 
 
 //首页模块所需接口
-Card.searchByCond = function(cond, category, brand, offset, capacity, order, longitude, latitude, callback){
+Card.searchByCond = function(userid, cond, category, brand, offset, capacity, order, longitude, latitude, callback){
 	mysql.getConnection(function(err, conn){
 		if (err) 
 			callback(err);
@@ -191,12 +187,30 @@ Card.searchByCond = function(cond, category, brand, offset, capacity, order, lon
 			for (var i in rows) {
 				rows[i].dis = GetDistance(latitude, longitude, rows[i].latitude, rows[i].longitude);
 			}
-			console.log(rows)
-			callback(err, rows);
-			conn.release();
-		});
-	});
-};
+
+			//查询用户用户收藏列表
+			var sql = 'SELECT cardid FROM collect WHERE userid = ?';
+			console.log(sql, userid);
+			conn.query(sql, [userid], function(err, cards){
+				if(err)
+					return callback(err);
+				for(var x in rows){//遍历card表，如果已收藏，则收藏标记位置为1
+					rows[x].is_collect = 0;
+					for(var y in cards){
+						if(rows[x].cardid == cards[y].cardid){
+							rows[x].is_collect = 1;//1为已标记
+							break;
+						}
+					}
+				}
+
+				conn.release();
+				callback(err, rows);
+			})
+
+		})
+	})
+}
 
 
 function rad(d){
@@ -218,20 +232,22 @@ function GetDistance( lat1,  lng1,  lat2,  lng2){
 }
 
 
+//卖家的所有待交易卡
 Card.searchCardsByOwner = function(owner, callback){
     mysql.getConnection(function(err, conn){
         if (err) 
             callback(err);
+        var sql = 'SELECT cardid, title, pictures, describes, price, logistic, category, brand, freight, exchange, owner, amount, '+
+		'time, longitude, latitude, user.username FROM card LEFT JOIN user ON owner = user.userid WHERE user.userid = ?';
 
-		var sql = 'SELECT cardid, title, pictures, describes, price, logistic, category, brand, freight, exchange, owner, amount, time, longitude, latitude FROM card WHERE owner = "' +owner+'"';
-
-        console.log('searchCardsByOwner_SQL: '+ sql);
+        console.log(sql);
         conn.query(sql, function(err, rows){
             callback(err, rows);
             conn.release();
         });
-    });
-};
+    })
+}
+
 
 module.exports = Card;
 

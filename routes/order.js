@@ -58,6 +58,21 @@ router.post('/queryAddrById', function(req, res, next){
 
 })
 
+//查询默认发货地址
+router.get('/getDefaultAddr', function(req, res, next){
+	var userid = req.query.userid; 
+
+	Address.getDefaultAddr(userid, function(err, rows){
+		if(err)
+			return res.json({error : err});
+		if(rows.length == 0)
+			return res.json(null);
+		else
+			return res.json(rows[0]);
+	})
+
+})
+
 //确认订单，未付款
 router.post('/checkOrder', function(req, res, next){
 	var cardid = req.body.cardid;

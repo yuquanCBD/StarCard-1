@@ -36,6 +36,8 @@ var message_route = require('./routes/message');        //消息路由
 var pingpp_route = require('./routes/pingpp');          //支付webhooks路由
 var userCenter_route = require('./routes/userCenter');  //用户中心路由
 
+var test_route = require('./routes/test');//测试路由
+
 var app = express();
 
 require('./scheduler/schedule'); //激活定时器
@@ -68,7 +70,6 @@ app.use(session({
 
 //获取状态
 app.use(function(req,res,next){
-    console.log('%s', new Date());
     var error = req.flash('error');
     res.locals.error = error.length?error:null;
 

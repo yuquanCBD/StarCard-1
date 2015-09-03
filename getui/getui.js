@@ -4,32 +4,68 @@ var Target = require('./getui/Target');
 var APNTemplate = require('./getui/template/APNTemplate');
 var TransmissionTemplate = require('./getui/template/TransmissionTemplate');
 var SingleMessage = require('./getui/message/SingleMessage');
- 
+var ListMessage = require('./getui/message/ListMessage');
+var APNPayload = require('./payload/APNPayload');
+var DictionaryAlertMsg = require('./payload/DictionaryAlertMsg'); 
+
 var HOST = 'http://sdk.open.api.igexin.com/apiex.htm';
-var APPID = 'b03c5cfef65ed30108f0a3fd82c3f6b4';
-var APPKEY = '110000';
-var MASTERSECRET = 'a02a76119b20d4e31620d7597a3b4f35';
+var APPID = 'Fci2u5FR3f7LbGE3N3Sqt2';
+var APPKEY = '02lp0im7ud7BWPVVvdmtR7';
+var MASTERSECRET = 'UiNeSu2Jti5wMAeU516iw8';
 var CID = '289cf3a73ee6e37e456faa4582e96b2e';
 var CID2 = '3e170b169630706f82baf94c8a2b8923';
-var DEVICETOKEN = '40f90da8ad0ff88f5b1fd54a11549a3e555e153786efe9e9d1a0341d227598cc';
+var DEVICETOKEN = '21a95fe90f39cff4a135e96f86955ee7fe0fe4c2be10a055c76da1e395c072be';
 var gt = new GeTui(HOST, APPKEY, MASTERSECRET);
-gt.connect(function () {
-    pushAPN();
-});
-function pushAPN() {
+
+
+function pushAPNMessageToList(title, body, extra, device_tokens) {
+   var template = new APNTemplate();
+   var payload = new APNPayload();
+   var alertMsg = new DictionaryAlertMsg();
+   alertMsg.body = body;
+   alertMsg.actionLocKey = "";
+   alertMsg.locKey = "ccccccc";
+   alertMsg.locArgs = Array("dddddd");
+   alertMsg.launchImage = "";
+   //ios8.2以上版本支持
+   alertMsg.title = title;
+   alertMsg.titleLocKey = "dddddd";
+   alertMsg.titleLocArgs = Array("");
+   alertMsg.extra = extra;
+
+    payload.alertMsg=alertMsg;
+    payload.badge=5;
+    payload.contentAvailable =1;
+    payload.category="";
+    payload.sound="";
+    payload.customMsg.payload1="payload";
+    template.setApnInfo(payload);
+    var message = new ListMessage();
+    message.setData(template);
+    gt.getAPNContentId(APPID, message, function(err, res) {
+        var contentId = res;
+        gt.pushAPNMessageToList(APPID, contentId, device_tokens || [DEVICETOKEN], function (err, res) {
+            console.log(res);
+            process.exit(0);
+        });
+    })
+}
+
+function pushAPN(title, body, device_token) {
     var template = new APNTemplate();
 
    var payload = new APNPayload();
    var alertMsg = new DictionaryAlertMsg();
-   alertMsg.body = "";
+   alertMsg.body = body;
    alertMsg.actionLocKey = "";
-   alertMsg.locKey = "";
-   alertMsg.locArgs = Array("");
+   alertMsg.locKey = "ccccccc";
+   alertMsg.locArgs = Array("dddddd");
    alertMsg.launchImage = "";
    //ios8.2以上版本支持
-   alertMsg.title = "";
-   alertMsg.titleLocKey = "";
+   alertMsg.title = title;
+   alertMsg.titleLocKey = "dddddd";
    alertMsg.titleLocArgs = Array("");
+   alertMsg.message_id = '我是消息id';
 
    payload.alertMsg=alertMsg;
    payload.badge=5;
@@ -41,7 +77,22 @@ function pushAPN() {
 
     var message = new SingleMessage();
     message.setData(template);
-    gt.pushAPNMessageToSingle(APPID, DEVICETOKEN, message, function (err, res) {
+    gt.pushAPNMessageToSingle(APPID, device_token || DEVICETOKEN, message, function (err, res) {
         console.log(res);
+        process.exit(0);
     });
+}
+
+//单推接口
+exports.push = function(title, body, device_token){
+    gt.connect(function () {
+        pushAPN(title, body);
+    })
+}
+
+//群推接口device_tokens 是数组, extra为json对象
+exports.pushToList = function(title, body, extra, device_tokens){
+    gt.connect(function () {
+        pushAPNMessageToList(title, body, device_tokens)
+    })
 }

@@ -8,7 +8,7 @@ Message.showMessageNotRead = function(userid, callback){
 		if(err)
 			callback(err);
 
-		var sql = 'SELECT msg_id, event_id, status, time, msg_type, title, description, card_pic FROM message WHERE userid = "' + userid + '" AND status = 0 ORDER BY time DESC';
+		var sql = 'SELECT msg_id, event_id, status, time, msg_type, title, description, card_pic, cardid, order_buy_sell, order_status FROM message WHERE userid = "' + userid + '" AND status = 0 ORDER BY time DESC';
 		conn.query(sql,function(err, rows){
 			callback(err, rows);
 			conn.release();
@@ -44,7 +44,22 @@ Message.insertNewMsg = function(userid, event_id, msg_type, title, description, 
 			conn.release();
 		});
 	});
-};
+}
+
+//生成订单消息
+Message.insertOrderMsg = function(userid, event_id, msg_type, title, description, card_pic, cardid, order_buy_sell, order_status, callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			callback(err);
+		console.log('--------------insertNewMsg', userid, event_id, msg_type, title, description, card_pic, cardid, order_buy_sell, order_status);
+		var sql = 'INSERT INTO message (userid, event_id, msg_type, title, description, card_pic, cardid, order_buy_sell, order_status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+
+		conn.query(sql, [userid, event_id, msg_type, title, description, card_pic, cardid, order_buy_sell, order_status], function(err, results){
+			callback(err, results);
+			conn.release();
+		});
+	});
+}
 
 //返回所有的消息
 Message.showAllMessages = function(userid, callback){

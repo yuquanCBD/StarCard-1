@@ -26,7 +26,7 @@ User.get = function get(username, callback){
 		conn.query(sql, function(err, rows){
 			if(err)
 				callback(err);
-						
+
 			console.log(rows);
 			if (rows.length != 0) {
 				var user = new User(rows[0]);
@@ -37,6 +37,32 @@ User.get = function get(username, callback){
 		});
 	});
 }
+
+//用户登录
+User.login = function(username, device_token, callback){
+	mysql.getConnection(function(err, conn){
+		if (err) 
+			callback(err);
+
+		var sql = 'SELECT userid, username, password, score FROM user WHERE username = "' + username +'"';
+		console.log(sql);
+		conn.query(sql, function(err, rows){
+			if(err)
+				return callback(err);
+			if(rows.length == 0)
+				return callback('用户不存在')
+
+			var sql = 'UPDATE user SET device_token = ? WHERE userid = ?';
+			console.log(sql);
+			conn.query(sql, [device_token, rows[0].userid], function(err, results){
+        		conn.release();
+        		callback(err, rows[0]);
+			})
+
+		})
+	})
+}
+
 
 User.save = function save(user,callback){
 	mysql.getConnection(function(err, conn){
@@ -212,8 +238,34 @@ User.addCardCollect = function(userid, cardid, callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
 			callback(err);
+		var sql = 'SELECT COUNT(1) AS has FROM collect WHERE userid = ? AND cardid = ?';
 
-		var sql = 'INSERT INTO collect(userid, cardid) VALUES(?, ?)';
+		console.log('SQL: '+ sql);
+		conn.query(sql, [userid, cardid], function(err, rows){
+			if(rows.length > 0 && rows[0].has > 0){
+				conn.release();
+				return callback('卡片收藏不能重复添加');
+			}
+
+			var sql = 'INSERT INTO collect(userid, cardid) VALUES(?, ?)';
+
+			console.log('SQL: '+ sql);
+			conn.query(sql, [userid, cardid], function(err, results){
+				callback(err, results);
+				conn.release();
+			})
+		})
+
+	})
+}
+
+//取消收藏卡片
+User.cancleCardCollect = function(userid, cardid, callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			callback(err);
+
+		var sql = 'DELETE FROM collect WHERE userid = ? AND cardid = ?';
 
 		console.log('SQL: '+ sql);
 		conn.query(sql, [userid, cardid], function(err, results){
@@ -399,7 +451,7 @@ User.findUserById = function(userid, callback){
 		if(err)
 			return callback(err);
 
-		var sql = 'SELECT userid, username, email, create_time, telephone, IDCardNo, score, gender, portrait, sell_cnt, buy_cnt FROM user WHERE userid = ?';
+		var sql = 'SELECT userid, username, email, create_time, telephone, IDCardNo, score, gender, portrait, sell_cnt, buy_cnt, identificated, shutup FROM user WHERE userid = ?';
 		conn.query(sql, [userid], function(err, rows){
 			conn.release();
 			callback(err, rows[0]);
@@ -485,13 +537,42 @@ User.queryWikiCollect = function(userid, offset, capacity, callback){
 }
 
 
-//收藏wiki查询
+//收藏wiki
 User.addWikiCollect = function(userid, wikiid, callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
 			callback(err);
 
-		var sql = 'INSERT INTO wiki_collect(userid, wikiid) VALUES(?, ?)';
+		var sql = 'SELECT COUNT(1) AS has FROM wiki_collect WHERE userid = ? AND wikiid = ?';
+		console.log('SQL: '+ sql);
+		conn.query(sql, [userid, wikiid], function(err, rows){
+			if(rows.length != 0 && rows[0].has > 0){
+				conn.release();
+				callback('收藏失败，不能重复收藏');
+				return;
+			}
+
+			var sql = 'INSERT INTO wiki_collect(userid, wikiid) VALUES(?, ?)';
+
+			console.log('SQL: '+ sql);
+			conn.query(sql, [userid, wikiid], function(err, results){
+				callback(err, results);
+				conn.release();
+			})
+
+		})
+
+
+	})
+}
+
+//取消百科收藏
+User.cancleWikiCollect = function(userid, wikiid, callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			callback(err);
+
+		var sql = 'DELETE FROM wiki_collect WHERE userid = ? AND wikiid = ?';
 
 		console.log('SQL: '+ sql);
 		conn.query(sql, [userid, wikiid], function(err, results){
@@ -500,7 +581,6 @@ User.addWikiCollect = function(userid, wikiid, callback){
 		})
 	})
 }
-
 
 module.exports = User;
 
