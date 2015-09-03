@@ -4,6 +4,7 @@ var Target = require('./getui/Target');
 var APNTemplate = require('./getui/template/APNTemplate');
 var TransmissionTemplate = require('./getui/template/TransmissionTemplate');
 var SingleMessage = require('./getui/message/SingleMessage');
+var ListMessage = require('./getui/message/ListMessage');
 var APNPayload = require('./payload/APNPayload');
 var DictionaryAlertMsg = require('./payload/DictionaryAlertMsg'); 
 

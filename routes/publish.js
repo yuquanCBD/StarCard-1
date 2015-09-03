@@ -30,9 +30,13 @@ console.log("Request handler 'start' was called.");
     '<input type="text" name="freight" value="5" /></br>'+
     '<input type="text" name="exchange" value="1" /></br>'+
     '<input type="text" name="owner" value="userid001" /></br>'+
+    '<input type="text" name="ownername" value="123" /></br>'+
     '<input type="text" name="amount" value="3" /></br>'+
     '<input type="text" name="longitude" value="120.2" /></br>'+
     '<input type="text" name="latitude" value="30.3" /></br>'+
+    '<input type="text" name="card_no" value="123456789" /></br>'+
+    '<input type="text" name="exchange_desc" value="" /></br>'+
+    '<input type="file" name="main_img"/></br>'+
     '<input type="file" name="imgs" multiple="multiple"></br>'+ 
     '<input type="submit" value="Upload file" />'+ 
     '</form>'+ 
@@ -209,7 +213,7 @@ function addInfo(fields, files, res){
       return res.json({error:'存储图片失败'});
     }
     else{
-      for (var i  in files.imgs) {
+      for (var i  in files.imgs) {//存储副图
         if(i > 2) break; //最多三张
         var file = files.imgs[i];
         if(file.originalFilename.length == 0){//没有上传图片
@@ -224,12 +228,24 @@ function addInfo(fields, files, res){
           str += (','+p);
         }
         fs.renameSync(file.path, filePath+uId+'/'+i+'.'+String(types[types.length-1]));
-      };
+      }
+      //存储主图
+      var main_img_path = '';
+      {
+          var file = files.main_img[0];
+          if(file.originalFilename.length != 0){//没有上传图片
+              var types = file.originalFilename.split('.');
+              var filename = 'main';
+              main_img_path = "imgs/card/"+uId+'/'+'main'+'.'+String(types[types.length-1]);
+              fs.renameSync(file.path, filePath+uId+'/'+'main'+'.'+String(types[types.length-1]));
+          }
+      }
+
       console.log('图片信息添加成功');
       console.log(str);
       //将路径和卡片信息存入数据库
-      var sql = 'insert into card(cardid, title, describes, price, logistic, category, brand, freight, exchange, owner, amount, pictures, longitude, latitude, ownername, card_no, exchange_desc) values';
-      sql = sql + '("'+uId+'","'+title+'","'+describes+'","'+price+'","'+logistic+'","'+category+'","'+brand+'","'+freight+'","'+exchange+'","'+owner+'","'+amount+'","'+str+'","'+longitude+'","'+latitude+'", "'+ ownername +'", "'+ card_no +'", "'+ exchange_desc +'")';
+      var sql = 'insert into card(cardid, title, describes, price, logistic, category, brand, freight, exchange, owner, amount, pictures, longitude, latitude, ownername, card_no, exchange_desc, main_img) values';
+      sql = sql + '("'+uId+'","'+title+'","'+describes+'","'+price+'","'+logistic+'","'+category+'","'+brand+'","'+freight+'","'+exchange+'","'+owner+'","'+amount+'","'+str+'","'+longitude+'","'+latitude+'", "'+ ownername +'", "'+ card_no +'", "'+ exchange_desc + '", "'+ main_img_path +'")';
       console.log(sql);
       Card.add(sql, function(err, user){
         if(err){
