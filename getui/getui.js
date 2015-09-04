@@ -19,7 +19,7 @@ var DEVICETOKEN = '455806063838d010aa6298fe988111b3e3ccbdf5e6a81ac5f08679bc924b1
 var gt = new GeTui(HOST, APPKEY, MASTERSECRET);
 
 
-function pushAPNMessageToList(title, body, extra, device_tokens) {
+function pushAPNMessageToList(title, body, device_tokens) {
    var template = new APNTemplate();
    var payload = new APNPayload();
    var alertMsg = new DictionaryAlertMsg();
@@ -46,6 +46,7 @@ function pushAPNMessageToList(title, body, extra, device_tokens) {
     gt.getAPNContentId(APPID, message, function(err, res) {
         var contentId = res;
         gt.pushAPNMessageToList(APPID, contentId, device_tokens || [DEVICETOKEN], function (err, res) {
+            console.log(title, body, device_tokens);
             console.log(res);
             //process.exit(0);
         });
@@ -79,6 +80,7 @@ function pushAPN(title, body, device_token) {
     var message = new SingleMessage();
     message.setData(template);
         gt.pushAPNMessageToSingle(APPID, device_token || DEVICETOKEN, message, function (err, res) {
+        console.log(title, body, device_token);
         console.log(res);
         //process.exit(0);
     });
@@ -92,7 +94,7 @@ exports.push = function(title, body, device_token){
 }
 
 //群推接口device_tokens 是数组, extra为json对象
-exports.pushToList = function(title, body, extra, device_tokens){
+exports.pushToList = function(title, body, device_tokens){
     gt.connect(function () {
         pushAPNMessageToList(title, body, device_tokens)
     })

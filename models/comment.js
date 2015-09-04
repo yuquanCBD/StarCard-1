@@ -1,6 +1,6 @@
 var mysql = require('./mysql');
 var Message = require('./message')
-var getui = require('../models/comment');
+var getui = require('../getui/getui');
 
 
 function Comment(comment){
