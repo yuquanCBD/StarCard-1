@@ -27,7 +27,7 @@ router.get('/test', function(req, res, next){
 
 router.get('/add', function(req, res, next){
 	if(req.session.starObj === undefined){
- 		return res.render('../public/404.html');
+ 		return res.render('card_manage/login.html');
   	};
   return res.render('news_manage/newsAdd.html');
 });
@@ -125,7 +125,7 @@ router.post('/update',function(req, res, next){
 /*    ----------- 消息推送 -------------   */
 router.get("/message", function(req, res, next){
 	if(req.session.starObj === undefined){
- 		return res.render('../public/404.html');
+ 		return res.render('card_manage/login.html');
   	};
 	return res.render("news_manage/message.html");
 })
@@ -142,7 +142,7 @@ router.post("/message",function(req, res, next){
 		console.log(device);
 		var obj = {content:content};
 		console.log(device,'  ,  ',obj);
-		getui.pushToList(title, obj);
+		getui.pushToList(title, content);
 		return res.render("news_manage/message.html");
 	})
 });
