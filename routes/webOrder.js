@@ -185,7 +185,7 @@ router.post('/tele', function(req, res, next){
 	var seller = req.body.seller;
 	//console.log("==========buyerid==========",buyer);
 	//console.log("==========sellerid===========",seller);
-	var buyerTele,sellerTele;
+	var buyerTele="",sellerTele="";
 	var sql1 = 'select * from user where userid = "'+seller+'"';
 	var sql2 = 'select * from manager where userid = "'+seller+'"';
 	var sql3 = 'select * from user where userid = "'+buyer+'"';
@@ -201,7 +201,9 @@ router.post('/tele', function(req, res, next){
 			}
 			else{
 				Order.exec(sqlB2, function(err,row4){
-					var buyerTele = row4[0].telephone;
+					var buyerTele = "";
+					if(row4.length > 0)
+						buyerTele = row4[0].telephone;
 					return res.json({buyerTele:buyerTele, sellerTele:sellerTele});
 				})
 			}
@@ -219,8 +221,8 @@ router.post('/tele', function(req, res, next){
 		}
 		else{
 			Order.exec(sql2, function(err, row2){
-				sellerTele = row2[0].telephone;
-				//console.log("==============manager==============",sellerTele);
+				if(row2.length > 0)
+					sellerTele = row2[0].telephone;
 				checkManger(sql3,sql4);
 			})
 		}
