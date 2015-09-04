@@ -30,6 +30,7 @@ User.get = function get(username, callback){
 			console.log(rows);
 			if (rows.length != 0) {
 				var user = new User(rows[0]);
+				conn.release();
 				callback(err,user);
 			}else
 				callback(err, null);

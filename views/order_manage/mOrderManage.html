@@ -351,7 +351,7 @@
 											<th class="hidden-480">运费</th>
 											<!-- <th class="hidden-480">卡片数</th>
 											<th class="hidden-480">消息</th> -->
-											<th class="hidden-480">订单类型</th>
+											<th class="hidden-480">交易时间</th>
 											<!-- <th class="hidden-480">地址id</th> -->
 											<!-- <th class="hidden-480">支付宝订单</th> -->
 											<!-- <th class="hidden-480">收货时间</th> -->
@@ -841,6 +841,13 @@
 
 		jQuery(document).ready(function() {     
 			function createTR(obj,index){
+				var date = new Date(obj.create_time);
+   				var year = date.getFullYear();
+   				var month = date.getMonth()+1;
+   				var day = date.getDate();
+   				var hour = date.getHours();
+   				var minute = date.getMinutes();
+   				var str = year+"-"+month+"-"+day+"   "+hour+":"+minute;
 				var tr = '<tr class="odd gradeX">'+
 					//'<td><input type="checkbox" class="checkboxes" value="1" name="checks"/></td>'+
 					'<td>'+index+'</td>'+
@@ -860,22 +867,18 @@
 				else{
 					tr += '<td>交易完成</td>'
 				};
-				// tr += '<td>'+obj.alipay_id+'</td>';
 
 				tr += '<td>'+obj.card_price+'</td><td>'+obj.logistic_price+'</td>';
 					
 
-				if(obj.ordertype == 1){
-					tr += '<td>现金购买</td>';
-				}
-				else{
-					tr += '<td>换卡申请</td>';
-				};	
-				// tr += 	'<td>'+obj.addr_id+'</td>'+
-				// 		'<td>'+obj.alipay_id+'</td>'+
-				// 		'<td>'+obj.receive_time+'</td>';
-					//'<td><a href="#" cardId="'+obj.cardId+'" onclick="beSure()">delete</a></td>'+
-				tr += '<td><button orderid="'+obj.orderid+'" cardid="'+obj.cardid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" create_time="'+obj.create_time+'" class="detailButton">详情</button></td>'+
+				// if(obj.ordertype == 1){
+				// 	tr += '<td>现金购买</td>';
+				// }
+				// else{
+				// 	tr += '<td>换卡申请</td>';
+				// };	
+				tr += "<td>"+str+"</td>";
+				tr += '<td><button orderid="'+obj.orderid+'" ordertype="'+obj.ordertype+'" cardid="'+obj.cardid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" create_time="'+obj.create_time+'" class="detailButton">详情</button></td>'+
 					'<td><button orderid="'+obj.orderid+'" class="deleteButton">删除</button></td>'+
 					'<td><button orderid="'+obj.orderid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" create_time="'+obj.create_time+'" class="updateButton">修改</button></td>'+
 
@@ -950,13 +953,15 @@
 			   				var message = tar.attr("message");
 			   				var addr_id = tar.attr("addr_id");
 			   				var create_time = tar.attr("create_time");
+			   				//var ordertype = tar.attr("ordertype");
+			   				var ordertype = tar.attr("ordertype") == 0 ? "换卡申请" : "现金购买";
 			   				//var cardid = $(tds[1]).text();
 			   				var seller = $(tds[2]).text();
 			   				var buyer = $(tds[3]).text();
 			   				var status = $(tds[4]).text();
 			   				var card_price = $(tds[5]).text();
 			   				var logistic_price = $(tds[6]).text();
-			   				var ordertype = $(tds[7]).text();
+			   				//var ordertype = $(tds[7]).text();
 			   				$("input#orderidD").attr({value:orderid});
 			   				$("input#logisticD").attr({value:logistic});
 			   				$("input#logistic_noD").attr({value:logistic_no});

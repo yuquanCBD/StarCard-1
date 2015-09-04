@@ -257,10 +257,10 @@
 
 					<ul class="sub-menu">
 						<li class="">
-							<a href="/webWiki/add">新闻增加</a>
+							<a href="/kindeditor/nodejs/newsAdd.html">新闻增加</a>
 						</li>
 						<li>
-							<a href="/webWiki/query">新闻查询、删除、修改</a>
+							<a href="/kindeditor/nodejs/newsManage.html">新闻查询、删除、修改</a>
 						</li>
 					</ul>
 
@@ -540,7 +540,9 @@
 		   $('#messageAdd').click(function(e){
 		   		var title = $("input#title").val();
 		   		var content = $("#content").val();
-		   		alert(title+'    ,     '+content);
+		   		if(title === undefined || content === undefined){
+		   			return false;
+		   		}
 		   		if(confirm('是否需要添加？')){
 		   			return true;
 		   		}

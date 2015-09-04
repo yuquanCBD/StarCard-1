@@ -28,13 +28,11 @@ router.get('/test', function(req, res, next){
 router.get('/add', function(req, res, next){
 	if(req.session.starObj === undefined){
  		return res.render('card_manage/login.html');
-  };
+  	};
   return res.render('news_manage/newsAdd.html');
 });
 
 router.post('/add',function(req, res, next){
-	// var content = req.body.content;
-	// console.log("%%%$$$$$%%%%%$$$$%%%$$$",req.body.content);
 	var title = req.body.title;
 	var source = req.body.source;
 	var create_time = req.body.create_time;
@@ -50,9 +48,6 @@ router.post('/add',function(req, res, next){
 });
 //添加信息
 function addInfo(fields, files, res){
-  var imgurl = "";
-  console.log("文件：&&&&&&&&&&",files);
-  
   //存储图片，得到图片的路径信息
   var filePath = path.join(__dirname, '../public/imgs/news/');
   for (var i  in files.imgFile){
@@ -81,14 +76,62 @@ router.post("/uploadImg", function(req, res, next){
 	});
 	//return res.json({error:0,url:"/imgs/news/f19fe650-51ef-11e5-aa63-171f08a47137/0.jpg"});
 });
+//获取列表
+router.get('/getlist',function(req, res, next){
+	News.getlist(function(err, rows){
+		if(err){
+			return res.json({error:"error"});
+		}
+		return res.json(rows);
+	});
+});
+//根据新闻id删除新闻
+router.get('/delete',function(req, res, next){
+	if(req.session.starObj === undefined){
+ 		return res.json({error:"error"});
+  	};
+	var news_id = req.query.news_id;
+	News.delete(news_id, function(err,rows){
+		if(err){
+			return res.json({error:"error"});
+		}
+		else{
+			return res.json({success:"success"});
+		}
+	});
+});
+//根据新闻id更新信息
+router.post('/update',function(req, res, next){
+	var news_id = req.body.news_id;
+	var title = req.body.title;
+	var source = req.body.source;
+	var create_time = req.body.create_time;
+	var content = req.body.content;
+	var obj = {news_id:news_id, title:title, source:source, create_time:create_time, content:content};
+	News.update(obj, function(err, rows){
+		if(err){
+			return res.json({"err":"修改信息错误"});
+		}
+		else{
+			return res.render("../public/kindeditor/nodejs/newsManage.html");
+		}
+	});
+})
 
+
+
+
+
+/*    ----------- 消息推送 -------------   */
 router.get("/message", function(req, res, next){
+	if(req.session.starObj === undefined){
+ 		return res.render('card_manage/login.html');
+  	};
 	return res.render("news_manage/message.html");
 })
 router.post("/message",function(req, res, next){
 	var title = req.body.title;
 	var content = req.body.content;
-	console.log("#######content:",content,'   $$$$$$$$$$title:',title);
 	User.getDevice_token(function(err, rows){
 		
 		var device = [];

@@ -77,7 +77,7 @@
 
 				<a href="/query" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
 
-				<img src="media/image/menu-toggler.png" alt="" />
+				<img src="/webNews/media/image/menu-toggler.png" alt="" />
 
 				</a>          
 
@@ -260,10 +260,31 @@
 
 					<ul class="sub-menu">
 						<li class="active">
-							<a href="/webWiki/add">新闻增加</a>
+							<a href="/kindeditor/nodejs/newsAdd.html">新闻增加</a>
 						</li>
 						<li>
-							<a href="/webWiki/query">新闻查询、删除、修改</a>
+							<a href="/kindeditor/nodejs/newsManage.html">新闻查询、删除、修改</a>
+						</li>
+					</ul>
+
+				</li>
+				<li class="">
+
+					<a href="javascript:;">
+
+						<i class="icon-table"></i> 
+
+						<span class="title">消息推送</span>
+
+						<!-- <span class="selected"></span> -->
+
+						<span class="arrow open"></span>
+
+					</a>
+
+					<ul class="sub-menu">
+						<li class="">
+							<a href="/webNews/message">消息推送</a>
 						</li>
 					</ul>
 
@@ -396,7 +417,7 @@
 
 													<div class="controls">
 
-														<input id="create_time" type="text"  class="m-wrap medium" name="create_time" value="2015-09-01 09:20:17" />
+														<input id="create_time" type="text"  class="m-wrap medium" name="create_time"/>
 														
 														<span class="help-inline">(形如"2015-09-01 09:20:17" 或者 "2015-09-01 09:20")</span>
 
@@ -409,7 +430,7 @@
 
 													<div class="controls">
 
-														<textarea id="editor" name="content" style="width:400px;height:300px;">
+														<textarea id="editor" name="content" style="width:700px;height:400px;">
         													
     													</textarea>
 
@@ -525,42 +546,11 @@
 	      });
 
 		jQuery(document).ready(function() {   
-			function Ajax(url, obj){
-				console.log(url);
-				console.log(obj);
-				$.ajax({
-			   		type : 'POST',
-			   		url : url,
-			   		data : obj,
-			   		dataType : 'json',
-			   		cache : false,
-			   		success : function(data){
-			   			console.log(data);
-			   			if(data.success === true){
-			   				$("#usernameCheck").text(obj.username+"已经存在");
-			   				$("input#username").attr("flag",1);
-			   			}
-			   			if(data.error !== undefined){
-			   				$("#usernameCheck").text(data.error);
-			   				$("input#username").attr("flag",2);
-			   			}
-			   			if(data.success === false && data.error === undefined)
-			   			{
-			   				$("#usernameCheck").text("");
-			   				$("input#username").attr("flag",0); //flag为0表示可以插入数据库
-			   			}
-			   			
-			   		},
-			   		error : function(){
-			   			alert('检查用户名信息失败');
-			   		}
-		   		});
-			};
+			
 		   // initiate layout and plugins
 		   $('#newsAdd').click(function(e){
 		   		if(confirm('是否需要添加？')){
 		   			KindEditor.sync('#editor');
-		   			alert($('#editor').val());
 		   			return true;
 		   		}
 		   		else{
