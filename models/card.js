@@ -128,7 +128,7 @@ Card.queryByID = function(cardid, callback){
 		conn.query(sql, function(err, rows){
 			if (err) 
 				callback(err);
-			callback(err, rows[0]);
+			callback(err, rows);
 			conn.release();
 		});
 	});

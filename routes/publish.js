@@ -7,6 +7,7 @@ var User = require('../models/user');
 var path = require('path');
 var fs = require('fs');
 var exec = require('child_process').exec;
+var crypto = require('crypto');
 
 router.get('/', function(req, res, next){
 console.log("Request handler 'start' was called."); 
@@ -189,7 +190,7 @@ function updateInfo(fields, files, res){
 //增加卡片信息函数
 function addInfo(fields, files, res){
   var str = "";
-  var uId = uuid.v1();
+  var uId = crypto.randomBytes(16).toString('hex');//生成32位随机字符串
   var title = fields.title[0];
   var price = fields.price[0];
   var amount = fields.amount[0];
