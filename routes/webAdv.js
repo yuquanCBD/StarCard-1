@@ -55,8 +55,9 @@ function addInfoNew(fields, files, res){
         var date = new Date();
         var str = String(date.getTime());
         imgurl = "/imgs/adv/"+str+'.'+String(types[types.length-1]);
+        console.log(file);
         fs.renameSync(file.path, filePath+str+'.'+String(types[types.length-1]));
-      };
+  }
    return res.json({error:0,url:imgurl});
 };
 //添加广告信息

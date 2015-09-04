@@ -45,7 +45,7 @@ User.login = function(username, device_token, callback){
 		if (err) 
 			callback(err);
 
-		var sql = 'SELECT userid, username, password, score FROM user WHERE username = "' + username +'"';
+		var sql = 'SELECT userid, username, password, score, device_token FROM user WHERE username = "' + username +'"';
 		console.log(sql);
 		conn.query(sql, function(err, rows){
 			if(err)

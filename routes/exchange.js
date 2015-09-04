@@ -149,7 +149,7 @@ function addInfo(fields, files, res){
       console.log('图片信息添加成功', str);
       //将路径和卡片信息存入数据库
 
-      Exchange.addExchange(uId, buserid, scardid, suserid, describes, card_pic, card_name, card_desc, str,function(err, results){
+      Exchange.addExchange(uId, buserid, scardid, suserid, describes, card_pic, card_name, card_desc, str, function(err, results){
           if(err)
               return res.json({error : err});
           return res.json({success : '交换申请提交成功'});

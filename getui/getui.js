@@ -20,6 +20,7 @@ var gt = new GeTui(HOST, APPKEY, MASTERSECRET);
 
 
 function pushAPNMessageToList(title, body, device_tokens) {
+
    var template = new APNTemplate();
    var payload = new APNPayload();
    var alertMsg = new DictionaryAlertMsg();
@@ -87,13 +88,16 @@ function pushAPN(title, body, device_token) {
 
 //单推接口
 exports.push = function(title, body, device_token){
+    if(typeof(device_token) == 'undefined' || device_token == '') return;
+
     gt.connect(function () {
-        pushAPN(title, body);
+        pushAPN(title, body, device_token);
     })
 }
 
 //群推接口device_tokens 是数组, extra为json对象
 exports.pushToList = function(title, body, device_tokens){
+    if(typeof(device_tokens) == 'undefined' || device_tokens.length == 0) return;
     gt.connect(function () {
         pushAPNMessageToList(title, body, device_tokens)
     })
