@@ -282,6 +282,9 @@
 						<li class="">
 							<a href="/webNews/message">消息推送</a>
 						</li>
+						<li class="">
+							<a href="/webNews/messagelist">消息管理</a>
+						</li>
 					</ul>
 
 				</li>
@@ -454,7 +457,7 @@
 
 													<div class="controls">
 
-														<input type="text" class="m-wrap medium" name="email" />
+														<input id="email" type="text" class="m-wrap medium" name="email" />
 
 <!-- 														<span class="help-inline">单位/个</span> -->
 
@@ -467,7 +470,7 @@
 
 													<div class="controls">
 
-														<input type="text" class="m-wrap medium" name="telephone" />
+														<input id="telephone" type="text" class="m-wrap medium" name="telephone" />
 
 <!-- 														<span class="help-inline">单位/个</span> -->
 
@@ -493,7 +496,7 @@
 
 													<div class="controls">
 
-														<input type="text" class="m-wrap medium" name="score" />
+														<input id="score" type="text" class="m-wrap medium" name="score" />
 
 														<span class="help-inline">(数字)</span>
 
@@ -677,6 +680,15 @@
 		   		var password1 = $('input#password1').attr("value");
 		   		var password2 = $('input#password2').attr("value");
 		   		var IDCardNo = $("input#cardNo").attr("value");
+		   		var username = $('input#username').attr('value');
+				var email = $('input#email').attr('value');
+				var telephone = $('input#telephone').attr('value');
+				var score = $('input#score').attr('value');
+				//var describes = $('#describes').attr('value');
+				if(!password1 || !password2 || !IDCardNo || !username || !email || !telephone || !score){
+		   			alert("请完整输入信息");
+		   			return false;
+		   		}
 		   		if(password1 !== password2 && password1 !== ""){
 		   			alert("密码输入不一致");
 		   			$('input#password1').attr("value","");

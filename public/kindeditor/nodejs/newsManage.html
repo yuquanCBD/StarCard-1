@@ -298,6 +298,9 @@
 						<li class="">
 							<a href="/webNews/message">消息推送</a>
 						</li>
+						<li class="">
+							<a href="/webNews/messagelist">消息管理</a>
+						</li>
 					</ul>
 
 				</li>
@@ -417,7 +420,7 @@
 											<th class="hidden-480">标题</th>
 											<th class="hidden-480">来源</th>
 											<th class="hidden-480">发表时间</th>
-											<!-- <th class="hidden-480">删除</th> -->
+											<th class="hidden-480">删除</th>
 											<th class="hidden-480">修改</th>
 										</tr>
 
@@ -513,12 +516,11 @@
 
 														<input id="source" type="text"  class="m-wrap medium" name="source" />
 														
-														<!-- <span class="help-inline">Some hint here</span> -->
 
 													</div>
 
 												</div>
-												<div class="control-group">
+												<!-- <div class="control-group">
 
 													<label class="control-label">新闻发表时间:</label>
 
@@ -530,7 +532,7 @@
 
 													</div>
 
-												</div>
+												</div> -->
 												<div class="control-group">
 
 													<label class="control-label">新闻正文:</label>
@@ -682,21 +684,20 @@
 					'<td>'+obj.title+'</td>'+
 					'<td>'+obj.source+'</td>'+
 					'<td>'+str+'</td>'+
+					'<td><button news_id="'+obj.news_id+'" class="deleteButton">删除</button></td>'+
 					"<td><button news_id='"+obj.news_id+"' index='"+index+"' class='updateButton'>修改</button></td></tr>";
 				return tr;
 			};
-			function getAjax(url){
+			function postAjax(url,data){
 				console.log(url);
 				$.ajax({
-			   		type : 'GET',
+			   		type : 'POST',
 			   		url : url,
+			   		data:data,
 			   		dataType : 'json',
 			   		cache : false,
 			   		success : function(data){
 			   			var evalData = eval(data);
-			   			if(evalData.error != undefined){
-			   				window.location.href='/404.html';
-			   			}
 			   			location.reload();
 			   		},
 			   		error : function(){
@@ -721,7 +722,7 @@
 			   				if(confirm('是否需要删除?')){
 			   					var cid = $(e.target).attr('news_id');
 			   					console.log(cid);
-			   					getAjax('/webNews/delete?news_id='+cid);
+			   					postAjax('/webNews/delete',{news_id:cid});
 			   				}
 			   			});
 			   			/*index  username  gender  email  telephone  score  IDCardNo*/
@@ -741,7 +742,7 @@
 				   				var str = year+"-"+month+"-"+day+"   "+hour+":"+minute+":"+second;
 			   					$('input#news_id').attr('value',obj.news_id);
 			   					$('input#title').attr('value',obj.title);
-			   					$('input#create_time').attr('value',str);
+			   					//$('input#create_time').attr('value',str);
 			   					$('input#source').attr('value',obj.source);
 			   					//$('#editor').attr('value',obj.content);
 			   					editor.html(obj.content);
@@ -758,6 +759,15 @@
 			}
 		 	query();
 		 	$('#newsUpdate').click(function(e){
+		 		KindEditor.sync('#editor');
+		   		var title = $("input#title").val();
+		   		var source = $("input#source").val();
+		   		var editor = $("#editor").val();
+		   		//console.log(title,'   ',source,'    ',editor);
+		   		if(!title || !source || !editor){
+		   			alert("请完整输入信息");
+		   			return false;
+		   		}
 				if(confirm('是否确认修改信息?')){
 					KindEditor.sync('#editor');
 					return true;

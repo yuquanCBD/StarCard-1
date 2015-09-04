@@ -286,6 +286,9 @@
 						<li class="">
 							<a href="/webNews/message">消息推送</a>
 						</li>
+						<li class="">
+							<a href="/webNews/messagelist">消息管理</a>
+						</li>
 					</ul>
 
 				</li>
@@ -435,7 +438,7 @@
 													</div>
 
 												</div>
-												<div class="control-group">
+												<!-- <div class="control-group">
 
 													<label class="control-label">新闻发表时间:</label>
 
@@ -447,7 +450,7 @@
 
 													</div>
 
-												</div>
+												</div> -->
 												<div class="control-group">
 
 													<label class="control-label">新闻正文</label>
@@ -573,6 +576,15 @@
 			
 		   // initiate layout and plugins
 		   $('#newsAdd').click(function(e){
+		   		KindEditor.sync('#editor');
+		   		var title = $("input#title").val();
+		   		var source = $("input#source").val();
+		   		var editor = $("#editor").val();
+		   		//console.log(title,'   ',source,'    ',editor);
+		   		if(!title || !source || !editor){
+		   			alert("请完整输入信息");
+		   			return false;
+		   		}
 		   		if(confirm('是否需要添加？')){
 		   			KindEditor.sync('#editor');
 		   			return true;

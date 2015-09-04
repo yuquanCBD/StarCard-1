@@ -280,6 +280,9 @@
 						<li class="">
 							<a href="/webNews/message">消息推送</a>
 						</li>
+						<li class="">
+							<a href="/webNews/messagelist">消息管理</a>
+						</li>
 					</ul>
 
 				</li>
@@ -409,7 +412,7 @@
 
 													<div class="controls">
 
-														<input type="text" class="m-wrap meduium" name="title" />
+														<input id="title" type="text" class="m-wrap meduium" name="title" />
 
 														<!-- <span class="help-inline">Some hint here</span> -->
 
@@ -423,7 +426,7 @@
 
 													<div class="controls">
 
-														<input type="text"  class="m-wrap medium" name="price" />
+														<input id="price" type="text"  class="m-wrap medium" name="price" />
 														<span class="help-inline">单位/元</span>
 														<!-- <span class="help-inline">Some hint here</span> -->
 
@@ -437,7 +440,7 @@
 
 													<div class="controls">
 
-														<input type="text" class="m-wrap medium" name="amount" />
+														<input id="amount" type="text" class="m-wrap medium" name="amount" />
 
 														<span class="help-inline">单位/个</span>
 
@@ -515,35 +518,13 @@
 
 													<div class="controls">
 
-														<input type="text"  class="m-wrap medium" name="freight" />
+														<input id="freight" type="text"  class="m-wrap medium" name="freight" />
 
 														<span class="help-inline">单位/元</span>
 
 													</div>
 
 												</div>
-
-												<!-- <div class="control-group">
-
-													<label class="control-label">Large Dropdown</label>
-
-													<div class="controls">
-
-														<select class="large m-wrap" tabindex="1">
-
-															<option value="Category 1">Category 1</option>
-
-															<option value="Category 2">Category 2</option>
-
-															<option value="Category 3">Category 5</option>
-
-															<option value="Category 4">Category 4</option>
-
-														</select>
-
-													</div>
-
-												</div> -->
 
 												<div class="control-group">
 
@@ -675,7 +656,7 @@
 
 													<div class="controls">
 
-														<textarea name="describes" class="large m-wrap" rows="3" placeholder="少于50字"></textarea>
+														<textarea id="describes" name="describes" class="large m-wrap" rows="3" placeholder="少于50字"></textarea>
 
 													</div>
 
@@ -1019,6 +1000,20 @@
 
 		   // initiate layout and plugins
 		   $('#cardAdd').click(function(e){
+		   		var title = $("input#title").attr("value");
+		   		var price = $("input#price").attr("value");
+		   		var amount = $("input#amount").attr("value");
+		   		var freight = $("input#freight").attr("value");
+		   		var describes = $("#describes").val();
+		   		if(!title || !price || !amount || !freight || !describes ){
+		   			alert("请完整输入信息");
+		   			$("input#title").attr("value","");
+			   		$("input#price").attr("value","");
+			   		$("input#amount").attr("value","");
+			   		$("input#freight").attr("value","");
+			   		$("#describes").attr("value","");
+		   			return false;
+		   		}
 		   		if(confirm('是否需要添加？')){
 		   			return true;
 		   		}

@@ -35,9 +35,9 @@ router.get('/add', function(req, res, next){
 router.post('/add',function(req, res, next){
 	var title = req.body.title;
 	var source = req.body.source;
-	var create_time = req.body.create_time;
+	//var create_time = req.body.create_time;
 	var content = req.body.content;
-	var obj = {title:title, source:source, create_time:create_time, content:content};
+	var obj = {title:title, source:source, content:content};
 	News.add(obj, function(err, r){
 		if(err){
 			return res.json({error:"数据库操作错误"});
@@ -90,7 +90,22 @@ router.get('/delete',function(req, res, next){
 	if(req.session.starObj === undefined){
  		return res.json({error:"error"});
   	};
+
 	var news_id = req.query.news_id;
+	console.log("%%%%%%%%%%%%%%%:",news_id);
+	News.delete(news_id, function(err,rows){
+		if(err){
+			return res.json({error:"error"});
+		}
+		else{
+			return res.json({success:"success"});
+		}
+	});
+});
+//根据新闻id删除新闻
+router.post('/delete',function(req, res, next){
+	var news_id = req.body.news_id;
+	console.log("%%%%%%%%%%%%%%%:",news_id);
 	News.delete(news_id, function(err,rows){
 		if(err){
 			return res.json({error:"error"});
@@ -105,9 +120,9 @@ router.post('/update',function(req, res, next){
 	var news_id = req.body.news_id;
 	var title = req.body.title;
 	var source = req.body.source;
-	var create_time = req.body.create_time;
+	//var create_time = req.body.create_time;
 	var content = req.body.content;
-	var obj = {news_id:news_id, title:title, source:source, create_time:create_time, content:content};
+	var obj = {news_id:news_id, title:title, source:source, content:content};
 	News.update(obj, function(err, rows){
 		if(err){
 			return res.json({"err":"修改信息错误"});
@@ -128,25 +143,55 @@ router.get("/message", function(req, res, next){
  		return res.render('card_manage/login.html');
   	};
 	return res.render("news_manage/message.html");
-})
+});
+router.get("/messagelist", function(req, res, next){
+	if(req.session.starObj === undefined){
+ 		return res.render('card_manage/login.html');
+  	};
+	return res.render("news_manage/messageManage.html");
+});
+
 router.post("/message",function(req, res, next){
 	var title = req.body.title;
 	var content = req.body.content;
-	User.getDevice_token(function(err, rows){
-		
-		var device = [];
-		for (var i = 0; i < rows.length; i++) {
-			if(rows[i].device_token != '')
-				device.push(rows[i].device_token);
-		};
-		console.log(device);
-		var obj = {content:content};
-		console.log(device,'  ,  ',obj);
-		getui.pushToList(title, content);
-		return res.render("news_manage/message.html");
-	})
+	News.addMessage({title:title, content:content}, function(err, r){
+		if(err){
+			return res.json({error:"消息存储失败"});
+		}
+		User.getDevice_token(function(err, rows){
+			var device = [];
+			for (var i = 0; i < rows.length; i++) {
+				if(rows[i].device_token != '')
+					device.push(rows[i].device_token);
+			};
+			console.log(device);
+			var obj = {content:content};
+			console.log(device,'  ,  ',obj);
+			getui.pushToList(title, content);
+			return res.render("news_manage/message.html");
+		});
+	});
+	
 });
 
-
+//获取列表
+router.get('/getlistMessage',function(req, res, next){
+	News.getlistMessage(function(err, rows){
+		if(err){
+			return res.json({error:"error"});
+		}
+		return res.json(rows);
+	});
+});
+//deleteMessage
+router.post('/deletemessage', function(req, res, next){
+	var message_id = req.body.message_id;
+	News.deleteMessage(message_id, function(err, r){
+		if(err){
+			return res.json({error:"error"});
+		}
+		return res.json({success:"success"});
+	})
+});
 
 module.exports = router;
