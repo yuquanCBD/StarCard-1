@@ -698,8 +698,8 @@
 			}
 			function query(){
 				$.ajax({
-			   		type : 'GET',
-			   		url : '/webAdv/getlist',
+			   		type : 'POST',
+			   		url : '/webAdv/list',
 			   		dataType : 'json',
 			   		cache : false,
 			   		success : function(data){

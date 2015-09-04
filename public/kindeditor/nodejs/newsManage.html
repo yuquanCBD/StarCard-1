@@ -417,7 +417,7 @@
 											<th class="hidden-480">标题</th>
 											<th class="hidden-480">来源</th>
 											<th class="hidden-480">发表时间</th>
-											<th class="hidden-480">删除</th>
+											<!-- <th class="hidden-480">删除</th> -->
 											<th class="hidden-480">修改</th>
 										</tr>
 
@@ -682,7 +682,6 @@
 					'<td>'+obj.title+'</td>'+
 					'<td>'+obj.source+'</td>'+
 					'<td>'+str+'</td>'+
-					'<td><button news_id="'+obj.news_id+'" class="deleteButton">删除</button></td>'+
 					"<td><button news_id='"+obj.news_id+"' index='"+index+"' class='updateButton'>修改</button></td></tr>";
 				return tr;
 			};
