@@ -294,6 +294,9 @@
 						<li class="">
 							<a href="/webNews/message">消息推送</a>
 						</li>
+						<li class="">
+							<a href="/webNews/messagelist">消息管理</a>
+						</li>
 					</ul>
 
 				</li>
@@ -559,7 +562,7 @@
 
 														<input id='IDCardNo' type="text" class="m-wrap medium" name="IDCardNo" />
 
-														<span class="help-inline">(X直接输入大写"X")</span>
+														<span class="help-inline">(身份证最后一位为x的输入后五位的前四位)</span>
 
 													</div>
 
@@ -888,6 +891,16 @@
 			}
 		 	query();
 		 	$('#updateSubmit').click(function(e){
+		 		var IDCardNo = $("input#IDCardNo").attr("value");
+		   		//var username = $('input#username').attr('value');
+				var email = $('input#email').attr('value');
+				var telephone = $('input#telephone').attr('value');
+				var score = $('input#score').attr('value');
+				console.log(IDCardNo,',',email,',',telephone,',',score);
+				if(!IDCardNo || !email || !telephone || !score){
+		   			alert("请完整输入信息");
+		   			return false;
+		   		}
 				if(confirm('是否确认修改信息?')){
 					return true;
 				}

@@ -295,6 +295,9 @@
 						<li class="">
 							<a href="/webNews/message">消息推送</a>
 						</li>
+						<li class="">
+							<a href="/webNews/messagelist">消息管理</a>
+						</li>
 					</ul>
 
 				</li>
@@ -1355,7 +1358,17 @@
 				});
 			});
 			$('#updateSubmit').click(function(e){
+				var title = $('input#title').attr('value');
+				var price = $('input#price').attr('value');
+				var amount = $('input#amount').attr('value');
+				var freight = $('input#freight').attr('value');
+				var describes = $('#describes').attr('value');
+				if(!title || !price || !amount || !freight || !describes ){
+		   			alert("请完整输入信息");
+		   			return false;
+		   		}
 				if(confirm('是否确认修改信息?')){
+
 					return true;
 				}
 				else{

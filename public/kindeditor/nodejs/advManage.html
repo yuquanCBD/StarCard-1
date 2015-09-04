@@ -298,6 +298,9 @@
 						<li class="">
 							<a href="/webNews/message">消息推送</a>
 						</li>
+						<li class="">
+							<a href="/webNews/messagelist">消息管理</a>
+						</li>
 					</ul>
 
 				</li>
@@ -753,6 +756,13 @@
 			}
 		 	query();
 		 	$('#advUpdate').click(function(e){
+		 		KindEditor.sync('#editor');
+		   		var title = $("input#title").val();
+		   		var editor = $("#editor").val();
+		   		if(!title || !editor){
+		   			alert("请完整输入标题和新闻正文!");
+		   			return false;
+		   		}
 				if(confirm('是否确认修改信息?')){
 					KindEditor.sync('#editor');
 					return true;

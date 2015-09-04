@@ -281,6 +281,9 @@
 						<li class="">
 							<a href="/webNews/message">消息推送</a>
 						</li>
+						<li class="">
+							<a href="/webNews/messagelist">消息管理</a>
+						</li>
 					</ul>
 
 				</li>
@@ -415,7 +418,7 @@
 
 													<div class="controls">
 
-														<input type="text" class="m-wrap meduium" name="wikiname" />
+														<input id="wikiname" type="text" class="m-wrap meduium" name="wikiname" />
 
 														<!-- <span class="help-inline">Some hint here</span> -->
 
@@ -428,7 +431,7 @@
 
 													<div class="controls">
 
-														<input type="text" class="m-wrap meduium" name="english_name" />
+														<input id="english_name" type="text" class="m-wrap meduium" name="english_name" />
 													</div>
 
 												</div>
@@ -482,7 +485,7 @@
 
 													<div class="controls">
 
-														<input type="text"  class="m-wrap medium" name="series" />
+														<input id="series" type="text"  class="m-wrap medium" name="series" />
 													</div>
 
 												</div>
@@ -493,7 +496,7 @@
 
 													<div class="controls">
 
-														<input type="text" class="m-wrap medium" name="serial_number" />
+														<input id="series_number" type="text" class="m-wrap medium" name="serial_number" />
 
 														<span class="help-inline">(只接受数字)</span>
 
@@ -507,7 +510,7 @@
 
 													<div class="controls">
 
-														<input type="text"  class="m-wrap large" name="rarity" />
+														<input id="rarity" type="text"  class="m-wrap large" name="rarity" />
 													</div>
 
 												</div>
@@ -518,7 +521,7 @@
 
 													<div class="controls">
 
-														<input type="text"  class="m-wrap medium" name="price" />
+														<input id="price" type="text"  class="m-wrap medium" name="price" />
 
 														<span class="help-inline">单位/元</span>
 
@@ -549,7 +552,7 @@
 
 													<div class="controls">
 
-														<textarea name="describes" class="large m-wrap" rows="3" placeholder="少于100字"></textarea>
+														<textarea id="describes" name="describes" class="large m-wrap" rows="3" placeholder="少于100字"></textarea>
 
 													</div>
 
@@ -671,6 +674,17 @@
 
 		   // initiate layout and plugins
 		   $('#cardAdd').click(function(e){
+		   		var wikiname = $("input#wikiname").attr("value");
+				var english_name = $("input#english_name").attr("value");
+				var series = $("input#series").attr("value");
+				var series_number = $("input#series_number").attr("value");
+				var rarity = $("input#rarity").attr("value");
+				var price = $("input#price").attr("value");
+				var describes = $("#describes").attr("value");
+				if(!wikiname || !english_name || !series || !series_number || !rarity || !price || !describes){
+					alert("请完整输入信息");
+					 return false;
+				}
 		   		if(confirm('是否需要添加？')){
 		   			return true;
 		   		}

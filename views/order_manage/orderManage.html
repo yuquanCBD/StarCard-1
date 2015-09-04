@@ -292,6 +292,9 @@
 						<li class="">
 							<a href="/webNews/message">消息推送</a>
 						</li>
+						<li class="">
+							<a href="/webNews/messagelist">消息管理</a>
+						</li>
 					</ul>
 
 				</li>
@@ -437,6 +440,7 @@
 											<th class="hidden-480">消息</th> -->
 											<!-- <th class="hidden-480">订单类型</th> -->
 											<th class="hidden-480">交易时间</th>
+											<th class="hidden-480">打款</th>
 											<!-- <th class="hidden-480">地址id</th> -->
 											<!-- <th class="hidden-480">支付宝订单</th> -->
 											<!-- <th class="hidden-480">收货时间</th> -->
@@ -985,7 +989,13 @@
 				// else{
 				// 	tr += '<td>换卡申请</td>';
 				// };
-				tr += '<td>'+str+'</td>';	
+				tr += '<td>'+str+'</td>';
+				if(obj.paid_tag == 1){
+					tr += '<td>已打款</td>';
+				}
+				else{
+					tr += '<td>未打款</td>';
+				};	
 				// tr += 	'<td>'+obj.addr_id+'</td>'+
 				// 		'<td>'+obj.alipay_id+'</td>'+
 				// 		'<td>'+obj.receive_time+'</td>';
@@ -1219,6 +1229,14 @@
 			}
 		 	query();
 		 	$('#updateSubmit').click(function(e){
+		 		//card_price,logistic_price,card_num
+		 		var card_price = $("input#card_price").attr("value");
+		 		var logistic_price = $("input#logistic_price").attr("value");
+		 		var card_num = $("input#card_num").attr("value");
+		 		if(!card_num || !card_price || !logistic_price){
+		 			alert("请输入完整信息");
+		 			return false;
+		 		}
 				if(confirm('是否确认修改信息?')){
 					$('input#orderid').removeAttr('disabled');
 					return true;

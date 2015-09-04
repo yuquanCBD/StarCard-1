@@ -293,6 +293,9 @@
 						<li class="">
 							<a href="/webNews/message">消息推送</a>
 						</li>
+						<li class="">
+							<a href="/webNews/messagelist">消息管理</a>
+						</li>
 					</ul>
 
 				</li>
@@ -1187,6 +1190,17 @@
 			}
 		 	query();
 		 	$('#updateSubmit').click(function(e){
+		 		var wikiname = $("input#wikiname").attr("value");
+				var english_name = $("input#english_name").attr("value");
+				var series = $("input#series").attr("value");
+				var series_number = $("input#series_number").attr("value");
+				var rarity = $("input#rarity").attr("value");
+				var price = $("input#price").attr("value");
+				var describes = $("#describes").attr("value");
+				if(!wikiname || !english_name || !series || !series_number || !rarity || !price || !describes){
+					alert("请完整输入信息");
+					 return false;
+				}
 				if(confirm('是否确认修改信息?')){
 					$('input#wikiid').removeAttr('disabled');
 					return true;

@@ -295,6 +295,9 @@
 						<li class="">
 							<a href="/webNews/message">消息推送</a>
 						</li>
+						<li class="">
+							<a href="/webNews/messagelist">消息管理</a>
+						</li>
 					</ul>
 
 				</li>
@@ -725,7 +728,7 @@
 
 													<div class="controls">
 
-														<input type="text" class="m-wrap medium" name="email" />
+														<input id="emailC" type="text" class="m-wrap medium" name="email" />
 
 <!-- 														<span class="help-inline">单位/个</span> -->
 
@@ -738,7 +741,7 @@
 
 													<div class="controls">
 
-														<input type="text" class="m-wrap medium" name="telephone" />
+														<input id="telephoneC" type="text" class="m-wrap medium" name="telephone" />
 
 <!-- 														<span class="help-inline">单位/个</span> -->
 
@@ -1074,12 +1077,6 @@
 			   					else{
 			   						$('#userImg').append('<span class="help-inline">没有图片</span>');
 			   					}
-			   					
-			   					
-			   					
-			   					//updateAjax('update',{flag:'hahhahah'});
-			   					// var tds = tr.getElementsByTagName('td');
-			   					// console.log(tds.length);
 			   				}
 			   			})
 			   			App.init();
@@ -1093,6 +1090,13 @@
 			}
 		 	query();
 		 	$('#updateSubmit').click(function(e){
+		 		var IDCardNo = $("input#IDCardNo").attr("value");
+				var email = $('input#email').attr('value');
+				var telephone = $('input#telephone').attr('value');
+				if(!IDCardNo || !email || !telephone){
+		   			alert("请完整输入信息");
+		   			return false;
+		   		}
 				if(confirm('是否确认修改信息?')){
 					return true;
 				}
@@ -1152,6 +1156,15 @@
 		   		var password1 = $('input#password1C').attr("value");
 		   		var password2 = $('input#password2C').attr("value");
 		   		var IDCardNo = $("input#IDCardNoC").attr("value");
+		   		var username = $('input#usernameC').attr('value');
+				var email = $('input#emailC').attr('value');
+				var telephone = $('input#telephoneC').attr('value');
+				//var score = $('input#scoreC').attr('value');
+				//var describes = $('#describes').attr('value');
+				if(!password1 || !password2 || !IDCardNo || !username || !email || !telephone){
+		   			alert("请完整输入信息");
+		   			return false;
+		   		}
 		   		if(password1 !== password2 && password1 !== ""){
 		   			alert("密码输入不一致");
 		   			$('input#password1C').attr("value","");
