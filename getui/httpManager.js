@@ -27,7 +27,7 @@ var httpManager = {
         if (needGzip) {
             options.gzip = true;
             options.headers['Content-Encoding'] = 'gzip';
-            postData = zlib.gzipSync(JSON.stringify(postData));
+            postData = JSON.stringify(postData);
         } else {
             options.json = true;
         }
