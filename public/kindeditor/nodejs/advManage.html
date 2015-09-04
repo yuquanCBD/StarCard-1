@@ -256,7 +256,7 @@
 
 				</li>
 
-				<li class="active">
+				<li class="">
 
 					<a href="javascript:;">
 
@@ -274,7 +274,7 @@
 						<li class="">
 							<a href="/kindeditor/nodejs/newsAdd.html">新闻增加</a>
 						</li>
-						<li class="active">
+						<li class="">
 							<a href="/kindeditor/nodejs/newsManage.html">新闻查询、删除、修改</a>
 						</li>
 					</ul>
@@ -301,7 +301,7 @@
 					</ul>
 
 				</li>
-				<li class="">
+				<li class="active">
 
 					<a href="javascript:;">
 
@@ -319,7 +319,7 @@
 						<li class="">
 							<a href="/kindeditor/nodejs/advAdd.html">广告增加</a>
 						</li>
-						<li class="">
+						<li class="active">
 							<a href="/kindeditor/nodejs/advManage.html">广告查询、删除、修改</a>
 						</li>
 					</ul>
@@ -415,8 +415,7 @@
 										<tr>
 											<th>序号</th>
 											<th class="hidden-480">标题</th>
-											<th class="hidden-480">来源</th>
-											<th class="hidden-480">发表时间</th>
+											<th class="hidden-480">时间</th>
 											<th class="hidden-480">删除</th>
 											<th class="hidden-480">修改</th>
 										</tr>
@@ -481,14 +480,14 @@
 										<div class="tab-pane active" id="portlet_tab1">
 
 											<!-- BEGIN FORM-->
-											<form action="/webNews/update" method="post" class="form-horizontal">
+											<form action="/webAdv/update" enctype="multipart/form-data" method="post" class="form-horizontal">
 												<div hidden class="control-group">
 
-													<label class="control-label" >news_id:</label>
+													<label class="control-label" >adv_id:</label>
 
 													<div class="controls">
 
-														<input id="news_id" type="text" class="m-wrap meduium" name="news_id" />
+														<input id="adv_id" type="text" class="m-wrap meduium" name="adv_id" />
 
 													</div>
 
@@ -507,30 +506,23 @@
 
 												<div class="control-group">
 
-													<label class="control-label">新闻来源:</label>
+													<label class="control-label">缩略图:</label>
 
-													<div class="controls">
-
-														<input id="source" type="text"  class="m-wrap medium" name="source" />
-														
-														<!-- <span class="help-inline">Some hint here</span> -->
-
+													<div id="advImg" class="controls">
 													</div>
 
 												</div>
 												<div class="control-group">
 
-													<label class="control-label">新闻发表时间:</label>
+													<label class="control-label">缩略图更改:</label>
 
 													<div class="controls">
-
-														<input id="create_time" type="text"  class="m-wrap medium" name="create_time"/>
-														
-														<span class="help-inline">(形如"2015-09-01 09:20:17" 或者 "2015-09-01 09:20")</span>
-
+														<input class="medium m-wrap" type="file" name="imgs" multiple="multiple">
+														<span class="help-inline">(不更换缩略图不要上传)</span>
 													</div>
 
 												</div>
+												
 												<div class="control-group">
 
 													<label class="control-label">新闻正文:</label>
@@ -547,7 +539,7 @@
 
 												<div class="form-actions">
 
-													<button id='newsUpdate' type="submit" class="btn blue"><i class="icon-ok"></i> 新闻信息修改</button>
+													<button id='advUpdate' type="submit" class="btn blue"><i class="icon-ok"></i> 广告信息修改</button>
 
 													<!-- <button type="button" class="btn">取消</button> -->
 												</div>
@@ -680,10 +672,9 @@
 					//'<td><input type="checkbox" class="checkboxes" value="1" name="checks"/></td>'+
 					'<td>'+index+'</td>'+
 					'<td>'+obj.title+'</td>'+
-					'<td>'+obj.source+'</td>'+
 					'<td>'+str+'</td>'+
-					'<td><button news_id="'+obj.news_id+'" class="deleteButton">删除</button></td>'+
-					"<td><button news_id='"+obj.news_id+"' index='"+index+"' class='updateButton'>修改</button></td></tr>";
+					'<td><button adv_id="'+obj.adv_id+'" class="deleteButton">删除</button></td>'+
+					"<td><button adv_id='"+obj.adv_id+"' index='"+index+"' class='updateButton'>修改</button></td></tr>";
 				return tr;
 			};
 			function getAjax(url){
@@ -708,7 +699,7 @@
 			function query(){
 				$.ajax({
 			   		type : 'GET',
-			   		url : '/webNews/getlist',
+			   		url : '/webAdv/getlist',
 			   		dataType : 'json',
 			   		cache : false,
 			   		success : function(data){
@@ -720,9 +711,9 @@
 			   			};
 			   			$("button.deleteButton").click(function(e){
 			   				if(confirm('是否需要删除?')){
-			   					var cid = $(e.target).attr('news_id');
+			   					var cid = $(e.target).attr('adv_id');
 			   					console.log(cid);
-			   					getAjax('/webNews/delete?news_id='+cid);
+			   					getAjax('/webAdv/delete?adv_id='+cid);
 			   				}
 			   			});
 			   			/*index  username  gender  email  telephone  score  IDCardNo*/
@@ -732,18 +723,21 @@
 			   					$('div#query').attr('hidden',true);
 			   					var index = $(e.target).attr('index');
 			   					var obj = eva[Number(index) - 1];
-			   					var date = new Date(obj.create_time);
-				   				var year = date.getFullYear();
-				   				var month = date.getMonth()+1;
-				   				var day = date.getDate();
-				   				var hour = date.getHours();
-				   				var minute = date.getMinutes();
-				   				var second = date.getSeconds();
-				   				var str = year+"-"+month+"-"+day+"   "+hour+":"+minute+":"+second;
-			   					$('input#news_id').attr('value',obj.news_id);
+				   				
+			   					$('input#adv_id').attr('value',obj.adv_id);
 			   					$('input#title').attr('value',obj.title);
-			   					$('input#create_time').attr('value',str);
-			   					$('input#source').attr('value',obj.source);
+			   					var pictures = obj.main_picture;
+			   					var strs = pictures.split(',');
+			   					$("#advImg").empty();
+			   					if(strs[0] != ''){
+			   						for(var i=0;i<strs.length;i++){
+			   						$('#advImg').append('<img src="../../'+strs[i]+'" height="100" width="100">');
+			   						};
+			   					}
+			   					else{
+			   						$('#userImg').append('<span class="help-inline">没有图片</span>');
+			   					}
+			   					//$('input#source').attr('value',obj.source);
 			   					//$('#editor').attr('value',obj.content);
 			   					editor.html(obj.content);
 			   				}
@@ -758,7 +752,7 @@
 		   		});    
 			}
 		 	query();
-		 	$('#newsUpdate').click(function(e){
+		 	$('#advUpdate').click(function(e){
 				if(confirm('是否确认修改信息?')){
 					KindEditor.sync('#editor');
 					return true;

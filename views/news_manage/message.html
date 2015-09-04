@@ -12,7 +12,7 @@
 
 	<meta charset="utf-8" />
 
-	<title>新闻添加</title>
+	<title>消息推送</title>
 
 	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
@@ -286,6 +286,30 @@
 					</ul>
 
 				</li>
+				<li class="">
+
+					<a href="javascript:;">
+
+						<i class="icon-table"></i> 
+
+						<span class="title">广告管理</span>
+
+						<!-- <span class="selected"></span> -->
+
+						<span class="arrow open"></span>
+
+					</a>
+
+					<ul class="sub-menu">
+						<li class="">
+							<a href="/kindeditor/nodejs/advAdd.html">广告增加</a>
+						</li>
+						<li>
+							<a href="/kindeditor/nodejs/advManage.html">广告查询、删除、修改</a>
+						</li>
+					</ul>
+
+				</li>
 
 
 			</ul>
@@ -436,7 +460,7 @@
 
 												<div class="form-actions">
 
-													<button id='messageAdd' type="submit" class="btn blue"><i class="icon-ok"></i> 推送信息信息添加</button>
+													<button id='messageAdd' type="submit" class="btn blue"><i class="icon-ok"></i> 推送信息</button>
 
 
 													<!-- <button type="button" class="btn">取消</button> -->
@@ -540,7 +564,8 @@
 		   $('#messageAdd').click(function(e){
 		   		var title = $("input#title").val();
 		   		var content = $("#content").val();
-		   		if(title === undefined || content === undefined){
+		   		if(!title || !content){
+		   			alert(" 请将标题、内容填写完整!");
 		   			return false;
 		   		}
 		   		if(confirm('是否需要添加？')){

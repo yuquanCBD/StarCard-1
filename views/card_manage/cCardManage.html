@@ -847,7 +847,15 @@
 												</div>
 												<div class="control-group">
 
-													<label class="control-label">卡片图片</label>
+													<label class="control-label">卡片主图</label>
+													<div id="cardMainImg" class="controls">
+													</div>
+
+												</div>
+
+												<div class="control-group">
+
+													<label class="control-label">卡片副图</label>
 
 													<div id="cardImgD" class="controls">
 													</div>
@@ -1000,9 +1008,9 @@
 					//'<td>'+obj.owner+'</td>'+
 					'<td>'+obj.amount+'</td>'+
 					//'<td><a href="#" cardId="'+obj.cardId+'" onclick="beSure()">delete</a></td>'+
-					'<td><button cardId="'+obj.cardid+'" owner="'+obj.owner+'" pictures="'+obj.pictures+'" describes="'+obj.describes+'" class="detailsButton">详情</button></td>'+
+					'<td><button cardId="'+obj.cardid+'" owner="'+obj.owner+'" pictures="'+obj.pictures+'" main_img="'+obj.main_img+'" describes="'+obj.describes+'" class="detailsButton">详情</button></td>'+
 					'<td><button cardId="'+obj.cardid+'" class="deleteButton">删除</button></td>'+
-					'<td><button cardId="'+obj.cardid+'" owner="'+obj.owner+'" pictures="'+obj.pictures+'" describes="'+obj.describes+'" class="updateButton">修改</button></td>'+
+					'<td><button cardId="'+obj.cardid+'" owner="'+obj.owner+'" pictures="'+obj.pictures+'" main_img="'+obj.main_img+'" describes="'+obj.describes+'" class="updateButton">修改</button></td>'+
 					'<td><button cardId="'+obj.cardid+'" class="queryComment">查看评论</button></td>'+
 					//'<td><a href="StarCardAdd.html?hsjsh">ceshi</a></td>'
 					//'<td><button cardId="'+obj.cardid+'" class="updateButton">修改</button></td>'+
@@ -1097,11 +1105,13 @@
 			   			$('tbody#bodyM').empty();
 			   			for (var i = 0; i < eva.length; i++) {
 			  				var tr = createTR(eva[i],i+1);
-			   				$('tbody#bodyM').append(tr);			   			};
+			   				$('tbody#bodyM').append(tr);			   			
+			   			};
 			   			$("button.detailsButton").click(function(e){
 			   				var cardid = $(e.target).attr("cardId");
 			   				var describes = $(e.target).attr("describes");
 			   				var pictures = $(e.target).attr('pictures');
+			   				var main_img = $(e.target).attr('main_img');
 			   				var owner = $(e.target).attr("owner");
 		   					var tr = $(e.target).parent().parent();
 		   					var tds = $(tr).find('td');
@@ -1149,6 +1159,7 @@
 		   						}
 		   					};
 		   					$('#logisticD').attr('disabled',true);
+		   					//副图
 		   					var strs = pictures.split(',');
 		   					console.log('strs: ',strs[0]);
 		   					//<img src="../0.jpg" height="100" width="100">
@@ -1160,6 +1171,15 @@
 		   					}
 		   					else{
 		   						$('#cardImgD').append('<span class="help-inline">没有图片</span>');
+		   					}
+		   					//主图一张
+		   					$('#cardMainImg').empty();
+		   					console.log("main_img:",main_img);
+		   					if(main_img != null && main_img){
+		   						$('#cardMainImg').append('<img src="../'+main_img+'" height="100" width="100">');	
+		   					}
+		   					else{
+		   						$('#cardMainImg').append('<span class="help-inline">没有图片</span>');
 		   					}
 
 

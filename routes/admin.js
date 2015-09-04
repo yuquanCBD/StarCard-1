@@ -75,6 +75,9 @@ router.post('/login', function(req, res, next){
 
 });
 router.get('/starcardAdd',function(req, res, next){
+  if(req.session.starObj === undefined){
+    return res.render('card_manage/login.html');
+  };
   res.render('card_manage/StarCardAdd.html');
 });
 router.post('/starcardAdd',function(req, res, next){
@@ -95,6 +98,7 @@ router.post('/starcardAdd',function(req, res, next){
 
 function addInfo(fields, files, res, cid){
   var str = "";
+  var mainStr = "";
   var uId = uuid.v1();
   var title = fields.title[0];
   var price = fields.price[0];
@@ -130,11 +134,28 @@ function addInfo(fields, files, res, cid){
         }
         fs.renameSync(file.path, filePath+uId+'/'+i+'.'+String(types[types.length-1]));
       };
+      for (var i  in files.mainImgs) {
+        if(i > 0) break; //最多1张
+        var file = files.mainImgs[i];
+        if(file.originalFilename.length == 0){
+          break;
+        }
+        var types = file.originalFilename.split('.');
+        var p = "imgs/card/"+uId+'/main.'+String(types[types.length-1]);
+        if(mainStr === ""){
+          mainStr += p;
+        }
+        else{
+          mainStr += (','+p);
+        }
+        fs.renameSync(file.path, filePath+uId+'/main.'+String(types[types.length-1]));
+      };
+
       console.log('图片信息添加成功');
-      console.log(str);
+      console.log(str,' %%%%%%% ',mainStr);
       //将路径和卡片信息存入数据库
-      var sql = 'insert into card(cardid, title, describes, price, logistic, category, brand, freight, exchange, owner, amount, pictures) values';
-      sql = sql + '("'+uId+'","'+title+'","'+describes+'","'+price+'","'+logistic+'","'+category+'","'+brand+'","'+freight+'","'+exchange+'","'+owner+'","'+amount+'","'+str+'")';
+      var sql = 'insert into card(cardid, title, describes, price, logistic, category, brand, freight, exchange, owner, amount, pictures, main_img) values';
+      sql = sql + '("'+uId+'","'+title+'","'+describes+'","'+price+'","'+logistic+'","'+category+'","'+brand+'","'+freight+'","'+exchange+'","'+owner+'","'+amount+'","'+str+'","'+mainStr+'")';
       console.log(sql);
       Card.add(sql, function(err, user){
         if(err){
@@ -218,7 +239,11 @@ function updateInfo(fields, files, res){
      if(exists){ 
         var dirList = fs.readdirSync(filePath+uId);
         dirList.forEach(function(fileName){
-          fs.unlinkSync(filePath+uId+'/'+fileName);
+          var splitPath = fileName.split('.');
+          //console.log("％％％％％％％％％％％％％％图片名称",strs[0],'  ,  ',strs[1] );
+          if(splitPath[0] != "main"){
+            fs.unlinkSync(filePath+uId+'/'+fileName);
+          }  
         });
         console.log('删除成功');
 
@@ -305,7 +330,6 @@ router.post('/delete', function(req, res, next){
         });
         //return res.json({sucess:r});
     });
-
 });
 
 router.post('/detail', function(req, res, next){
