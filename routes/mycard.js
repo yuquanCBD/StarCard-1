@@ -3,6 +3,7 @@ var router = express.Router();
 var User = require('../models/user')
 var multiparty = require('multiparty');
 var ScoreRule = require('../models/score_rule');
+var Card = require('../models/card');
 
 
 //积分查询
@@ -137,7 +138,7 @@ router.post('/addWikiCollect', function(req, res, next){
 
 
 //取消收藏
-router.post('/cancleWikiCollect', function(req, ers, next){
+router.post('/cancleWikiCollect', function(req, res, next){
 	var userid = req.body.userid;
 	var wikiid = req.body.wikiid;
 
@@ -145,6 +146,20 @@ router.post('/cancleWikiCollect', function(req, ers, next){
 		if(err)
 			return res.json({error : err});
 		return res.json({success : '成功取消百科收藏'});
+	})
+})
+
+//根据卡片编号查询卡片详情
+router.post('/queryCardById', function(req, res, next){
+	var cardid = req.body.cardid;
+
+	Card.queryByID(cardid, function(err, rows){
+		if(err)
+			return res.json({error : err});
+		if(rows.length != 0)
+			return res.json(rows[0]);
+		else
+			return res.json(null);
 	})
 })
 
