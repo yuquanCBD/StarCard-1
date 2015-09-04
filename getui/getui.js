@@ -32,7 +32,6 @@ function pushAPNMessageToList(title, body, device_tokens) {
    alertMsg.title = title;
    alertMsg.titleLocKey = "dddddd";
    alertMsg.titleLocArgs = Array("");
-   alertMsg.extra = extra;
 
     payload.alertMsg=alertMsg;
     payload.badge=5;
