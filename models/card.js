@@ -241,7 +241,7 @@ Card.searchCardsByOwner = function(owner, callback){
 		'time, longitude, latitude, user.username FROM card LEFT JOIN user ON owner = user.userid WHERE user.userid = ?';
 
         console.log(sql);
-        conn.query(sql, function(err, rows){
+        conn.query(sql, [owner],function(err, rows){
             callback(err, rows);
             conn.release();
         });

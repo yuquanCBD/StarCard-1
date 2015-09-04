@@ -136,7 +136,8 @@ router.post("/message",function(req, res, next){
 		
 		var device = [];
 		for (var i = 0; i < rows.length; i++) {
-			device.push(rows[i].device_token);
+			if(rows[i].device_token != '')
+				device.push(rows[i].device_token);
 		};
 		console.log(device);
 		getui.pushToList(title, content, device);
