@@ -27,6 +27,10 @@ router.get('/test', function(req, res, next){
 });
 
 router.get('/add',function(req, res, next){
+  var obj = req.session.starObj;
+  if(obj === undefined){
+    return res.render("card_manage/login.html");
+  }
 	res.sendFile('card_manage/userAdd.html', options, function (err) {
     if (err) {
       console.log(err);
@@ -213,6 +217,10 @@ router.post("/userCheck",function(req, res, next){
 
 //用户信息管理
 router.get('/query', function(req, res ,next){
+  var obj = req.session.starObj;
+  if(obj === undefined){
+    return res.render("card_manage/login.html");
+  }
   res.render('card_manage/userManage.html');
 });
 
@@ -254,6 +262,10 @@ router.post("/delete",function(req, res, next){
 
 /*****************   超级管理员部分  *********************/
 router.get("/getmanager",function(req, res, next){
+  var obj = req.session.starObj;
+  if(obj === undefined){
+    return res.render("card_manage/login.html");
+  }
   var username = req.session.username;
   var password = req.session.password;
   var sql = 'select * from manager where username="'+username+'" and password="'+password+'"';

@@ -121,12 +121,20 @@ function addInfo(fields, files, res, req){
 };
 
 router.get('/lock',function(req, res, next){
+  var obj = req.session.starObj;
+  if(obj === undefined){
+    return res.render("card_manage/login.html");
+  }
 	var username = req.session.username;
 	var password = req.session.password;
 
 	return res.render('wiki_manage/lock.html');
 });
 router.get('/query',function(req, res, next){
+  var obj = req.session.starObj;
+  if(obj === undefined){
+    return res.render("card_manage/login.html");
+  }
 	var username = req.session.username;
 	var password = req.session.password;
 
@@ -159,6 +167,10 @@ router.post('/setlock',function(req, res, next){
 
 //根据id删除百科
 router.post("/delete",function(req, res, next){
+  var obj = req.session.starObj;
+  if(obj === undefined){
+    return res.json({error:"error"});
+  }
   var wikiid = req.body.wikiid;
   var sql = 'DELETE FROM wiki WHERE wikiid = "'+wikiid+'"';
   console.log("=======================",wikiid);
@@ -272,6 +284,10 @@ function updateInfo(fields, files, res){
 };
 
 router.get('/check',function(req, res, next){
+  var obj = req.session.starObj;
+  if(obj === undefined){
+    return res.render("card_manage/login.html");
+  }
   var username = req.session.username;
   var password = req.session.password;
 

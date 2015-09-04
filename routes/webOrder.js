@@ -27,6 +27,10 @@ router.get('/',function(req, res, next){
 });
 
 router.get('/query', function(req, res, next){
+	var obj = req.session.starObj;
+	if(obj === undefined){
+		return res.render("card_manage/login.html");
+	}
 	return res.render('order_manage/orderManage.html',{title:"订单查询",status:4});
 })
 
@@ -50,21 +54,14 @@ router.post('/query', function(req, res, next){
 	console.log("=========shhdhksd=====:",status);
     res.render('order_manage/orderManage.html',{title:'订单查询',status:status});
 });
-// router.post('/query', function(req, res, next){
-// 	var status = req.body.status;
-// 	var sql = 'select * from orders where status="'+status+'"';
-// 	Order.exec(sql, function(err, rows){
-// 		if(err){
-// 			console.log("err ===========>",err);
-// 			return res.json({'error':"数据库查询错误"});
-// 		}
-// 		return res.json(rows);
-// 	})
-//   //res.render('order_manage/orderManage.html',{title:'订单查询'});
-// });
+
 //根据订单状态查询订单信息
 router.post('/queryByStatus', function(req, res, next){
+
 	var status = req.body.status;
+	if(status == "" || status== null){
+		return res.json({error:"error"});
+	}
 	//console.log("测试form=-=-=-=-=-=-=-=-=-=====================",status);
 	var sql;
 	if(status == 4){
@@ -85,6 +82,10 @@ router.post('/queryByStatus', function(req, res, next){
 });
 //查询买家为管理员的订单消息
 router.post('/managerquery', function(req,res,next){
+	var obj = req.session.starObj;
+	if(obj === undefined){
+		return res.json({error:"error"});
+	}
 	var sql = "select * from manager inner join orders on orders.seller = manager.userid";
 	Order.exec(sql, function(err, rows){
 		if(err){
@@ -96,6 +97,10 @@ router.post('/managerquery', function(req,res,next){
 });
 //查询买家为普通商家的订单消息
 router.post('/commonquery', function(req,res,next){
+	var obj = req.session.starObj;
+	if(obj === undefined){
+		return res.json({error:"error"});
+	}
 	var sql = "select * from user inner join orders on orders.seller = user.userid";
 	Order.exec(sql, function(err, rows){
 		if(err){
@@ -107,6 +112,10 @@ router.post('/commonquery', function(req,res,next){
 // router
 router.post('/delete',function(req, res, next){
 	console.log('*****************delete***************');
+	var obj = req.session.starObj;
+	if(obj === undefined){
+		return res.json({error:"error"});
+	}
 	var sql = 'delete from orders where orderid="'+req.body.orderid+'"';
 	Order.exec(sql, function(err, r){
 		if(err){
@@ -116,6 +125,10 @@ router.post('/delete',function(req, res, next){
 	})
 });
 router.post('/addr',function(req, res, next){
+	var obj = req.session.starObj;
+	if(obj === undefined){
+		return res.json({error:"error"});
+	}
 	var addr_id = req.body.addr_id;
 	var sql = 'select * from address where addr_id="'+addr_id+'"';
 	Order.exec(sql, function(err, rows){

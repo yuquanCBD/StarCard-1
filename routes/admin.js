@@ -182,6 +182,10 @@ router.get('/managerquery', function(req, res ,next){
 
 router.post('/query', function(req, res, next){
   var obj = req.session.starObj;
+  if(obj === undefined){
+    return res.json({error:"error"});
+  }
+  var obj = req.session.starObj;
   console.log("=============----------------=====================",obj);
   Card.query(function(err, cards){
       if (err)
@@ -342,6 +346,10 @@ router.post('/detail', function(req, res, next){
 });
 
 router.get("/userAdd",function(req, res, next){
+  var obj = req.session.starObj;
+  if(obj === undefined){
+    return res.render("card_manage/login.html");
+  }
   res.render("card_manage/userAdd.html");
 });
 
@@ -359,18 +367,12 @@ router.post('/delcomment',function(req, res, next){
   })
 });
 router.get('/querycomment',function(req, res, next){
+  var obj = req.session.starObj;
+  if(obj === undefined){
+    return res.render("card_manage/login.html");
+  }
   var cardid = "b2ac5370-5136-11e5-aa92-93f9048adb9b";
   var cardid = req.query.cardid;
-  // Comment.showCardComments(cardid, function(err, rows){
-  //   if(err){
-  //     return res.json({err:"数据库操作错误"});
-  //   }
-  //   else{
-  //     console.log(rows);
-  //     //return res.json(rows);
-  //     return res.render("card_manage/comment.html",{cardid:cardid,rows:rows});
-  //   }
-  // })
   return res.render("card_manage/comment.html",{cardid:cardid});
 });
 router.post('/querycomment',function(req, res, next){
