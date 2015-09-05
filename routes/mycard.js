@@ -77,14 +77,10 @@ router.post('/updateUserInfo', function(req, res, next) {
 		var username = fields.username[0];
 		var gender = fields.gender[0];
 		var tel = fields.tel[0];
-		var province = fields.province[0];
-		var city = fields.city[0];
-		var district = fields.district[0];
-		var address = fields.address[0];
-		var postcode = fields.postcode[0];
 		var IDCardNo = fields.IDCardNo[0];
+		var addrid = fields.addrid[0];
 
-		User.updateUserInfo(userid, username, tel, gender, province, city, district, address, postcode, IDCardNo, files, function(err){
+		User.updateUserInfo(userid, username, tel, gender, addrid, IDCardNo, files, function(err){
 			if(err)
 				return res.json({error : err});
 			return res.json({success : '更新成功'});

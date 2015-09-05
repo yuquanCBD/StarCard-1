@@ -20,6 +20,26 @@ router.post('/identification', function (req, res, next) {
 
 })
 
+//通过id修改用户地址
+router.post('modifyAddrById', function(req, res, next){
+    var userid = req.body.userid;
+    var addrid = req.body.addrid;
+    var province = req.body.province;
+    var city = req.body.city;
+    var district = req.body.district;
+    var address = req.body.address;
+    var postcode = req.body.postcode;
+    var telephone = req.body.telephone;
+    var consignee = req.body.consignee;
+    var is_default = req.body.is_default;//1:设置为默认地址，0:否
+
+    Address.modifyAddrById(userid, addrid, province, city, district, address, postcode, telephone, consignee, is_default, function(err, results){
+        if(err)
+            return res.json({error : err});
+        return res.json({success : '地址修改成功'});
+    })
+})
+
 
 router.get('/', function(req, res, next){
 console.log("Request handler 'start' was called."); 

@@ -330,62 +330,82 @@ User.queryMyCard = function(userid, type, offset, capacity, callback){
 
 
 //更新用户资料
-User.updateUserInfo = function(userid, username, tel, gender, province, city, district, address, postcode, IDCardNo, files, callback){
+User.updateUserInfo = function(userid, username, tel, gender, addrid, IDCardNo, files, callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
 			callback(err);
 		
 		var sql0 = 'SELECT IDCardNo FROM user WHERE userid = "' + userid + '"';
 		var sql1 = 'UPDATE user SET username  = "'+username+'", telephone = "'+tel+'", gender ='+gender+'  WHERE userid = "'+userid+'"';
-		var sql2 = 'UPDATE address SET province  = "'+province+'", city = "'+city+'", district = "'+district+'",'+
-					'address = "'+address+'", postcode = '+postcode+' WHERE userid = "'+userid+'" AND tag = 1';
+		var sql2 = 'UPDATE address SET ';
 	
 		console.log('SQL: '+ sql0);
 		conn.query(sql0, function(err, rows){
-			if(err)
+			if(err){
+				conn.release();
 				return callback(err);
+			}
 			if(rows[0].IDCardNo != IDCardNo)
 				return callback('身份证号码错误！'); 
 
 			console.log('SQL: '+ sql1);
 			conn.query(sql1, function(err, res){
-				if(err)
+				if(err){
+					conn.release();
 					return callback(err);
-				console.log('SQL: '+ sql2);
-				conn.query(sql2, function(err,res){
-					if(err)
+				}
+
+				//设置用户其他地址为普通地址 
+				var sql = 'UPDATE address SET tag = 0 WHERE userid = ? AND tag = 1';
+				console.log(sql);
+				conn.query(sql, [userid], function(err,res){
+					if(err){
+						conn.release();
 						return callback(err);
-					//更新图片
-					var filePath = path.join(__dirname, '../public/imgs/user/') + userid;
-					if(!fs.existsSync(filePath))
-						callback('用户图片文件夹不存在')
-					var pics = fs.readdirSync(filePath);		//遍历删除目录下所有文件
-					pics.forEach(function(fileName){
-						var tmpPath = filePath + '/' + fileName;
-						fs.unlinkSync(tmpPath);
-					});
-					//保存新的用户图片,同时保存路径
-					var tmpPath = '';
-					for (var i in files.imgs ) {
-						if(i>2) break;
-						var file = files.imgs[i];
-						if(file.originalFilename.length == 0)
-							break;
-						var types = file.originalFilename.split('.'); //将文件名以.分隔，取得数组最后一项作为文件后缀名。
-					    fs.renameSync(file.path, filePath + '/' + i + '.' +String(types[types.length-1]));
-					    tmpPath += 'imgs/user/' +userid+ '/' + i + '.' +String(types[types.length-1]) + ';';
 					}
-					var sql = 'UPDATE user SET portrait = "' + tmpPath + '" WHERE userid = "' + userid + '"';
-					console.log("SQL:", sql);
-					conn.query(sql, function(err, res){conn.release()});
 
-					callback(err)
-				});
-			});
+					var sql = 'UPDATE address SET tag = 1 WHERE userid = ? AND addr_id = ?';
+					console.log(sql);
+					conn.query(sql, [userid, addrid], function(err,res){
+						if(err){
+							conn.release();
+							return callback(err);
+						}
+						//更新图片
+						var filePath = path.join(__dirname, '../public/imgs/user/') + userid;
+						if(!fs.existsSync(filePath))
+							callback('用户图片文件夹不存在')
+						var pics = fs.readdirSync(filePath);		//遍历删除目录下所有文件
+						pics.forEach(function(fileName){
+							var tmpPath = filePath + '/' + fileName;
+							fs.unlinkSync(tmpPath);
+						});
+						//保存新的用户图片,同时保存路径
+						var tmpPath = '';
+						for (var i in files.imgs ) {
+							if(i>2) break;
+							var file = files.imgs[i];
+							if(file.originalFilename.length == 0)
+								break;
+							var types = file.originalFilename.split('.'); //将文件名以.分隔，取得数组最后一项作为文件后缀名。
+						    fs.renameSync(file.path, filePath + '/' + i + '.' +String(types[types.length-1]));
+						    tmpPath += 'imgs/user/' +userid+ '/' + i + '.' +String(types[types.length-1]) + ';';
+						}
+						var sql = 'UPDATE user SET portrait = "' + tmpPath + '" WHERE userid = "' + userid + '"';
+						console.log("SQL:", sql);
+						conn.query(sql, function(err, results){
+							conn.release();
+							callback(err);	
+						})
 
-		});
-	});
-};
+					})
+
+				})
+			})
+
+		})
+	})
+}
 
 
 
