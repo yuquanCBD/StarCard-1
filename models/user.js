@@ -338,7 +338,7 @@ User.updateUserInfo = function(userid, username, tel, gender, province, city, di
 		var sql0 = 'SELECT IDCardNo FROM user WHERE userid = "' + userid + '"';
 		var sql1 = 'UPDATE user SET username  = "'+username+'", telephone = "'+tel+'", gender ='+gender+'  WHERE userid = "'+userid+'"';
 		var sql2 = 'UPDATE address SET province  = "'+province+'", city = "'+city+'", district = "'+district+'",'+
-					'address = "'+address+'", postcode = '+postcode+' WHERE userid = "'+userid+'"';
+					'address = "'+address+'", postcode = '+postcode+' WHERE userid = "'+userid+'" AND tag = 1';
 	
 		console.log('SQL: '+ sql0);
 		conn.query(sql0, function(err, rows){

@@ -144,28 +144,16 @@ Card.searchByCond = function(userid, cond, category, brand, offset, capacity, or
         var flag1 = false;
         var flag2 = false;
 
-		var sql = 'SELECT cardid, title, pictures, describes, price, logistic, category, brand, freight, exchange, owner, ownername, amount, time, longitude, latitude FROM card ';
-        if (cond) {
-            sql += ' WHERE (title = "'+ cond +'" OR brand = "'+cond+'") ';
-            flag1 = true;
-        }
-        if (brand) {
-            if (flag1)
+		var sql = 'SELECT cardid, title, pictures, describes, price, logistic, category, brand, freight, exchange, owner, ownername, amount, time, longitude, latitude FROM card  WHERE status = 0 ';
+        if (cond) 
+            sql += ' AND (title = "'+ cond +'" OR brand = "'+cond+'") ';
+
+        if (brand) 
                 sql += 'AND brand = "' + brand + '" ';
-            else
-                sql += 'WHERE brand = "' + brand + '" ';
-            flag2 = true;
-        }
-        if (category) {
-            if (flag1 && !flag2) 
+
+        if (category) 
                 sql += 'AND category = "' + category + '" ';
-            else if (flag1 && flag2)
-                sql += 'AND category = "' + category + '" ';
-            else if (!flag1 && flag2)
-                sql += 'AND category = "' + category + '" ';
-            else 
-                sql += 'WHERE category = "' + category + '" ';
-        }
+
 
         if(order == 1)
         	sql += ' order by time ';
