@@ -213,7 +213,7 @@
 						<li>
 							<a href="/webOrder/managerquery">管理员用户订单管理</a>
 						</li>
-						<li class="active">
+						<li  class="active">
 							<a href="/webOrder/commonquery">普通用户订单管理</a>
 						</li>
 
@@ -403,7 +403,21 @@
 								</div>
 
 							</div>
-
+							<form id='formQueryByStatus' action="/webOrder/queryC" method="post" class="form-horizontal">
+									
+									<div class="form-actions" style="padding-left:0">
+										<label  class="control-label" style="margin-right:0,margin-left:0">根据订单状态查询:</label>
+										<select style="float:left" id='statusQ' class="" name="status" style="margin-left:0px">
+											<option value="4">全部</option>
+											<option value="0">待付款</option>
+											<option value="1">待发货</option>
+											<option value="2">待收货</option>
+											<option value="3">交易完成</option>
+										</select>
+										<button style="margin-left:5%" type="submit" class="btn blue"><i class="icon-ok"></i> 订单信息查询</button>
+										<!-- <button type="button" class="btn">取消</button> -->
+									</div>
+							</form>
 							<div  class="portlet-body">
 
 								<table class="table table-striped table-bordered table-hover" id="sample_2">
@@ -426,13 +440,14 @@
 											<th class="hidden-480">消息</th> -->
 											<!-- <th class="hidden-480">订单类型</th> -->
 											<th class="hidden-480">交易时间</th>
-											<th class="hidden-480">是否打款</th>
+											<th class="hidden-480">打款</th>
 											<!-- <th class="hidden-480">地址id</th> -->
 											<!-- <th class="hidden-480">支付宝订单</th> -->
 											<!-- <th class="hidden-480">收货时间</th> -->
 											<th class="hidden-480">详情</th>
 											<th class="hidden-480">删除</th>
 											<th class="hidden-480">修改</th>
+											<th class="hidden-480">备注信息</th>
 
 										</tr>
 
@@ -441,12 +456,25 @@
 									<tbody>
 
 									</tbody>
-
+									<!-- <button>测试</button> -->
 								</table>
+								<!-- <input id="wholeCheck" type="checkbox"> -->
+								<button id="batchPay">勾选批量打款</button>
+								<button id="saveBtn">订单生成.csv文件</button>
 								<div style="display:none">
 									<textarea hidden rows="6" style="width:80%" id="content_csv">卡片id,订单状态,卡片总价,物流价格,卡片数量</textarea>
 								</div>
-									<button id="saveBtn">订单生成.csv文件</button>
+								<!-- <label class="control-label" >运单状态查询:</label>
+								<select id='statusQ' class="small m-wrap"  name="statusQ">
+									<option value="-1">全部</option>
+									<option value="0">待付款</option>
+									<option value="1">待发货</option>
+									<option value="2">待收货</option>
+									<option value="3">交易完成</option>
+
+								</select>
+								<button style="margin-left:10%">查询</button> -->
+								
 								
 							</div>
 
@@ -696,6 +724,7 @@
 													</div>
 
 												</div>
+
 												<div class="control-group">
 
 													<label class="control-label" >交易日期:</label>
@@ -740,7 +769,6 @@
 													</div>
 
 												</div> 
-
 												<div class="control-group">
 
 													<label class="control-label" >物流:</label>
@@ -912,11 +940,12 @@
 
 	<script src="media/js/app.js"></script>
 
-	<script src="media/js/table-managed.js"></script>
+	<script src="media/js/table-managed.js"></script>   
 	<script type="text/javascript" src="/media/FileSaver.js"></script>
-	<script type="text/javascript" src="/media/Blob.js"></script>     
+	<script type="text/javascript" src="/media/Blob.js"></script>       
 
 	<script>
+	//生成csv文件
 	(function(){
 		document.getElementById("saveBtn").onclick = function(event){
 			event.preventDefault();
@@ -932,12 +961,11 @@
 	})();
 		// 列表中展示的<!--index cardid seller buyer status card_price logistic_price ordertype -->
 		// <!--列表中未展示 orderid logistic  logistic_no alipay_id   card_num message  addr_id receive_time-->
-		
-		jQuery(document).ready(function() { 
-			//卡片id,订单状态,卡片总价,物流价格,卡片数量
-			function createTR(obj,index){
-				// var textarea_csv = $()
 
+		jQuery(document).ready(function() {  
+			var statusQuery = <%= status %>; 
+			console.log("=====",statusQuery);  
+			function createTR(obj,index){
 				var date = new Date(obj.create_time);
    				var year = date.getFullYear();
    				var month = date.getMonth()+1;
@@ -945,11 +973,16 @@
    				var hour = date.getHours();
    				var minute = date.getMinutes();
    				var str = year+"-"+month+"-"+day+"   "+hour+":"+minute;
+
 				var tr = '<tr class="odd gradeX">'+
 					//'<td><input type="checkbox" class="checkboxes" value="1" name="checks"/></td>'+
-					'<td>'+index+'</td>'+
-					'<td>'+obj.orderid+'</td>'+
-					'<td>'+''+'</td>'+
+					'<td><input type="checkbox"></td>';
+				if(obj.paid_tag == 0)
+					tr += '<td style="background-color:rgb(182,194,154)">'+obj.orderid+'</td>';
+				else{
+					tr += '<td>'+obj.orderid+'</td>';
+				}
+				tr +='<td>'+''+'</td>'+
 					'<td>'+''+'</td>';
 					//'<td>'+obj.logistic+'</td>';
 				if(obj.status == 0){
@@ -961,9 +994,12 @@
 				else if(obj.status == 2){
 					tr += '<td>待收货</td>';
 				}
-				else{
-					tr += '<td>交易完成</td>'
+				else if(obj.status == 3){
+					tr += '<td>交易完成</td>';
+				}else{
+					tr += '<td>交易关闭</td>'
 				};
+
 				// tr += '<td>'+obj.alipay_id+'</td>';
 
 				tr += '<td>'+obj.card_price+'</td><td>'+obj.logistic_price+'</td>';
@@ -974,22 +1010,22 @@
 				// }
 				// else{
 				// 	tr += '<td>换卡申请</td>';
-				// };	
-				tr +='<td>'+str+'</str>';
+				// };
+				tr += '<td>'+str+'</td>';
 				if(obj.paid_tag == 1){
 					tr += '<td>已打款</td>';
 				}
 				else{
 					tr += '<td>未打款</td>';
-				};
+				};	
 				// tr += 	'<td>'+obj.addr_id+'</td>'+
 				// 		'<td>'+obj.alipay_id+'</td>'+
 				// 		'<td>'+obj.receive_time+'</td>';
 					//'<td><a href="#" cardId="'+obj.cardId+'" onclick="beSure()">delete</a></td>'+
-				tr += '<td><button orderid="'+obj.orderid+'" ordertype="'+obj.ordertype+'" cardid="'+obj.cardid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" create_time="'+obj.create_time+'" class="detailButton">详情</button></td>'+
+				tr += '<td><button  orderid="'+obj.orderid+'" ordertype="'+obj.ordertype+'" cardid="'+obj.cardid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" create_time="'+obj.create_time+'" class="detailButton">详情</button></td>'+
 					'<td><button orderid="'+obj.orderid+'" class="deleteButton">删除</button></td>'+
 					'<td><button orderid="'+obj.orderid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" create_time="'+obj.create_time+'" class="updateButton">修改</button></td>'+
-
+					'<td><input type="text" style="width:70px" class="extraInfo" orderid="'+obj.orderid+'" value="'+obj.extra+'"></td>'
 					'</tr>';
 				return tr;
 			};
@@ -1034,7 +1070,7 @@
 			   			alert('获取手机号码失败！');
 			   		}
 		   		});
-			}
+			};
 			function getStatus(status){
 				if(status == 0){
 					return "待付款";
@@ -1042,8 +1078,10 @@
 					return "待发货";
 				}else if(status == 2){
 					return "待收货";
-				}else{
+				}else if(status == 3){
 					return "交易完成";
+				} else{
+					return "交易关闭";
 				};
 			}
 			function getCreateTime(create_time){
@@ -1079,18 +1117,32 @@
 				};
 				return m;
 			}
-			function query(){
-				var csv = "卡片id,买家id,买家id,订单状态,卡片总价,物流价格,卡片数量,交易时间,订单类型,物流,运单号,是否打款,支付宝订单编号,留言";
+			function setExtraAjax(url, obj){
 				$.ajax({
 			   		type : 'POST',
-			   		url : '/webOrder/commonquery',
-			   		data : {pageIndex : 0, pageSize : 20},
+			   		url : url,
+			   		data : obj,
+			   		dataType : 'json',
+			   		cache : false,
+			   		success : function(data){
+			   			console.log("保存成功");
+			   		},
+			   		error : function(){
+			   			alert("备注信息添加失败");
+			   		}
+		   		});
+			};
+			function query(){
+				var csv = "卡片id,买家id,买家id,订单状态,卡片总价,物流价格,卡片数量,交易时间,订单类型,物流,运单号,支付宝订单编号,是否打款,留言";
+				$.ajax({
+			   		type : 'POST',
+			   		url : '/webOrder/queryByStatusC',
+			   		data : {status:statusQuery},
 			   		dataType : 'json',
 			   		cache : false,
 			   		success : function(data){
 			   			var eva = eval(data);
 			   			$('tbody').empty();
-			   			//卡片id,订单状态,卡片总价,物流价格,卡片数量
 			   			for (var i = 0; i < eva.length; i++) {
 			   				var obj = eva[i];
 							csv+=" \r\n"+obj.orderid+','+obj.buyer+','+obj.seller+','+getStatus(obj.status)+','+obj.card_price+','+obj.logistic_price+','+obj.card_num+','+getCreateTime(obj.create_time)+','+getOrderType(obj.ordertype)+','+obj.logistic+','+obj.logistic_no+','+obj.alipay_id+','+obj.paid_tag+','+changeM(obj.message);
@@ -1100,9 +1152,14 @@
 			   			$("#content_csv").attr("value",csv);
 			   			eva.forEach(function(obj, index){
 			   				var trs = $("tbody").find("tr");
+				   			// console.log(trs.length);
+				   			// var resultTr;
+				   			// for (var i = 0; i < trs.length; i++) {
+				   			// 	var tr = trs[i];
+				   			// 	tds = $(tr).find("td");
+				   			// };
 			   				getTeleAjax('/webOrder/tele',{seller:obj.seller, buyer:obj.buyer},trs[index]);
 			   			});
-
 			   			$("button.detailButton").click(function(e){
 			   				$('div#update').attr('hidden',true);
 			   				$('div#query').attr('hidden',true);
@@ -1110,8 +1167,8 @@
 			   				var tar = $(e.target);
 			   				var tr = tar.parent().parent();
 			   				var tds = $(tr).find('td');
-			   				var orderid = tar.attr("orderid");
 			   				var cardid = tar.attr("cardid");
+			   				var orderid = tar.attr("orderid");
 			   				var logistic = tar.attr("logistic");
 			   				var logistic_no = tar.attr("logistic_no");
 			   				var alipay_id = tar.attr("alipay_id");
@@ -1179,6 +1236,12 @@
 			   					PostAjax('/webOrder/delete',{orderid:cid});
 			   				}
 			   			});
+			   			//当input输入完毕就执行数据库的添加
+			   			$("input.extraInfo").blur(function(){
+							var orderid = $(this).attr("orderid");
+							var extra = $(this).attr("value");
+							setExtraAjax("/webOrder/extra", {orderid:orderid,extra:extra});
+						});
 			   			/*index  username  gender  email  telephone  score  IDCardNo*/
 			   			$("button.updateButton").click(function(e){
 			   				if(confirm('是否需要修改卡信息?')){
@@ -1190,11 +1253,12 @@
 				   				var tr = tar.parent().parent();
 				   				var tds = $(tr).find('td');
 				   				var orderid = tar.attr("orderid");
+				   				var cardid = tar.attr("cardid");
 				   				var card_num = tar.attr("card_num");
 				   				var message = tar.attr("message");
 				   				var addr_id = tar.attr("addr_id");
 				   				var receive_time = tar.attr("receive_time");
-				   				var cardid = $(tds[1]).text();
+				   				//var cardid = $(tds[1]).text();
 				   				var seller = $(tds[2]).text();
 				   				var buyer = $(tds[3]).text();
 				   				var status = $(tds[4]).text();
@@ -1221,10 +1285,6 @@
 			   						$(options[3]).attr("selected",1);
 			   					};
 			   					
-			   					
-			   					//updateAjax('update',{flag:'hahhahah'});
-			   					// var tds = tr.getElementsByTagName('td');
-			   					// console.log(tds.length);
 			   				}
 			   			})
 			   			App.init();
@@ -1238,6 +1298,7 @@
 			}
 		 	query();
 		 	$('#updateSubmit').click(function(e){
+		 		//card_price,logistic_price,card_num
 		 		var card_price = $("input#card_price").attr("value");
 		 		var logistic_price = $("input#logistic_price").attr("value");
 		 		var card_num = $("input#card_num").attr("value");
@@ -1268,7 +1329,46 @@
 				$('div#detail').attr('hidden',true);
 			   	$('div#query').attr('hidden',false);
 				
-			})
+			});
+		
+			$("button#batchPay").click(function(e){
+				//var tbody = $(tbody);
+				var trs = $("tbody").find("tr");
+				console.log("tr的数量:",trs.length);
+				var arr = [];
+				//var str ='';
+				for (var i = 0; i < trs.length; i++) {
+					var tr = trs[i];
+					var check = $(tr).find('input')[0];
+					if($(check).attr('checked')){
+						var tds = $(tr).find('td');
+						if($(tds[4]).text() != "交易完成"){
+							alert("只有交易完成才可以确认打款，请检查勾选!");
+							return false;
+						}
+						arr.push($(tds[1]).text());
+					}
+				};
+				if(arr.length == 0){
+					alert("请勾选打款");
+					return false;
+				}
+				var str = arr.join(',');
+				$.ajax({
+			   		type : 'POST',
+			   		url : '/webOrder/paid',
+			   		data : {orderid:str},
+			   		dataType : 'json',
+			   		cache : false,
+			   		success : function(data){
+			   			location.reload();
+			   		},
+			   		error : function(){
+			   			alert('查询信息失败');
+			   		}
+		   		}); 
+				//console.log(arr);
+			});
 
 		});
 
