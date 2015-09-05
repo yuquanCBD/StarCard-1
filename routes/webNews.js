@@ -82,6 +82,7 @@ router.get('/getlist',function(req, res, next){
 		if(err){
 			return res.json({error:"error"});
 		}
+		console.log(rows);
 		return res.json(rows);
 	});
 });
@@ -180,6 +181,7 @@ router.get('/getlistMessage',function(req, res, next){
 		if(err){
 			return res.json({error:"error"});
 		}
+		console.log(rows);
 		return res.json(rows);
 	});
 });

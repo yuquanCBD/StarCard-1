@@ -65,10 +65,10 @@ router.post('/queryByStatus', function(req, res, next){
 	//console.log("测试form=-=-=-=-=-=-=-=-=-=====================",status);
 	var sql;
 	if(status == 4){
-		sql ='select * from orders'; 
+		sql ='select * from orders order by create_time desc'; 
 	}
 	else{
-		sql = 'select * from orders where status="'+status+'"';
+		sql = 'select * from orders where status="'+status+'" order by orders.create_time desc';
 	}
 	console.log(sql);
 	Order.exec(sql, function(err, rows){
@@ -86,7 +86,7 @@ router.post('/managerquery', function(req,res,next){
 	if(obj === undefined){
 		return res.json({error:"error"});
 	}
-	var sql = "select * from manager inner join orders on orders.seller = manager.userid";
+	var sql = "select * from manager inner join orders on orders.seller = manager.userid order by orders.create_time desc";
 	Order.exec(sql, function(err, rows){
 		if(err){
 			return res.json({error:"数据库查询错误"});
@@ -101,7 +101,7 @@ router.post('/commonquery', function(req,res,next){
 	if(obj === undefined){
 		return res.json({error:"error"});
 	}
-	var sql = "select * from user inner join orders on orders.seller = user.userid";
+	var sql = "select * from user inner join orders on orders.seller = user.userid order by orders.create_time desc";
 	Order.exec(sql, function(err, rows){
 		if(err){
 			return res.json({error:"数据库查询错误"});
