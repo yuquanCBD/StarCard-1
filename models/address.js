@@ -90,6 +90,22 @@ Address.getDefaultAddr = function(userid, callback){
 	})
 }
 
+//修改默认收货地址
+Address.modifyDefaultAddr = function(userid, province, city, district, address, postcode, callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			return callback(err)
+
+		var sql = 'UPDATE address SET province = ?, city = ?, district = ?, address = ?, postcode = ? WHERE userid = ? AND tag = 1';
+		console.log('SQL: '+ sql);
+
+		conn.query(sql, [province, city, district, address, postcode, userid], function(err, results){
+            conn.release();
+            callback(err, results);
+        });
+	})
+}
+
 
 
 module.exports = Address;

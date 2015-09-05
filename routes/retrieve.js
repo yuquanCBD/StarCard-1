@@ -21,8 +21,9 @@ router.post('/getMsgCap', function(req, res, next){
 
 		var tel = req.body.telephone;
 		var msg = capUtil.getMsgCap(tel);
+		// var msg = 123456;
 		req.session.msg = msg;
-		req.session.when = new Date();
+		req.session.last = (new Date().getTime())/1000;
 		req.session.tel = tel;
 		res.json({success: '获取短信验证码成功'});
 	});
@@ -38,14 +39,15 @@ function checkCap(req, res, next){
 //校验短信验证码
 router.post('/verifyMsg', function(req, res, next){
 	var now = new Date();
-	if(!req.session.when || (now.getTime() - req.session.when.getTime()) > 30000)
-		return res.json({error: '验证码过期'});
-	测试先不验证短信验证码
-	if(req.body.msg != req.session.msg)
-		return res.json({error: '验证码错误'});
+	console.log('----------------------------1', now.getTime()/1000, req.session.last , now.getTime()/1000 - req.session.last, req.body.msg);
 
+	if(!req.session.last || (now.getTime()/1000 - req.session.last) > 300)
+		return res.json({error: '验证码过期'});
+	//测试先不验证短信验证码
+	// if(req.body.msg != req.session.msg)
+	// 	return res.json({error: '验证码错误'});
 	res.json({success: '验证码校验成功'});
-});
+})
 
 // 输入新密码
 router.post('/newPwd', function(req, res, next){

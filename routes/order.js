@@ -3,6 +3,22 @@ var router 		= express.Router();
 var Address 	= require('../models/address')
 var Order 		= require('../models/order')
 
+
+router.post('/modifyDefaultAddr', function(req, res, next){
+	var userid = req.body.userid;
+	var province = req.body.province;
+	var city = req.body.city;
+	var district = req.body.district;
+	var address = req.body.address;
+	var postcode = req.body.postcode;
+
+	Address.modifyDefaultAddr(userid, province, city, district, address, postcode, function(err, results){
+		if(err)
+			return res.json({error : err});
+		return res.json({success : '默认收货地址修改成功'});
+	})
+})
+
 //获取常用收货地址列表
 router.get('/queryAddrList', function(req, res, next){
 	var userid = req.query.userid;
