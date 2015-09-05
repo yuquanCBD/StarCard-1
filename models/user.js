@@ -389,7 +389,7 @@ User.updateUserInfo = function(userid, username, tel, gender, addrid, IDCardNo, 
 								break;
 							var types = file.originalFilename.split('.'); //将文件名以.分隔，取得数组最后一项作为文件后缀名。
 						    fs.renameSync(file.path, filePath + '/' + i + '.' +String(types[types.length-1]));
-						    tmpPath += 'imgs/user/' +userid+ '/' + i + '.' +String(types[types.length-1]) + ';';
+						    tmpPath += 'imgs/user/' +userid+ '/' + i + '.' +String(types[types.length-1]);
 						}
 						var sql = 'UPDATE user SET portrait = "' + tmpPath + '" WHERE userid = "' + userid + '"';
 						console.log("SQL:", sql);

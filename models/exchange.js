@@ -50,6 +50,22 @@ Exchange.addExchange = function(id, buserid, scardid, suserid, describes, card_p
 
 //处理换卡请求
 Exchange.changeStatus = function(id, status, refuseInfo, buserid, card_pic, card_name, card_desc, scardid, callback){
+	if(status == 1){//如果同意换卡，则把card表的status置为1
+		mysql.getConnection(function(err, conn){
+			if(err)
+				return callback(err);
+
+			var sql = 'UPDATE card SET status = 1 WHERE cardid = ?';
+			conn.query(sql, [scardid], function(err, results){
+				conn.release();
+				if(err)
+					return callback(err);
+			})
+
+		})
+	}
+
+
 	mysql.getConnection(function(err, conn){
 		if(err)
 			callback(err);

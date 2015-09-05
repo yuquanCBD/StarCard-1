@@ -36,11 +36,12 @@ router.post('/queryDetail', function(req, res, next){
 router.post('/modify', function(req, res, next){
     var wikiid = req.body.wikiid;
     var describes = req.body.describes;
-    Wiki.modify(wiki, describes, function(err, result){
+
+    Wiki.modify(wikiid, describes, function(err, result){
         if (err)
             return res.json({error : err});
         return res.json({success : "更新成功"});
-    });
-});
+    })
+})
 
 module.exports = router;
