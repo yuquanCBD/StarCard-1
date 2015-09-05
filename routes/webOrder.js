@@ -32,27 +32,36 @@ router.get('/query', function(req, res, next){
 		return res.render("card_manage/login.html");
 	}
 	return res.render('order_manage/orderManage.html',{title:"订单查询",status:4});
-})
+});
 
 router.get('/commonquery', function(req, res, next){
 	var obj = req.session.starObj;
 	if(obj === undefined){
 		return res.render("card_manage/login.html");
 	}
-	return res.render("order_manage/cOrderManage.html",{title:"普通商家订单查询"});
+	return res.render("order_manage/cOrderManage.html",{title:"普通商家订单查询",status:4});
 });
 router.get('/managerquery', function(req, res, next){
 	var obj = req.session.starObj;
 	if(obj == undefined){
 		return res.render("card_manage/login.html");
 	}
-	return res.render("order_manage/mOrderManage.html",{title:"管理员订单查询"});
+	return res.render("order_manage/mOrderManage.html",{title:"管理员订单查询",status:4});
 });
-//查询所有订单
+//所有订单中根据状态查询
 router.post('/query', function(req, res, next){
-	var status = req.body.status[0];
-	console.log("=========shhdhksd=====:",status);
+	var status = req.body.status;
     res.render('order_manage/orderManage.html',{title:'订单查询',status:status});
+});
+//普通用户中订单中根据状态查询
+router.post('/queryC', function(req, res, next){
+	var status = req.body.status;
+    res.render('order_manage/cOrderManage.html',{title:'普通商家订单查询',status:status});
+});
+//管理员中订单中根据状态查询
+router.post('/queryM', function(req, res, next){
+	var status = req.body.status;
+    res.render('order_manage/mOrderManage.html',{title:'管理员订单查询',status:status});
 });
 
 //根据订单状态查询订单信息
@@ -80,35 +89,87 @@ router.post('/queryByStatus', function(req, res, next){
 		//return res.render("order_manage/mOrderManage.html",{title:"管理员订单查询"});
 	})
 });
-//查询买家为管理员的订单消息
-router.post('/managerquery', function(req,res,next){
-	var obj = req.session.starObj;
-	if(obj === undefined){
+router.post('/queryByStatusC', function(req, res, next){
+
+	var status = req.body.status;
+	if(status == "" || status== null){
 		return res.json({error:"error"});
 	}
-	var sql = "select * from manager inner join orders on orders.seller = manager.userid order by orders.create_time desc";
+	//console.log("测试form=-=-=-=-=-=-=-=-=-=====================",status);
+	var sql;
+	if(status == 4){
+		//sql ='select * from orders order by create_time desc';
+		sql = "select * from user inner join orders on orders.seller = user.userid order by orders.create_time desc"; 
+	}
+	else{
+		//sql = 'select * from orders where status="'+status+'" order by orders.create_time desc';
+		var sql = 'select * from user inner join orders on orders.seller = user.userid where orders.status="'+status+'" order by orders.create_time desc';
+	}
+	console.log(sql);
 	Order.exec(sql, function(err, rows){
 		if(err){
 			return res.json({error:"数据库查询错误"});
 		}
-		console.log("=========",rows);
+		
 		return res.json(rows);
+		//return res.render("order_manage/mOrderManage.html",{title:"管理员订单查询"});
 	})
 });
-//查询买家为普通商家的订单消息
-router.post('/commonquery', function(req,res,next){
-	var obj = req.session.starObj;
-	if(obj === undefined){
+router.post('/queryByStatusM', function(req, res, next){
+
+	var status = req.body.status;
+	if(status == "" || status== null){
 		return res.json({error:"error"});
 	}
-	var sql = "select * from user inner join orders on orders.seller = user.userid order by orders.create_time desc";
+	//console.log("测试form=-=-=-=-=-=-=-=-=-=====================",status);
+	var sql;
+	if(status == 4){
+		//sql ='select * from orders order by create_time desc'; 
+		sql = "select * from manager inner join orders on orders.seller = manager.userid order by orders.create_time desc"; 
+	}
+	else{
+		//sql = 'select * from orders where status="'+status+'" order by orders.create_time desc';
+		var sql = 'select * from manager inner join orders on orders.seller = manager.userid where orders.status="'+status+'" order by orders.create_time desc';
+	}
+	console.log(sql);
 	Order.exec(sql, function(err, rows){
 		if(err){
 			return res.json({error:"数据库查询错误"});
 		}
+		
 		return res.json(rows);
+		//return res.render("order_manage/mOrderManage.html",{title:"管理员订单查询"});
 	})
 });
+// //查询买家为管理员的订单消息
+// router.post('/managerquery', function(req,res,next){
+// 	var obj = req.session.starObj;
+// 	if(obj === undefined){
+// 		return res.json({error:"error"});
+// 	}
+// 	var sql = "select * from manager inner join orders on orders.seller = manager.userid order by orders.create_time desc";
+// 	Order.exec(sql, function(err, rows){
+// 		if(err){
+// 			return res.json({error:"数据库查询错误"});
+// 		}
+// 		console.log("=========",rows);
+// 		return res.json(rows);
+// 	})
+// });
+// //查询买家为普通商家的订单消息
+// router.post('/commonquery', function(req,res,next){
+// 	var obj = req.session.starObj;
+// 	if(obj === undefined){
+// 		return res.json({error:"error"});
+// 	}
+// 	var sql = "select * from user inner join orders on orders.seller = user.userid order by orders.create_time desc";
+// 	Order.exec(sql, function(err, rows){
+// 		if(err){
+// 			return res.json({error:"数据库查询错误"});
+// 		}
+// 		return res.json(rows);
+// 	})
+// });
 // router
 router.post('/delete',function(req, res, next){
 	console.log('*****************delete***************');
@@ -250,7 +311,6 @@ router.post('/paid',function(req, res, next){
 			return res.json({error : err});
 	 	return res.json({success:"success"});
 	})
-
 })
 
 

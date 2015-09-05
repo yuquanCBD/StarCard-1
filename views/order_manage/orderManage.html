@@ -417,7 +417,7 @@
 										<button style="margin-left:5%" type="submit" class="btn blue"><i class="icon-ok"></i> 订单信息查询</button>
 										<!-- <button type="button" class="btn">取消</button> -->
 									</div>
-								</form>
+							</form>
 							<div  class="portlet-body">
 
 								<table class="table table-striped table-bordered table-hover" id="sample_2">
@@ -994,8 +994,10 @@
 				else if(obj.status == 2){
 					tr += '<td>待收货</td>';
 				}
-				else{
-					tr += '<td>交易完成</td>'
+				else if(obj.status == 3){
+					tr += '<td>交易完成</td>';
+				}else{
+					tr += '<td>交易关闭</td>'
 				};
 
 				// tr += '<td>'+obj.alipay_id+'</td>';
@@ -1076,8 +1078,10 @@
 					return "待发货";
 				}else if(status == 2){
 					return "待收货";
-				}else{
+				}else if(status == 3){
 					return "交易完成";
+				} else{
+					return "交易关闭";
 				};
 			}
 			function getCreateTime(create_time){
@@ -1326,28 +1330,7 @@
 			   	$('div#query').attr('hidden',false);
 				
 			});
-			$("button#queryByStatus").click(function(e){
-				var options = $('#statusQ').find('option');
-				var sta;
-				for (var i = 0; i < options.length; i++) {
-					if($(options[i]).attr('selected')){
-						sta = $(options[i]).attr("value");
-					}
-				};
-				$.ajax({
-			   		type : 'GET',
-			   		url : '/webOrder/queryByStatus?status='+sta,
-			   		//data : {status:sta},
-			   		dataType : 'json',
-			   		cache : false,
-			   		success : function(data){
-			   			var eva = eval(data);
-			   		},
-			   		error : function(){
-			   			alert('查询信息失败');
-			   		}
-		   		});    
-			});//click
+		
 			$("button#batchPay").click(function(e){
 				//var tbody = $(tbody);
 				var trs = $("tbody").find("tr");
@@ -1359,9 +1342,17 @@
 					var check = $(tr).find('input')[0];
 					if($(check).attr('checked')){
 						var tds = $(tr).find('td');
+						if($(tds[4]).text() != "交易完成"){
+							alert("只有交易完成才可以确认打款，请检查勾选!");
+							return false;
+						}
 						arr.push($(tds[1]).text());
 					}
 				};
+				if(arr.length == 0){
+					alert("请勾选打款");
+					return false;
+				}
 				var str = arr.join(',');
 				$.ajax({
 			   		type : 'POST',
@@ -1377,29 +1368,6 @@
 			   		}
 		   		}); 
 				//console.log(arr);
-			});
-			$("input#wholeCheck").click(function(e){
-				if($("#wholeCheck").attr("checked")){
-					console.log("全选");
-					var trs = $("tbody").find("tr");
-					console.log(trs.length);
-					for (var i = 0; i < trs.length; i++) {
-						var tr = trs[i];
-						// var tds = $(tr).find('td');
-						// var checks = $(tds[0]).find('input');
-						// var check = checks[0];
-						var check = $(tr).find('input')[0];
-						if($(check).attr('checked')){
-							$(check).removeAttr("checked");
-						}
-						else{
-							$(check).attr("checked",true);
-						}
-					};
-				}
-				else{
-					console.log("反选");
-				}
 			});
 
 		});
