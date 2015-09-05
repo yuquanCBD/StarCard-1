@@ -425,6 +425,7 @@
 											<!-- <th class="hidden-480">卡片数</th>
 											<th class="hidden-480">消息</th> -->
 											<th class="hidden-480">交易时间</th>
+											<th class="hidden-480">是否打款</th>
 											<!-- <th class="hidden-480">地址id</th> -->
 											<!-- <th class="hidden-480">支付宝订单</th> -->
 											<!-- <th class="hidden-480">收货时间</th> -->
@@ -971,6 +972,12 @@
 				// 	tr += '<td>换卡申请</td>';
 				// };	
 				tr += "<td>"+str+"</td>";
+				if(obj.paid_tag == 1){
+					tr += '<td>已打款</td>';
+				}
+				else{
+					tr += '<td>未打款</td>';
+				};	
 				tr += '<td><button orderid="'+obj.orderid+'" ordertype="'+obj.ordertype+'" cardid="'+obj.cardid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" create_time="'+obj.create_time+'" class="detailButton">详情</button></td>'+
 					'<td><button orderid="'+obj.orderid+'" class="deleteButton">删除</button></td>'+
 					'<td><button orderid="'+obj.orderid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" create_time="'+obj.create_time+'" class="updateButton">修改</button></td>'+

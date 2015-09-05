@@ -426,6 +426,7 @@
 											<th class="hidden-480">消息</th> -->
 											<!-- <th class="hidden-480">订单类型</th> -->
 											<th class="hidden-480">交易时间</th>
+											<th class="hidden-480">是否打款</th>
 											<!-- <th class="hidden-480">地址id</th> -->
 											<!-- <th class="hidden-480">支付宝订单</th> -->
 											<!-- <th class="hidden-480">收货时间</th> -->
@@ -975,6 +976,12 @@
 				// 	tr += '<td>换卡申请</td>';
 				// };	
 				tr +='<td>'+str+'</str>';
+				if(obj.paid_tag == 1){
+					tr += '<td>已打款</td>';
+				}
+				else{
+					tr += '<td>未打款</td>';
+				};
 				// tr += 	'<td>'+obj.addr_id+'</td>'+
 				// 		'<td>'+obj.alipay_id+'</td>'+
 				// 		'<td>'+obj.receive_time+'</td>';
