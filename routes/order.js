@@ -182,6 +182,18 @@ router.post('/queryOrderByOrderid', function(req, res, next){
 	})
 })
 
+
+//修改运费
+router.post('/modifyFreight', function(req, res, next){
+	var orderid = req.body.orderid;
+	var logistic_price = req.body.logistic_price;
+
+	Order.modifyFreight(orderid, logistic_price, function(err, results){
+        if(err)
+            return res.json({error : err});
+        return res.json({success : '修改成功'});
+	})
+})
 module.exports = router;
 
 

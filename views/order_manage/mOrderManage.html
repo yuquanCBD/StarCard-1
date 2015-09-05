@@ -441,6 +441,10 @@
 									</tbody>
 
 								</table>
+								<div style="display:none">
+									<textarea hidden rows="6" style="width:80%" id="content_csv">卡片id,订单状态,卡片总价,物流价格,卡片数量</textarea>
+								</div>
+									<button id="saveBtn">订单生成.csv文件</button>
 								
 							</div>
 
@@ -906,9 +910,25 @@
 
 	<script src="media/js/app.js"></script>
 
-	<script src="media/js/table-managed.js"></script>     
+	<script src="media/js/table-managed.js"></script> 
+	<script type="text/javascript" src="/media/FileSaver.js"></script>
+	<script type="text/javascript" src="/media/Blob.js"></script>     
 
 	<script>
+	//生成csv文件
+	(function(){
+		document.getElementById("saveBtn").onclick = function(event){
+			event.preventDefault();
+			var BB = self.Blob;
+			saveAs(
+				  new BB(
+					  ["\ufeff" + document.getElementById("content_csv").value] //\ufeff防止utf8 bom防止中文乱码
+					, {type: "text/plain;charset=utf8"}
+				)
+				, "order.csv"
+			);
+		};
+	})();
 		// 列表中展示的<!--index cardid seller buyer status card_price logistic_price ordertype -->
 		// <!--列表中未展示 orderid logistic  logistic_no alipay_id   card_num message  addr_id receive_time-->
 
@@ -973,7 +993,29 @@
 			   		}
 		   		}); 
 			};
+			// function getTeleAjax(url, obj, tr){
+			// 	$.ajax({
+			//    		type : 'POST',
+			//    		url : url,
+			//    		data : obj,
+			//    		dataType : 'json',
+			//    		cache : false,
+			//    		success: function(data){
+			//    			console.log("后台获取手机号");
+			//    			console.log(data);
+			//    			var tds = $(tr).find("td");
+			//    			$(tds[2]).html(data.sellerTele);
+			//    			$(tds[3]).html(data.buyerTele);
+			//    		},
+			//    		error : function(){
+			//    			alert('获取手机号码失败！');
+			//    		}
+		 //   		});
+			// };
 			function getTeleAjax(url, obj, tr){
+				console.log("=====begin:");
+				console.log(url);
+				console.log(obj);
 				$.ajax({
 			   		type : 'POST',
 			   		url : url,
@@ -984,15 +1026,65 @@
 			   			console.log("后台获取手机号");
 			   			console.log(data);
 			   			var tds = $(tr).find("td");
+			   			console.log($(tds[0]).text());
+			   			console.log($(tds[1]).text());
 			   			$(tds[2]).html(data.sellerTele);
+			   			//$(tds[2]).attr("html",data.sellerTele);
 			   			$(tds[3]).html(data.buyerTele);
+			   			
+			   			//$(td).attr("value",data[0].telephone);
 			   		},
 			   		error : function(){
 			   			alert('获取手机号码失败！');
 			   		}
 		   		});
-			};
+			}
+			function getStatus(status){
+				if(status == 0){
+					return "待付款";
+				}else if(status == 1){
+					return "待发货";
+				}else if(status == 2){
+					return "待收货";
+				}else{
+					return "交易完成";
+				};
+			}
+			function getCreateTime(create_time){
+				var date = new Date(create_time);
+   				var year = date.getFullYear();
+   				var month = date.getMonth()+1;
+   				var day = date.getDate();
+   				var hour = date.getHours();
+   				var minute = date.getMinutes();
+   				var str = year+"-"+month+"-"+day+"   "+hour+":"+minute;
+   				return str;
+			}
+			function getOrderType(ordertype){
+				if(ordertype == 1){
+					return "现金购买";
+				}
+				else{
+					return "换卡申请";
+				};
+			}
+			function changeM(message){
+				if(message === null){
+					return "无";
+				}
+				var strs = message.split(',');
+				var m = "";
+				for (var i = 0; i < strs.length; i++) {
+					if(m == ""){
+						m += strs[i];
+					}else{
+						m +='.'+strs[i];
+					}
+				};
+				return m;
+			}
 			function query(){
+				var csv = "卡片id,买家id,买家id,订单状态,卡片总价,物流价格,卡片数量,交易时间,订单类型,物流,运单号,支付宝订单编号,是否打款,留言";
 				$.ajax({
 			   		type : 'POST',
 			   		url : '/webOrder/managerquery',
@@ -1003,13 +1095,18 @@
 			   			var eva = eval(data);
 			   			$('tbody').empty();
 			   			for (var i = 0; i < eva.length; i++) {
+			   				var obj = eva[i];
+							csv+=" \r\n"+obj.orderid+','+obj.buyer+','+obj.seller+','+getStatus(obj.status)+','+obj.card_price+','+obj.logistic_price+','+obj.card_num+','+getCreateTime(obj.create_time)+','+getOrderType(obj.ordertype)+','+obj.logistic+','+obj.logistic_no+','+obj.alipay_id+','+obj.paid_tag+','+changeM(obj.message);
 			  				var tr = createTR(eva[i],i+1);
 			   				$('tbody').append(tr);
 			   			};
+			   			$("#content_csv").attr("value",csv);
 			   			eva.forEach(function(obj, index){
+			   				
 			   				var trs = $("tbody").find("tr");
 			   				getTeleAjax('/webOrder/tele',{seller:obj.seller, buyer:obj.buyer},trs[index]);
 			   			});
+			   			
 			   			$("button.detailButton").click(function(e){
 			   				$('div#update').attr('hidden',true);
 			   				$('div#query').attr('hidden',true);

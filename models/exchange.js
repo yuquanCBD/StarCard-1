@@ -1,5 +1,6 @@
 var mysql = require('./mysql');
 var Message = require('./message')
+var getui = require('../getui/getui');
 
 
 function Exchange(exchange){
@@ -27,13 +28,22 @@ Exchange.addExchange = function(id, buserid, scardid, suserid, describes, card_p
 					'(?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		console.log(sql);
 		conn.query(sql, [id, buserid, scardid, suserid, describes, card_pic, card_name, card_desc, pictures],function(err, results){
-			conn.release();
 			if(err)
 				return callback(err);
 
-			conn.release();
 			callback(err, results);
 			Message.insertNewMsg(suserid, id, 4, card_name, card_desc, card_pic, scardid, function(err, results){if(err) console.log(err)});
+
+			/*个推消息*/
+			var sql = 'SELECT device_token FROM user WHERE userid = ?';
+			conn.query(sql, [suserid], function(err, rows){
+				conn.release();
+				if(rows.length == 0)
+					return;
+				var device_token = rows[0].device_token;
+				getui.push('交易消息', '有人对您发布的卡片提出了换卡申请～', device_token);
+			})
+			/*个推消息*/
 		})
 	})
 }
@@ -50,9 +60,20 @@ Exchange.changeStatus = function(id, status, refuseInfo, buserid, card_pic, card
 			if(err)
 				return callback(err);
 
-			conn.release();
 			callback(err, results);
+			
 			Message.insertNewMsg(buserid, id, 4, card_name, card_desc, card_pic, scardid, function(err, results){ if(err) console.log(err)});
+		
+			/*个推消息*/
+			var sql = 'SELECT device_token FROM user WHERE userid = ?';
+			conn.query(sql, [buserid], function(err, rows){
+				conn.release();
+				if(rows.length == 0)
+					return;
+				var device_token = rows[0].device_token;
+				getui.push('交易消息', '卖家已经处理了您提出的换卡申请～', device_token);
+			})
+			/*个推消息*/
 		})
 	})
 
