@@ -689,10 +689,10 @@
 			   		cache : false,
 			   		success : function(data){
 			   			var evalData = eval(data);
-			   			if(evalData.error != undefined){
+			   			if(evalData.error !== undefined){
 			   				window.location.href='/404.html';
-			   			}
-			   			location.reload();
+			   			}else
+							location.reload();
 			   		},
 			   		error : function(){
 			   			alert("删除错误");

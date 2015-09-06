@@ -79,7 +79,7 @@ function addInfo(fields, files, res){
     }
     else{
       for (var i  in files.imgs) {
-        if(i > 3) break; //最多3张
+        if(i > 0) break; //最多3张
         var file = files.imgs[i];
         if(file.originalFilename.length == 0){
           break;

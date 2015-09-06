@@ -411,7 +411,7 @@
 
 											<!-- BEGIN FORM-->
 
-											<form action="/webNews/add" method="post" class="form-horizontal">
+											<form action="/webNews/add" enctype="multipart/form-data" method="post" class="form-horizontal">
 
 												<div class="control-group">
 
@@ -425,6 +425,7 @@
 
 												</div>
 
+
 												<div class="control-group">
 
 													<label class="control-label">新闻来源:</label>
@@ -435,6 +436,27 @@
 														
 														<!-- <span class="help-inline">Some hint here</span> -->
 
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label">新闻描述:</label>
+
+													<div class="controls">
+
+														<textarea id="describes" name="describes" class="large m-wrap" rows="5"></textarea>
+
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label">新闻主图:</label>
+
+													<div class="controls">
+														<input class="medium m-wrap" type="file" name="imgs" multiple="multiple">
+														<span class="help-inline">(最多一张)</span>
 													</div>
 
 												</div>
@@ -580,11 +602,17 @@
 		   		var title = $("input#title").val();
 		   		var source = $("input#source").val();
 		   		var editor = $("#editor").val();
+		   		var describes = $("#describes").val();
+		   		if(describes.length > 500){
+		   			alert("描述字段过长!");
+		   			return false;
+		   		}
 		   		//console.log(title,'   ',source,'    ',editor);
-		   		if(!title || !source || !editor){
+		   		if(!title || !source || !editor || !describes){
 		   			alert("请完整输入信息");
 		   			return false;
 		   		}
+
 		   		if(confirm('是否需要添加？')){
 		   			KindEditor.sync('#editor');
 		   			return true;
