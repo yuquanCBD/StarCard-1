@@ -214,6 +214,7 @@ function addInfo(fields, files, res){
       return res.json({error:'存储图片失败'});
     }
     else{
+      console.log(files);
       for (var i  in files.imgs) {//存储副图
         if(i > 2) break; //最多三张
         var file = files.imgs[i];

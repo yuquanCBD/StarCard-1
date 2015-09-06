@@ -5,6 +5,7 @@ var queue = require('../struct/queue');
 var async = require('async');
 var pay 		= require('../pingpp/pay'); //ping＋＋支付接口
 var getui = require('../getui/getui');
+var crypto = require('crypto');
 
 var BUYER_TAG = -1;
 var SELLER_TAG = 1;
@@ -26,7 +27,7 @@ Order.checkOrder = function(cardid, cardnum, seller, buyer, card_price, logistic
 		if(err)
 			return callback(err);
 
-		var orderid = uuid.v1();
+		var orderid = crypto.randomBytes(12).toString('hex');
 		var sql1 = 'INSERT INTO orders (orderid, cardid, card_num, seller, buyer, card_price, logistic_price, addr_id, card_pic, card_name, card_desc) '+
 				'VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
@@ -182,6 +183,31 @@ Order.deliverOrder = function(orderid, logistic, logistic_no, logistic_code, cal
 
 //订单收货， 交易成功
 Order.receiveOrder = function(orderid, seller, buyer, callback){
+
+	mysql.getConnection(function(err, conn){//更新card status为1，交易成功
+		if(err)
+			return callback(err);
+
+		var sql = 'SELECT cardid FROM orders WHERE orderid = ?';
+		console.log(sql);
+		conn.query(sql, [orderid], function(err, rows){
+			if(err)
+				return callback(err);
+			if(rows.length == 0) return;
+
+			var cardid = rows[0].cardid;
+			var sql = 'UPDATE card SET status = 1 WHERE cardid = ?';
+			conn.query(sql, [cardid], function(err, results){
+				conn.release();
+				if(err)
+					return callback(err);
+			})
+
+		})
+
+	})
+
+
 	mysql.getConnection(function(err, conn){
 		if(err)
 			return callback(err);
@@ -361,10 +387,10 @@ Order.queryOrderList = function(userid, tag, usertype,callback){
 			return callback(err);
 		var sql = '';
 		if(usertype == 1)
-			sql = 'SELECT orderid, cardid, seller, buyer, logistic, logistic_no, status, card_price, logistic_price, addr_id, card_num, alipay_id, receive_time,  card_pic, card_name, card_desc FROM orders WHERE buyer = "'+userid+'" AND status = ' + tag; 
+			sql = 'SELECT orderid, cardid, seller, buyer, logistic, logistic_no, status, card_price, logistic_price, addr_id, card_num, alipay_id, receive_time,  card_pic, card_name, card_desc, create_time FROM orders WHERE buyer = "'+userid+'" AND status = ' + tag; 
 
 		else
-			sql = 'SELECT orderid, cardid, seller, buyer, logistic, logistic_no, status, card_price, logistic_price, addr_id, card_num, alipay_id, receive_time, card_pic, card_name, card_desc FROM orders WHERE seller = "'+userid+'" AND status = ' + tag; 
+			sql = 'SELECT orderid, cardid, seller, buyer, logistic, logistic_no, status, card_price, logistic_price, addr_id, card_num, alipay_id, receive_time, card_pic, card_name, card_desc , create_time FROM orders WHERE seller = "'+userid+'" AND status = ' + tag; 
 		console.log('SQL: '+ sql);
 		conn.query(sql, function(err, rows){
 			if(err)

@@ -156,7 +156,9 @@ Card.searchByCond = function(userid, cond, category, brand, offset, capacity, or
 
 
         if(order == 1)
-        	sql += ' order by time ';
+        	sql += ' order by time ';//默认按发布时间排序
+        else if(order == 4)
+        	sql += ' order by price ';//按价格price排序
 
         offset = parseInt(offset) * parseInt(capacity);
         sql += 'LIMIT ' + offset + ', ' + capacity;  //分页查询

@@ -1,4 +1,6 @@
 var mysql = require('./mysql');
+var async = require('async');
+
 
 function Address(){};
 
@@ -106,6 +108,40 @@ Address.modifyDefaultAddr = function(userid, province, city, district, address, 
 	})
 }
 
+//通过id修改用户地址
+Address.modifyAddrById = function(userid, addrid, province, city, district, address, postcode, telephone, consignee, is_default, callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			return callback(err)
 
+		if(is_default == 0){//不设置为默认地址
+
+			var sql = 'UPDATE address SET province = ?, city = ?, district = ?, address = ?, postcode = ? , telephone = ?, consignee = ? WHERE addr_id = ?';
+			console.log('SQL: '+ sql);
+
+			conn.query(sql, [province, city, district, address, postcode, telephone, consignee, addrid], function(err, results){
+	            conn.release();
+	            return callback(err, results);
+	        })
+        }else{//设置为默认地址
+        	var sql = 'UPDATE address SET tag = 0 WHERE userid = ?';
+        	console.log('SQL: '+ sql);
+			conn.query(sql, [userid], function(err, results){
+				if (err) {
+					conn.release();
+					return callback(err);
+				}
+	            
+	            var sql = 'UPDATE address SET province = ?, city = ?, district = ?, address = ?, postcode = ? , telephone = ?, consignee = ?, tag = 1 WHERE addr_id = ?';
+				conn.query(sql, [province, city, district, address, postcode, telephone, consignee, addrid], function(err, results){
+		            conn.release();
+		            return callback(err, results);
+		        })
+
+	        })
+
+        }
+	})
+}
 
 module.exports = Address;

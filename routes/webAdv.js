@@ -42,24 +42,6 @@ function addInfoKind(fields, files, res){
       };
    return res.json({error:0,url:imgurl});
 };
-//添加信息
-function addInfoNew(fields, files, res){
-  //存储图片，得到图片的路径信息
-  var filePath = path.join(__dirname, '../public/imgs/adv/');
-  for (var i  in files.imgFile){
-        var file = files.imgFile[i];
-        if(file.originalFilename.length == 0){
-          break;
-        }
-        var types = file.originalFilename.split('.');
-        var date = new Date();
-        var str = String(date.getTime());
-        imgurl = "/imgs/adv/"+str+'.'+String(types[types.length-1]);
-        console.log(file);
-        fs.renameSync(file.path, filePath+str+'.'+String(types[types.length-1]));
-  }
-   return res.json({error:0,url:imgurl});
-};
 //添加广告信息
 //添加信息
 function addInfo(fields, files, res){
@@ -115,7 +97,7 @@ router.post("/uploadImg", function(req, res, next){
 		  console.log(err);
 		  return res.json({error:1});
 		};
-		addInfoNew(fields, files, res);
+		addInfoKind(fields, files, res);
 	});
 	//return res.json({error:0,url:"/imgs/news/f19fe650-51ef-11e5-aa63-171f08a47137/0.jpg"});
 });
