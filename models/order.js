@@ -26,41 +26,71 @@ Order.checkOrder = function(cardid, cardnum, seller, buyer, card_price, logistic
 	mysql.getConnection(function(err, conn){
 		if(err)
 			return callback(err);
-
-		var orderid = crypto.randomBytes(12).toString('hex');
-		var sql1 = 'INSERT INTO orders (orderid, cardid, card_num, seller, buyer, card_price, logistic_price, addr_id, card_pic, card_name, card_desc) '+
-				'VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-
-		var sql2 = 'UPDATE card SET status = -1 WHERE cardid = "' + cardid + '"';
-
-		console.log('Order_Add_SQL: '+ sql1);
-		conn.query(sql1, [orderid, cardid, cardnum, seller, buyer, card_price, logistic_price, addr_id, card_pic, card_name, card_desc], function(err, results){
-			if(err)
+		var sql = 'SELECT amount FROM card WHERE cardid = ?';//查询卡片数量
+		console.log(sql, cardid);
+		conn.query(sql, [cardid], function(err, rows){
+			if(err){
+				conn.release();
 				return callback(err);
+			}
 
-			console.log('UPDATE_card_SQL: '+ sql2);
-			conn.query(sql2, function(err, results){
-				callback(err, orderid);
-				
-				//生成卖家的一条消息 
+			if(rows.length == 0){
+				conn.release();
+				return callback('卡片数量不明');
+			}
+			var amount = rows[0].amount;//卡片数量
+			if(amount < cardnum){
+				conn.release();
+				return callback('商品数量不足');
+			}
 
-				Message.insertOrderMsg(seller, orderid, 2, card_name, card_desc, card_pic, cardid, SELLER_TAG, 0, function(err, results){});
+			var sql = '';
+			if(amount == cardnum)//修改卡片数量，如果下单卡片数量等于现有数量，则将卡片状态置为－1（交易中）
+				sql = 'UPDATE card SET status = -1 , amount = 0 WHERE cardid = "' + cardid + '"';
+			else
+				sql = 'UPDATE card SET amount = '+(amount - cardnum)+' WHERE cardid = "' + cardid + '"';
 
-				/*个推消息*/
-				var sql = 'SELECT device_token FROM user WHERE userid = ?';
-				conn.query(sql, [seller], function(err, rows){
+			console.log(sql);
+			conn.query(sql, function(err, results){
+				if(err){
 					conn.release();
-					if(rows.length == 0)
-						return;
-					var device_token = rows[0].device_token;
-					getui.push('交易消息', '您发布的卡片已有人购买', device_token);
-				})
-				/*个推消息*/
-			});
-        });
+					return callback(err);
+				}
 
-	});
-};
+				var orderid = crypto.randomBytes(12).toString('hex');//生成32位orderid
+				var sql = 'INSERT INTO orders (orderid, cardid, card_num, seller, buyer, card_price, logistic_price, addr_id, card_pic, card_name, card_desc) '+
+				'VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';//下单sql
+				console.log(sql);
+				conn.query(sql, [orderid, cardid, cardnum, seller, buyer, card_price, logistic_price, addr_id, card_pic, card_name, card_desc], function(err, results){
+					if(err){
+						conn.release();
+						return callback(err);
+					}
+					
+					callback(err, orderid);
+
+					//生成卖家的一条消息 
+					Message.insertOrderMsg(seller, orderid, 2, card_name, card_desc, card_pic, cardid, SELLER_TAG, 0, function(err, results){});
+
+					/*个推消息*/
+					var sql = 'SELECT device_token FROM user WHERE userid = ?';
+					conn.query(sql, [seller], function(err, rows){
+						conn.release();
+						if(rows.length == 0)
+							return;
+						var device_token = rows[0].device_token;
+						getui.push('交易消息', '您发布的卡片已有人购买', device_token);
+					})
+					/*个推消息*/
+
+				})
+
+			})
+
+		})
+
+	})//end mysql
+}
 
 //订单付款，待发货
 Order.payOrder = function(orderid, amount, client_ip, callback){
@@ -82,44 +112,50 @@ Order.payOrder = function(orderid, amount, client_ip, callback){
 }
 
 Order.payOrderSuccess = function(orderid, transaction_no, callback){
-	var sql = 'UPDATE orders SET status = 1, alipay_id = "'+transaction_no+'" WHERE orderid = "' + orderid + '"';
-
-	console.log('payOrder_SQL: '+ sql);
-	conn.query(sql, function(err, results){
-		if(err){
-			conn.release();
+	console.log('------------------ Order.payOrderSuccess');
+	mysql.getConnection(function(err, conn){
+		if(err)
 			return callback(err);
-		}
-			
 
-		callback(err, results);
+		var sql = 'UPDATE orders SET status = 1, alipay_id = "'+transaction_no+'" WHERE orderid = "' + orderid + '"';
 
-		var sql = 'SELECT seller, card_name, card_desc, card_pic, cardid FROM orders WHERE orderid = ?';//根据订单号查询卖家的userid
-		conn.query(sql, [orderid], function(err, rows){
-
-			if(rows.length == 0) return;
-
-			var seller = rows[0].seller;
-			var card_name = rows[0].card_name;
-			var card_desc = rows[0].card_desc;
-			var card_pic = rows[0].card_pic;
-			var cardid = rows[0].cardid;
-			//生成卖家的一条消息 
-			Message.insertOrderMsg(seller, orderid, 2, card_name, card_desc, card_pic, cardid, SELLER_TAG, 1, function(err, results){if(err) console.log(err)});
-
-			/*个推消息*/
-			var sql = 'SELECT device_token FROM user WHERE userid = ?';
-			conn.query(sql, [seller], function(err, rows){
+		console.log('payOrder_SQL: '+ sql);
+		conn.query(sql, function(err, results){
+			if(err){
 				conn.release();
-				if(rows.length == 0)
-					return;
-				var device_token = rows[0].device_token;
-				getui.push('交易消息', '您发布的卡片已有人付款', device_token);
-			})
-			/*个推消息*/
-		});
+				return callback(err);
+			}
+				
+			callback(err, results);
 
-    });
+			var sql = 'SELECT seller, card_name, card_desc, card_pic, cardid FROM orders WHERE orderid = ?';//根据订单号查询卖家的userid
+			conn.query(sql, [orderid], function(err, rows){
+
+				if(rows.length == 0) return;
+
+				var seller = rows[0].seller;
+				var card_name = rows[0].card_name;
+				var card_desc = rows[0].card_desc;
+				var card_pic = rows[0].card_pic;
+				var cardid = rows[0].cardid;
+				//生成卖家的一条消息 
+				Message.insertOrderMsg(seller, orderid, 2, card_name, card_desc, card_pic, cardid, SELLER_TAG, 1, function(err, results){if(err) console.log(err)});
+
+				/*个推消息*/
+				var sql = 'SELECT device_token FROM user WHERE userid = ?';
+				conn.query(sql, [seller], function(err, rows){
+					conn.release();
+					if(rows.length == 0)
+						return;
+					var device_token = rows[0].device_token;
+					getui.push('交易消息', '您发布的卡片已有人付款', device_token);
+				})
+				/*个推消息*/
+			})
+
+	    })
+
+	})
 }
 
 //订单发货，待收货
@@ -183,7 +219,7 @@ Order.deliverOrder = function(orderid, logistic, logistic_no, logistic_code, cal
 
 //订单收货， 交易成功
 Order.receiveOrder = function(orderid, seller, buyer, callback){
-
+/*
 	mysql.getConnection(function(err, conn){//更新card status为1，交易成功
 		if(err)
 			return callback(err);
@@ -207,7 +243,7 @@ Order.receiveOrder = function(orderid, seller, buyer, callback){
 
 	})
 
-
+*/
 	mysql.getConnection(function(err, conn){
 		if(err)
 			return callback(err);
@@ -324,41 +360,69 @@ Order.cancleOrder = function(orderid, callback){
 		if(err)
 			return callback(err);
 
-		var sql = 'UPDATE orders SET status = -1 WHERE orderid = "' + orderid + '"'; 
+		var sql = 'SELECT cardid, card_num FROM orders WHERE orderid = ?';//查询订单卡片数量
+		conn.query(sql, [orderid], function(err, rows){
+			if(err){
+				conn.release();
+				return callback(err);
+			}
+			if(rows.length == 0){
+				conn.release();
+				return callback('订单信息为空');
+			}
+			var cardid = rows[0].cardid;
+			var card_num = rows[0].card_num;
 
-		console.log('cancleOrder_SQL: '+ sql);
-		conn.query(sql, function(err, results){
-			callback(err, results);
-			
-			var sql = 'SELECT seller, card_name, card_desc, card_pic, cardid FROM orders WHERE orderid = ?';//根据订单号查询卖家的userid
-			conn.query(sql, [orderid], function(err, rows){
-			
-				if(rows.length == 0) return;
-
-				var seller = rows[0].seller;
-				var card_name = rows[0].card_name;
-				var card_desc = rows[0].card_desc;
-				var card_pic = rows[0].card_pic;
-				var cardid = rows[0].cardid;
-				//生成卖家的一条消息 
-				Message.insertOrderMsg(seller, orderid, 2, card_name, card_desc, card_pic, cardid, SELLER_TAG, -1, function(err, results){if(err) console.log(err);});
-
-				/*个推消息*/
-				var sql = 'SELECT device_token FROM user WHERE userid = ?';
-				conn.query(sql, [seller], function(err, rows){
+			var sql = 'UPDATE card SET status = 0, amount = amount + ? WHERE cardid = ?';//修改卡片状态为0（待出售），卡片数量为原有卡片数量加上订单的卡片数量
+			conn.query(sql, [card_num, cardid], function(err, results){
+				if(err){
 					conn.release();
-					if(rows.length == 0)
-						return;
-					var device_token = rows[0].device_token;
-					getui.push('交易消息', '买家取消了订单', device_token);
-				})
-				/*个推消息*/
+					return callback(err);
+				}
 
-			});
-			
-        });
-	});
-};
+				var sql = 'UPDATE orders SET status = -1 WHERE orderid = ?'; //修改订单状态为关闭
+				conn.query(sql, [orderid], function(err, results){
+					if(err){
+						conn.release();
+						return callback(err);
+					}
+
+					callback(err, results);//回调返回
+
+					var sql = 'SELECT seller, card_name, card_desc, card_pic, cardid FROM orders WHERE orderid = ?';//根据订单号查询卖家的userid
+					conn.query(sql, [orderid], function(err, rows){
+					
+						if(rows.length == 0) return;
+
+						var seller = rows[0].seller;
+						var card_name = rows[0].card_name;
+						var card_desc = rows[0].card_desc;
+						var card_pic = rows[0].card_pic;
+						var cardid = rows[0].cardid;
+						//生成卖家的一条消息 
+						Message.insertOrderMsg(seller, orderid, 2, card_name, card_desc, card_pic, cardid, SELLER_TAG, -1, function(err, results){if(err) console.log(err);});
+
+						/*个推消息*/
+						var sql = 'SELECT device_token FROM user WHERE userid = ?';
+						conn.query(sql, [seller], function(err, rows){
+							conn.release();
+							if(rows.length == 0)
+								return;
+							var device_token = rows[0].device_token;
+							getui.push('交易消息', '买家取消了订单', device_token);
+						})
+						/*个推消息*/
+
+					})
+
+
+				})
+			})
+
+		})
+
+	})//end mysql
+}
 
 
 //update,更新备注信息

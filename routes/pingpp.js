@@ -1,11 +1,12 @@
 var express = require('express');
 var router = express.Router();
-var Order = require('../routes/order');
+var Order = require('../models/order');
 
 /* pingpp 支付webhooks回调函数 */
 router.post('/pay', function(req, res, next) {
-	var event = req.body.event;
-	console.log(event)
+  //console.log(req.body);
+	var event = req.body;
+
 	var resp = function (ret, status_code) {
 	  res.writeHead(status_code, {
 	    "Content-Type": "text/plain; charset=utf-8"
@@ -14,7 +15,7 @@ router.post('/pay', function(req, res, next) {
     }
 
     try {
-
+      console.log(event.type)
       if (event.type === undefined) {
         return resp('Event 对象中缺少 type 字段', 400);
       }
@@ -25,8 +26,8 @@ router.post('/pay', function(req, res, next) {
           // 开发者在此处加入对支付异步通知的处理代码
           var charge = event.data.object;
           if(charge.paid == true)
-          	Order.payOrderSuccess(charge.order_no, charge.transaction_no, function(err){if(err) console.log(err)});
-          
+             Order.payOrderSuccess(charge.order_no, charge.transaction_no, function(err, results){if(err) console.log(errr)});
+
           return resp("OK", 200);
           break;
         case "refund.succeeded":

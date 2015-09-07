@@ -231,7 +231,7 @@ router.post('/query', function(req, res, next){
       console.log("======>",err);
       return res.json({err:"数据库查询错误"});
     }
-    console.log("user query======>",rows);
+    //console.log("user query======>",rows);
     return res.json(rows);
   });       
 });
@@ -292,7 +292,7 @@ router.post('/mquery',function(req, res, next){
       console.log("======>",err);
       return res.json({err:"数据库查询错误"});
     }
-    console.log("user query======>",rows);
+    //console.log("user query======>",rows);
     return res.json(rows);
   });
 });

@@ -214,23 +214,7 @@ function addInfo(fields, files, res){
       return res.json({error:'存储图片失败'});
     }
     else{
-      console.log(files);
-      for (var i  in files.imgs) {//存储副图
-        if(i > 2) break; //最多三张
-        var file = files.imgs[i];
-        if(file.originalFilename.length == 0){//没有上传图片
-          break;
-        }
-        var types = file.originalFilename.split('.');
-        var p = "imgs/card/"+uId+'/'+i+'.'+String(types[types.length-1]);
-        if(str === ""){
-          str += p;
-        }
-        else{
-          str += (','+p);
-        }
-        fs.renameSync(file.path, filePath+uId+'/'+i+'.'+String(types[types.length-1]));
-      }
+      //console.log(files);
       //存储主图
       var main_img_path = '';
       {
@@ -240,8 +224,24 @@ function addInfo(fields, files, res){
               var filename = 'main';
               main_img_path = "imgs/card/"+uId+'/'+'main'+'.'+String(types[types.length-1]);
               fs.renameSync(file.path, filePath+uId+'/'+'main'+'.'+String(types[types.length-1]));
+              str += main_img_path + ',';
           }
       }
+
+      for (var i  in files.imgs) {//存储副图
+        if(i > 8) break; //最多9张
+        var file = files.imgs[i];
+        if(file.originalFilename.length == 0){//没有上传图片
+          break;
+        }
+        var types = file.originalFilename.split('.');
+        var p = "imgs/card/"+uId+'/'+i+'.'+String(types[types.length-1]);
+        str += p + ',';
+        fs.renameSync(file.path, filePath+uId+'/'+i+'.'+String(types[types.length-1]));
+      }
+
+      str = str.slice(0, -1);
+
 
       console.log('图片信息添加成功');
       console.log(str);

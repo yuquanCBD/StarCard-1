@@ -55,7 +55,7 @@ function addInfoNew(fields, files, res){
         var date = new Date();
         var str = String(date.getTime());
         imgurl = "/imgs/adv/"+str+'.'+String(types[types.length-1]);
-        console.log(file);
+        //console.log(file);
         fs.renameSync(file.path, filePath+str+'.'+String(types[types.length-1]));
   }
    return res.json({error:0,url:imgurl});
@@ -67,8 +67,8 @@ function addInfo(fields, files, res){
   var uId = uuid.v1();
   var title = fields.title[0];
   var content = fields.content[0];
-  console.log("title:",title," content:",content);
-  console.log("$$$$$$$$$$$$################@@@@@@@@@@@@@@@@@  ",files);
+  //console.log("title:",title," content:",content);
+  //console.log("$$$$$$$$$$$$################@@@@@@@@@@@@@@@@@  ",files);
   //return res.render("../public/kindeditor/nodejs/advAdd.html");
   //存储图片，得到图片的路径信息
   var filePath = path.join(__dirname, '../public/imgs/adv/');
@@ -136,7 +136,7 @@ router.get('/getlist',function(req, res, next){
 		if(err){
 			return res.json({error:"error"});
 		}
-    console.log(rows);
+    //console.log(rows);
 		return res.json(rows);
 	});
 });
@@ -145,7 +145,7 @@ router.post('/list',function(req, res, next){
     if(err){
       return res.json({error:"error"});
     }
-    console.log(rows);
+    //console.log(rows);
     return res.json(rows);
   });
 })

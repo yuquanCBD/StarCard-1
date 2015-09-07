@@ -101,6 +101,7 @@ router.post('/checkOrder', function(req, res, next){
 	var card_pic = req.body.card_pic;
 	var card_name = req.body.card_name;
 	var card_desc = req.body.card_desc;
+	var card_max_num = req.body.card_max_num; //出售卡片最大数量
 
 	Order.checkOrder(cardid, cardnum, seller, buyer, card_price, logistic_price, addrid, card_pic, card_name, card_desc, function(err, orderid){
 		if(err)
@@ -197,6 +198,7 @@ router.post('/queryOrderByOrderid', function(req, res, next){
             return res.json(rows[0]);
 	})
 })
+
 
 
 //修改运费

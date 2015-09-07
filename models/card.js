@@ -144,7 +144,7 @@ Card.searchByCond = function(userid, cond, category, brand, offset, capacity, or
         var flag1 = false;
         var flag2 = false;
 
-		var sql = 'SELECT cardid, title, pictures, describes, price, logistic, category, brand, freight, exchange, owner, ownername, amount, time, longitude, latitude FROM card  WHERE status = 0 ';
+		var sql = 'SELECT cardid, title, pictures, describes, price, logistic, category, brand, freight, exchange, owner, ownername, amount, time, longitude, latitude, main_img FROM card  WHERE status = 0 ';
         if (cond) 
             sql += ' AND (title = "'+ cond +'" OR brand = "'+cond+'") ';
 
@@ -155,8 +155,8 @@ Card.searchByCond = function(userid, cond, category, brand, offset, capacity, or
                 sql += 'AND category = "' + category + '" ';
 
 
-        if(order == 1)
-        	sql += ' order by time ';//默认按发布时间排序
+        if(order == 1 || order == 2)
+        	sql += ' order by time DESC ';//默认按发布时间排序
         else if(order == 4)
         	sql += ' order by price ';//按价格price排序
 
