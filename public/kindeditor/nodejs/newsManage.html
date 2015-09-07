@@ -484,7 +484,7 @@
 										<div class="tab-pane active" id="portlet_tab1">
 
 											<!-- BEGIN FORM-->
-											<form action="/webNews/update" method="post" class="form-horizontal">
+											<form action="/webNews/update" enctype="multipart/form-data" method="post" class="form-horizontal">
 												<div hidden class="control-group">
 
 													<label class="control-label" >news_id:</label>
@@ -520,19 +520,35 @@
 													</div>
 
 												</div>
-												<!-- <div class="control-group">
+												<div class="control-group">
 
-													<label class="control-label">新闻发表时间:</label>
+													<label class="control-label">新闻描述:</label>
 
 													<div class="controls">
 
-														<input id="create_time" type="text"  class="m-wrap medium" name="create_time"/>
-														
-														<span class="help-inline">(形如"2015-09-01 09:20:17" 或者 "2015-09-01 09:20")</span>
+														<textarea id="describes" name="describes" class="large m-wrap" rows="5"></textarea>
 
 													</div>
 
-												</div> -->
+												</div>
+												<div class="control-group">
+
+													<label class="control-label">新闻主图:</label>
+
+													<div id="newsImg" class="controls">
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label">新闻主图更改:</label>
+
+													<div class="controls">
+														<input class="medium m-wrap" type="file" name="imgs" multiple="multiple">
+														<span class="help-inline">(不更换主图不要上传)</span>
+													</div>
+
+												</div>
 												<div class="control-group">
 
 													<label class="control-label">新闻正文:</label>
@@ -698,7 +714,10 @@
 			   		cache : false,
 			   		success : function(data){
 			   			var evalData = eval(data);
-			   			location.reload();
+			   			if(evalData.error !== undefined){
+			   				window.location.href='/404.html';
+			   			}else
+							location.reload();
 			   		},
 			   		error : function(){
 			   			alert("删除错误");
@@ -742,8 +761,19 @@
 				   				var str = year+"-"+month+"-"+day+"   "+hour+":"+minute+":"+second;
 			   					$('input#news_id').attr('value',obj.news_id);
 			   					$('input#title').attr('value',obj.title);
-			   					//$('input#create_time').attr('value',str);
+			   					$('#describes').attr('value',obj.describes);
 			   					$('input#source').attr('value',obj.source);
+			   					var pictures = obj.main_picture;
+			   					var strs = pictures.split(',');
+			   					$("#newsImg").empty();
+			   					if(strs[0] != ''){
+			   						for(var i=0;i<strs.length;i++){
+			   						$('#newsImg').append('<img src="../../'+strs[i]+'" height="100" width="100">');
+			   						};
+			   					}
+			   					else{
+			   						$('#newsImg').append('<span class="help-inline">没有图片</span>');
+			   					}
 			   					//$('#editor').attr('value',obj.content);
 			   					editor.html(obj.content);
 			   				}

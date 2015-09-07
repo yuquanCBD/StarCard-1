@@ -42,6 +42,7 @@ function addInfoKind(fields, files, res){
       };
    return res.json({error:0,url:imgurl});
 };
+
 //添加信息
 function addInfoNew(fields, files, res){
   //存储图片，得到图片的路径信息
@@ -60,7 +61,7 @@ function addInfoNew(fields, files, res){
   }
    return res.json({error:0,url:imgurl});
 };
-//添加广告信息
+
 //添加信息
 function addInfo(fields, files, res){
   var str = "";
@@ -79,7 +80,7 @@ function addInfo(fields, files, res){
     }
     else{
       for (var i  in files.imgs) {
-        if(i > 3) break; //最多3张
+        if(i > 0) break; //最多3张
         var file = files.imgs[i];
         if(file.originalFilename.length == 0){
           break;
@@ -115,7 +116,7 @@ router.post("/uploadImg", function(req, res, next){
 		  console.log(err);
 		  return res.json({error:1});
 		};
-		addInfoNew(fields, files, res);
+		addInfoKind(fields, files, res);
 	});
 	//return res.json({error:0,url:"/imgs/news/f19fe650-51ef-11e5-aa63-171f08a47137/0.jpg"});
 });
