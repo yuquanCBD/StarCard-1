@@ -28,7 +28,7 @@ router.get('/test', function(req, res, next){
 router.get('/add', function(req, res, next){
 	if(req.session.starObj === undefined){
  		return res.render('card_manage/login.html');
-  	};
+  };
   return res.render('news_manage/newsAdd.html');
 });
 
