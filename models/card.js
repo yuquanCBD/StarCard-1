@@ -141,18 +141,16 @@ Card.searchByCond = function(userid, cond, category, brand, offset, capacity, or
 		if (err) 
 			callback(err);
 
-        var flag1 = false;
-        var flag2 = false;
 
 		var sql = 'SELECT cardid, title, pictures, describes, price, logistic, category, brand, freight, exchange, owner, ownername, amount, time, longitude, latitude, main_img FROM card  WHERE status = 0 ';
         if (cond) 
-            sql += ' AND (title = "'+ cond +'" OR brand = "'+cond+'") ';
+            sql += ' AND (title like "%'+ cond +'%" OR brand like "%'+cond+'%") ';
 
         if (brand) 
-                sql += 'AND brand = "' + brand + '" ';
+                sql += 'AND brand like "%' + brand + '%" ';
 
         if (category) 
-                sql += 'AND category = "' + category + '" ';
+                sql += 'AND category like "%' + category + '%" ';
 
 
         if(order == 1 || order == 2)
@@ -166,6 +164,10 @@ Card.searchByCond = function(userid, cond, category, brand, offset, capacity, or
 
 		console.log('querySQL: '+ sql);
 		conn.query(sql, function(err, rows){
+			if(err){
+				conn.release();
+				return callback(err);
+			}
 			if (order == 3) {//根据经纬度排序
 				rows.sort(function(a, b){
 					var d1 = GetDistance(latitude, longitude, a.latitude, a.longitude);

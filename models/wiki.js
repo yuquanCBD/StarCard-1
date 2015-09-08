@@ -16,43 +16,67 @@ function Wiki(wiki){
     this.brand = wiki.brand;
 }
 
-Wiki.queryByCond = function(cond, brand, category, offset, capacity,callback){
+Wiki.queryByCond = function(userid, cond, brand, category, offset, capacity,callback){
     mysql.getConnection(function(err, conn){
         if (err) 
             callback(err);
         var flag1 = false;
         var flag2 = false;
 
-        var sql = 'SELECT wikiid, wikiname, english_name, category, manufacturer, series, serial_number, rarity, describes, price, contributor, picture, brand FROM wiki ';
+        var sql = 'SELECT wikiid, wikiname, english_name, category, manufacturer, series, serial_number, rarity, describes, price, contributor, picture, brand, islock FROM wiki ';
         if (cond) {
-            sql += ' WHERE (wikiname = "'+ cond +'" OR serial_number = "' +cond+ '" OR brand = "'+cond+'") ';
+            sql += ' WHERE (wikiname like "%'+ cond +'%" OR serial_number like "%' +cond+ '%" OR brand like "%'+cond+'%") ';
             flag1 = true;
         }
         if (brand) {
             if (flag1)
-                sql += 'AND brand = "' + brand + '" ';
+                sql += 'AND brand like "%' + brand + '%" ';
             else
-                sql += 'WHERE brand = "' + brand + '" ';
+                sql += 'WHERE brand like "%' + brand + '%" ';
             flag2 = true;
         }
         if (category) {
             if (flag1 && !flag2) 
-                sql += 'AND category = "' + category + '" ';
+                sql += 'AND category like "%' + category + '%" ';
             else if (flag1 && flag2)
-                sql += 'AND category = "' + category + '" ';
+                sql += 'AND category like "%' + category + '%" ';
             else if (!flag1 && flag2)
-                sql += 'AND category = "' + category + '" ';
+                sql += 'AND category like "%' + category + '%" ';
             else 
-                sql += 'WHERE category = "' + category + '" ';
+                sql += 'WHERE category like "%' + category + '%" ';
         }
         offset = parseInt(offset) * parseInt(capacity);
         sql += 'LIMIT ' + offset + ', ' + capacity;  //分页查询
 
         console.log('queryByCond_SQL: '+ sql);
         conn.query(sql, function(err, rows){
-            callback(err, rows);
-            conn.release();
-        });
+            if(err){
+                conn.release();
+                return callback(err);
+            }
+
+            //查询百科收藏表
+            var sql = 'SELECT wikiid FROM wiki_collect WHERE userid = ?';
+            conn.query(sql, [userid], function(err, wikis){
+                if(err){
+                    conn.release();
+                    return callback(err);
+                }
+                for(var x in rows){
+                    rows[x].is_collect = 0;
+                    for(var y in wikis){
+                        if(rows[x].wikiid == wikis[y].wikiid){
+                            rows[x].is_collect = 1;
+                            break;
+                        }
+                    }
+                }
+                conn.release();
+                callback(err, rows);
+
+            })
+
+        })
     });
 };
 

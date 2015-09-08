@@ -311,11 +311,11 @@ User.queryMyCard = function(userid, type, offset, capacity, callback){
 		if(parseInt(type) == 0)
 			sql = 'SELECT a.cardid, a.title, a.pictures, a.describes, a.price, a.logistic, a.category, a.brand, '+
 				'a.freight, a.exchange, a.owner, a.amount, a.time, a.longitude, a.latitude FROM card a  WHERE '+
-				'status = 0 AND owner = "'+ userid +'"';
+				'status = 0 AND owner = "'+ userid +'" ORDER BY TIME DESC ';
 		else if(parseInt(type) == 1)
 			sql = 'SELECT a.cardid, a.title, a.pictures, a.describes, a.price, a.logistic, a.category, a.brand, '+
 				'a.freight, a.exchange, a.owner, a.amount, a.time, a.longitude, a.latitude FROM card a  WHERE '+
-				'status = 1 AND owner = "'+ userid +'"';
+				'status = 1 AND owner = "'+ userid +'" ORDER BY TIME DESC ';
 
 		offset = parseInt(offset) * parseInt(capacity);
         sql += 'LIMIT ' + offset + ', ' + capacity;  //分页查询
@@ -374,12 +374,12 @@ User.updateUserInfo = function(userid, username, tel, gender, addrid, IDCardNo, 
 						//更新图片
 						var filePath = path.join(__dirname, '../public/imgs/user/') + userid;
 						if(!fs.existsSync(filePath))
-							callback('用户图片文件夹不存在')
+							callback('用户图片文件夹不存在');
 						var pics = fs.readdirSync(filePath);		//遍历删除目录下所有文件
 						pics.forEach(function(fileName){
 							var tmpPath = filePath + '/' + fileName;
 							fs.unlinkSync(tmpPath);
-						});
+						})
 						//保存新的用户图片,同时保存路径
 						var tmpPath = '';
 						for (var i in files.imgs ) {
@@ -388,9 +388,11 @@ User.updateUserInfo = function(userid, username, tel, gender, addrid, IDCardNo, 
 							if(file.originalFilename.length == 0)
 								break;
 							var types = file.originalFilename.split('.'); //将文件名以.分隔，取得数组最后一项作为文件后缀名。
-						    fs.renameSync(file.path, filePath + '/' + i + '.' +String(types[types.length-1]));
-						    tmpPath += 'imgs/user/' +userid+ '/' + i + '.' +String(types[types.length-1]);
+							var file_name = Math.floor(Math.random()*100000);
+						    fs.renameSync(file.path, filePath + '/' + file_name + '.' +String(types[types.length-1]));
+						    tmpPath += 'imgs/user/' +userid+ '/' + file_name + '.' +String(types[types.length-1]);
 						}
+
 						var sql = 'UPDATE user SET portrait = "' + tmpPath + '" WHERE userid = "' + userid + '"';
 						console.log("SQL:", sql);
 						conn.query(sql, function(err, results){
