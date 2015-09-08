@@ -31,6 +31,7 @@ var webOrder_route = require('./routes/webOrder');      //web订单管理
 var webWiki_route = require('./routes/webWiki');        //wiki信息管理
 var webNews_route = require('./routes/webNews');        //news信息管理
 var webAdv_route = require('./routes/webAdv');          //广告信息管理
+var webService_route = require('./routes/webService');  //客服
 
 var message_route = require('./routes/message');        //消息路由
 var pingpp_route = require('./routes/pingpp');          //支付webhooks路由
@@ -103,6 +104,7 @@ app.use('/pingpp', pingpp_route);
 app.use('/usercenter', userCenter_route);
 app.use('/webNews',webNews_route);
 app.use('/webAdv',webAdv_route);
+app.use('/webService',webService_route);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
