@@ -212,6 +212,19 @@ router.post('/modifyFreight', function(req, res, next){
         return res.json({success : '修改成功'});
 	})
 })
+
+
+//用户退款
+router.post('/refund', function(req, res, next){
+	var orderid = req.body.orderid;
+
+	Order.refund(orderid, function(err, results){
+        if(err)
+            return res.json({error : err});
+        return res.json({success : '退款申请提交成功'});
+	})	 	 				   		
+})
+
 module.exports = router;
 
 
