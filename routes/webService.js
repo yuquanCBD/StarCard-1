@@ -97,8 +97,9 @@ router.post("/add", function(req, res, next){
 	var content = req.body.content;
 	var userid = req.body.userid;
 	var username = req.body.username;
+	var telephone = req.body.telephone;
 	var email = req.body.email;
-	var obj = {title:title, content:content, userid:userid, username:username, email:email};
+	var obj = {title:title, content:content, userid:userid, username:username, email:email, telephone:telephone};
 	Service.insert(obj, function(err, rows){
 		if(err){
 			return res.json({error:"error"});
