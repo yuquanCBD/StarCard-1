@@ -109,7 +109,13 @@
 
 		<!-- BEGIN SIDEBAR -->
 
-		<ul class="page-sidebar-menu">
+		<div class="page-sidebar nav-collapse collapse">
+
+			<!-- BEGIN SIDEBAR MENU -->        
+
+			
+			
+			<ul class="page-sidebar-menu">
 				<li class="">
 
 					<a href="javascript:;">
@@ -125,11 +131,18 @@
 					</a>
 
 					<ul class="sub-menu">
-						<li>
+						<li class="">
 
-							<a href="/admin/query">
+							<a href="/admin/managerquery">
 
-							信息查询、删除、修改</a>
+							 管理员卡片管理</a>
+
+						</li>
+						<li class="">
+
+							<a href="/admin/commonquery">
+
+							 普通商家卡片管理</a>
 
 						</li>
 
@@ -198,10 +211,15 @@
 
 					<ul class="sub-menu">
 						<li>
-
 							<a href="/webOrder/query">订单查询、删除、修改</a>
-
 						</li>
+						<li>
+							<a href="/webOrder/managerquery">管理员用户订单管理</a>
+						</li>
+						<li class="">
+							<a href="/webOrder/commonquery">普通用户订单管理</a>
+						</li>
+
 					</ul>
 
 				</li>
@@ -235,9 +253,104 @@
 					</ul>
 
 				</li>
+				<li class="">
+
+					<a href="javascript:;">
+
+						<i class="icon-table"></i> 
+
+						<span class="title">新闻管理</span>
+
+						<!-- <span class="selected"></span> -->
+
+						<span class="arrow open"></span>
+
+					</a>
+
+					<ul class="sub-menu">
+						<li>
+							<a href="/kindeditor/nodejs/newsAdd.html">新闻增加</a>
+						</li>
+						<li>
+							<a href="/kindeditor/nodejs/newsManage.html">新闻查询、删除、修改</a>
+						</li>
+					</ul>
+
+				</li>
+				<li class="">
+
+					<a href="javascript:;">
+
+						<i class="icon-table"></i> 
+
+						<span class="title">消息推送</span>
+
+						<!-- <span class="selected"></span> -->
+
+						<span class="arrow open"></span>
+
+					</a>
+
+					<ul class="sub-menu">
+						<li class="">
+							<a href="/webNews/message">消息推送</a>
+						</li>
+						<li class="">
+							<a href="/webNews/messagelist">消息管理</a>
+						</li>
+					</ul>
+
+				</li>
+				<li class="">
+
+					<a href="javascript:;">
+
+						<i class="icon-table"></i> 
+
+						<span class="title">广告管理</span>
+
+						<!-- <span class="selected"></span> -->
+
+						<span class="arrow open"></span>
+
+					</a>
+
+					<ul class="sub-menu">
+						<li class="">
+							<a href="/kindeditor/nodejs/advAdd.html">广告增加</a>
+						</li>
+						<li class="">
+							<a href="/kindeditor/nodejs/advManage.html">广告查询、删除、修改</a>
+						</li>
+					</ul>
+
+				</li>
+				<li class="">
+
+					<a href="javascript:;">
+
+						<i class="icon-table"></i> 
+
+						<span class="title">客服信息</span>
+
+						<!-- <span class="selected"></span> -->
+
+						<span class="arrow open"></span>
+
+					</a>
+
+					<ul class="sub-menu">
+						<li class="">
+							<a href="/webService/checksv">未处理客服信息</a>
+						</li>
+						<li class="">
+							<a href="/webService/allsv">所有客服信息</a>
+						</li>
+					</ul>
+
+				</li>
 
 			</ul>
-
 			<!-- END SIDEBAR MENU -->
 
 		</div>
@@ -283,7 +396,7 @@
 
 						<h3 class="page-title">
 
-							信息查询、删除、添加
+							管理员信息查询、删除、添加
 
 						</h3>
 
@@ -307,7 +420,7 @@
 
 							<div class="portlet-title">
 
-								<div class="caption"><i class="icon-user"></i>人员信息查询结果</div>
+								<div class="caption"><i class="icon-user"></i>管理员信息查询结果</div>
 
 								<div class="actions">
 
@@ -318,7 +431,10 @@
 							</div>
 
 							<div  class="portlet-body">
+
 								<p style="color:red">您无此权限查看</p>
+							
+								
 							</div>
 
 						</div>
@@ -372,7 +488,7 @@
 
 											<!-- BEGIN FORM-->
 
-											<form id='formUpdate' action="/webUser/update" enctype="multipart/form-data" method="post" class="form-horizontal">
+											<form id='formUpdate' action="/webUser/mupdate" enctype="multipart/form-data" method="post" class="form-horizontal">
 
 												<div hidden class="control-group">
 
@@ -427,13 +543,15 @@
 												</div>
 												<div class="control-group">
 
-													<label class="control-label">积分:</label>
-
+													<label class="control-label">是否为超级管理员</label>
 													<div class="controls">
+														<select id="super" class="small m-wrap" tabindex="1" name="super">
 
-														<input id='score' type="text" class="m-wrap medium" name="score" />
+															<option value="1">是</option>
 
-														<span class="help-inline">(数字)</span>
+															<option value="0">否</option>
+
+														</select>
 
 													</div>
 
@@ -446,7 +564,7 @@
 
 														<input id='IDCardNo' type="text" class="m-wrap medium" name="IDCardNo" />
 
-														<span class="help-inline">(X直接输入大写"X")</span>
+														<span class="help-inline">(如果最后为"X",那么添倒数第五位到倒数第二位)</span>
 
 													</div>
 
@@ -480,7 +598,6 @@
 														<img src="../0.jpg" height="100" width="100">
 														<img src="../1.jpg" height="100" width="100"> -->
 													</div>
-
 												</div>
 												<div class="control-group">
 
@@ -495,8 +612,8 @@
 
 												<div class="form-actions">
 
-													<button id="updateSubmit" type="submit" class="btn blue"><i class="icon-ok"></i> 用户信息修改</button>
-													<!-- <button type="button" class="btn">取消</button> -->
+													<button id="updateSubmit" type="submit" class="btn blue"><i class="icon-ok"></i> 管理员信息修改</button>
+													<button id="backButton" type="button" style="margin-left:5%" class="btn blue">返回</button>
 
 												</div>
 
@@ -622,9 +739,7 @@
 			App.init();
 
 			TableManaged.init();
-
-		});
-	
+			});
 	</script>
 
 <script type="text/javascript">  var _gaq = _gaq || [];  _gaq.push(['_setAccount', 'UA-37564768-1']);  _gaq.push(['_setDomainName', 'keenthemes.com']);  _gaq.push(['_setAllowLinker', true]);  _gaq.push(['_trackPageview']);  (function() {    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();</script></body>
