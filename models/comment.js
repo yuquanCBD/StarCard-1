@@ -29,31 +29,47 @@ Comment.addComment = function(cardid, userid, commentto, content, username, user
 			callback(err, results);
 			if(comment_id == null || comment_id == '') return;
 
-			//查询评论卡片的卖家
-			var sql = 'SELECT a.owner, a.title, a.describes, a.pictures From card a left join card_comment b on a.cardid = b.cardid where b.commentid = ?';
+			var sql = 'SELECT userid FROM comment WHERE commentid = ?'
 			console.log(sql);
-			conn.query(sql, [comment_id], function(err, rows){
-				
-				if(rows.length == 0)
-					return;
-				var seller = rows[0].owner;
-				var title = rows[0].title;
-				var describes = rows[0].describes;
-				var pictures = rows[0].pictures;
-				//生成买家的一条消息 
-
-				Message.insertNewMsg(seller, comment_id, 1, title, describes, pictures, cardid, function(err, results){ if(err) console.log(err);}); // 生成对卖家的一条信息
-				/*个推消息*/
-				var sql = 'SELECT device_token FROM user WHERE userid = ?';
-				console.log(sql);
-				conn.query(sql, [seller], function(err, rows){
+			conn.query(sql, [commentto], function(err, rows){
+				if(err){
 					conn.release();
-					if(rows.length == 0) return;
+					return callback(err);
+				}
+				if(rows.length == 0){
+					conn.release();
+					return callback('评论信息有错误!');
+				}
+				var to_userid = rows[0].userid;
 
-					var device_token = rows[0].device_token;
-					getui.push('评论消息', '有人对您发布的卡片发表了评论～', device_token);
+				//查询评论卡片的卖家
+				var sql = 'SELECT a.owner, a.title, a.describes, a.pictures From card a left join card_comment b on a.cardid = b.cardid where b.commentid = ?';
+				console.log(sql);
+				conn.query(sql, [comment_id], function(err, rows){
+					
+					if(rows.length == 0)
+						return;
+					var seller = rows[0].owner;
+					var title = rows[0].title;
+					var describes = rows[0].describes;
+					var pictures = rows[0].pictures;
+					//生成卖家的一条消息 
+					if(to_userid != null && to_userid != '')
+						Message.insertNewMsg(to_userid, comment_id, 1, title, describes, pictures, cardid, function(err, results){ if(err) console.log(err);})
+					Message.insertNewMsg(seller, comment_id, 1, title, describes, pictures, cardid, function(err, results){ if(err) console.log(err);}); // 生成对卖家的一条信息
+					/*个推消息*/
+					var sql = 'SELECT device_token FROM user WHERE userid = ?';
+					console.log(sql);
+					conn.query(sql, [seller], function(err, rows){
+						conn.release();
+						if(rows.length == 0) return;
+
+						var device_token = rows[0].device_token;
+						getui.push('评论消息', '有人对您发布的卡片发表了评论～', device_token);
+					})
+					/*个推消息*/
 				})
-				/*个推消息*/
+
 			})
 
         })    
