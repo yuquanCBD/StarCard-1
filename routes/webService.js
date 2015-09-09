@@ -100,6 +100,7 @@ router.post("/add", function(req, res, next){
 	var telephone = req.body.telephone;
 	var email = req.body.email;
 	var obj = {title:title, content:content, userid:userid, username:username, email:email, telephone:telephone};
+	console.log("客服add接口:",obj);
 	Service.insert(obj, function(err, rows){
 		if(err){
 			return res.json({error:"error"});
