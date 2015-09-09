@@ -47,6 +47,7 @@ Service.insert = function(obj, callback){
         if(err)
             return callback(err);
         var sql = "insert into service (title,content,userid,username,telephone,email) values (?, ?, ?, ?, ?, ?)";
+        console.log(sql);
         conn.query(sql, [title, content, userid, username, telephone, email], function(err, results){
             if(err)
                 return callback(err);
@@ -70,7 +71,7 @@ Service.queryById = function(id, callback){
         })
     })
 };
-//设置deal状态为1，管理员信息
+//设置deal状态为1，并插入管理员信息
 Service.update = function(obj, callback){
     var manager_id = obj.userid;
     var manager_name = obj.username;
