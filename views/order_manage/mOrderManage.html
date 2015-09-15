@@ -579,6 +579,45 @@
 
 												<div class="control-group">
 
+													<label class="control-label">物流</label>
+
+													<div class="controls">
+
+														<select id="logistic" class="small m-wrap" tabindex="1" name="logistic">
+															<option value="无">无</option>
+															<option value="顺丰">顺丰</option>
+
+															<option value="圆通">圆通</option>
+
+															<option value="中通">中通</option>
+
+															<option value="天天">天天</option>
+															<option value="韵达">韵达</option>
+															<option value="申通">申通</option>
+															<option value="百世汇通">百世汇通</option>
+															<option value="邮政包裹">邮政包裹</option>
+															<option value="EMS">EMS</option>
+															<option value="全峰">全峰</option>
+															<option value="宅急送">宅急送</option>
+														</select>
+
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label" >运单号:</label>
+
+													<div class="controls">
+
+														<input id='logistic_no' type="text" class="m-wrap medium" name="logistic_no" />
+
+													</div>
+
+												</div>
+
+												<div class="control-group">
+
 													<label class="control-label">运费:</label>
 
 													<div class="controls">
@@ -856,6 +895,17 @@
 													</div>
 
 												</div>
+												<div class="control-group">
+
+													<label class="control-label">备注信息:</label>
+
+													<div class="controls">
+
+														<textarea id='extraD' name="describes" class="large m-wrap" rows="3" placeholder=""></textarea>
+
+													</div>
+
+												</div>
 												
 											
 												<button id="backButton" type="button" class="btn blue" style="margin-left:25%">返回</button>
@@ -1041,9 +1091,9 @@
 				// 		'<td>'+obj.alipay_id+'</td>'+
 				// 		'<td>'+obj.receive_time+'</td>';
 					//'<td><a href="#" cardId="'+obj.cardId+'" onclick="beSure()">delete</a></td>'+
-				tr += '<td><button  orderid="'+obj.orderid+'" ordertype="'+obj.ordertype+'" cardid="'+obj.cardid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" create_time="'+obj.create_time+'" class="detailButton">详情</button></td>'+
+				tr += '<td><button  orderid="'+obj.orderid+'" ordertype="'+obj.ordertype+'" cardid="'+obj.cardid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" create_time="'+obj.create_time+'" extra="'+obj.extra+'" class="detailButton">详情</button></td>'+
 					'<td><button orderid="'+obj.orderid+'" class="deleteButton">删除</button></td>'+
-					'<td><button orderid="'+obj.orderid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" create_time="'+obj.create_time+'" class="updateButton">修改</button></td>'+
+					'<td><button orderid="'+obj.orderid+'" logistic="'+obj.logistic+'" logistic_no="'+obj.logistic_no+'" alipay_id="'+obj.alipay_id+'" card_num="'+obj.card_num+'" message="'+obj.message+'" addr_id="'+obj.addr_id+'" create_time="'+obj.create_time+'" index="'+index+'" class="updateButton">修改</button></td>'+
 					'<td><input type="text" style="width:70px" class="extraInfo" orderid="'+obj.orderid+'" value="'+obj.extra+'"></td>'
 					'</tr>';
 				return tr;
@@ -1197,6 +1247,7 @@
 			   				var addr_id = tar.attr("addr_id");
 			   				var create_time = tar.attr("create_time");
 			   				var ordertype = tar.attr("ordertype") == 0 ? "换卡申请" : "现金购买";
+			   				var extra = tar.attr("extra");
 			   				//var cardid = $(tds[1]).text();
 			   				var seller = $(tds[2]).text();
 			   				var buyer = $(tds[3]).text();
@@ -1226,6 +1277,7 @@
 			   				$("input#card_priceD").attr({value:card_price});
 			   				$("input#logistic_priceD").attr({value:logistic_price});
 			   				$("input#ordertypeD").attr({value:ordertype});
+			   				$("#extraD").attr({value:extra, disabled:true});
 			   				$.ajax({
 						   		type : 'POST',
 						   		url : '/webOrder/addr',
@@ -1278,6 +1330,8 @@
 				   				var message = tar.attr("message");
 				   				var addr_id = tar.attr("addr_id");
 				   				var receive_time = tar.attr("receive_time");
+				   				var index = tar.attr("index");
+				   				var obj = eva[ Number(index) -1 ];
 				   				//var cardid = $(tds[1]).text();
 				   				var seller = $(tds[2]).text();
 				   				var buyer = $(tds[3]).text();
@@ -1291,6 +1345,23 @@
 				   				$('input#logistic_price').attr("value",logistic_price);
 				   				$('input#card_num').attr("value",card_num);
 				   				$('input#message').attr("value",message);
+
+				   				if(obj.logistic_no !== null)
+				   					$('input#logistic_no').attr("value",obj.logistic_no);
+				   				else{
+				   					$('input#logistic_no').attr("value","");
+				   				}
+				   				var logistic = obj.logistic;
+				   				var options = $('#logistic').find('option');
+			   					for (var i = 0; i < options.length; i++) {
+			   						if($(options[i]).text() == logistic){
+			   							$(options[i]).attr('selected',1);
+			   						}
+			   					};
+			   					if(logistic === null){
+			   						$(options[0]).attr('selected',1);
+			   					}
+
 				   				var options = $('#status').find('option');
 			   					if(status == "待付款"){
 			   						$(options[0]).attr("selected",1);

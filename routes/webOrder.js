@@ -206,7 +206,9 @@ router.post('/update', function(req, res, next){
 	var card_price = req.body.card_price;
 	var logistic_price = req.body.logistic_price;
 	var card_num = req.body.card_num;
-	var sql = 'update orders set message="'+message+'", status="'+status+'", card_num="'+card_num+'", card_price="'+card_price+'", logistic_price="'+logistic_price+'" where orderid="'+orderid+'"';
+	var logistic = req.body.logistic == "无" ? "" : req.body.logistic;
+	var logistic_no = req.body.logistic_no;
+	var sql = 'update orders set message="'+message+'", status="'+status+'", logistic="'+logistic+'", logistic_no="'+logistic_no+'", card_num="'+card_num+'", card_price="'+card_price+'", logistic_price="'+logistic_price+'" where orderid="'+orderid+'"';
 	console.log("=====================================================update sql==========",sql);
 	Order.exec(sql, function(err, r){
 		if(err){

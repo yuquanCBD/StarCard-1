@@ -443,13 +443,14 @@
 											<th class="hidden-480">标题</th>
 											<!-- <th class="hidden-480">describes</th> -->
 											<th class="hidden-480">价格</th>
-											<th class="hidden-480">物流</th>
+											<!-- <th class="hidden-480">物流</th> -->
 											<th class="hidden-480">类别</th>
 											<th class="hidden-480">品牌</th>
 											<th class="hidden-100">物流价格</th>
 											<th class="hidden-100">交换</th>
 											<!-- <th class="hidden-100">owner</th> -->
 											<th class="hidden-100">数量</th>
+											<th class="hidden-100">卡片卖家</th>
 											<th class="hidden-100">详情</th>
 											<th class="hidden-480">删除</th>
 											<th class="hidden-480">修改</th>
@@ -570,6 +571,18 @@
 
 												<div class="control-group">
 
+													<label class="control-label">卡片交换描述</label>
+
+													<div class="controls">
+
+														<textarea id='exchange_desc' name="exchange_desc" class="large m-wrap" rows="3" placeholder=""></textarea>
+
+													</div>
+
+												</div>
+
+												<div class="control-group">
+
 													<label class="control-label">卡片类别</label>
 
 													<div class="controls">
@@ -606,27 +619,6 @@
 															<option value="Futera">Futera</option>
 
 															<option value="其他品牌">其他品牌</option>
-
-														</select>
-
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label">物流</label>
-
-													<div class="controls">
-
-														<select id='logistic' class="small m-wrap" name="logistic">
-
-															<option value="顺丰">顺丰</option>
-
-															<option value="圆通">圆通</option>
-
-															<option value="中通">中通</option>
-
-															<option value="天天">天天</option>
 
 														</select>
 
@@ -709,7 +701,7 @@
 												<div class="form-actions">
 
 													<button id="updateSubmit" type="submit" class="btn blue"><i class="icon-ok"></i> 修改</button>
-													<!-- <button type="button" class="btn">取消</button> -->
+													<button id="updateBack" type="button" style="margin-left:5%" class="btn blue">返回</button>
 
 												</div>
 
@@ -830,6 +822,18 @@
 
 												<div class="control-group">
 
+													<label class="control-label">卡片交换描述</label>
+
+													<div class="controls">
+
+														<textarea id='exchange_descD' name="exchange_descD" class="large m-wrap" rows="3" placeholder=""></textarea>
+
+													</div>
+
+												</div>
+
+												<div class="control-group">
+
 													<label class="control-label">卡片类别</label>
 
 													<div class="controls">
@@ -872,27 +876,7 @@
 													</div>
 
 												</div>
-												<div class="control-group">
-
-													<label class="control-label">物流</label>
-
-													<div class="controls">
-
-														<select id='logisticD' class="small m-wrap" name="logistic">
-
-															<option value="顺丰">顺丰</option>
-
-															<option value="圆通">圆通</option>
-
-															<option value="中通">中通</option>
-
-															<option value="天天">天天</option>
-
-														</select>
-
-													</div>
-
-												</div>
+												
 												<div class="control-group">
 
 													<label class="control-label">物流价格</label>
@@ -938,6 +922,19 @@
 													<div class="controls">
 
 														<textarea id='describesD' name="describes" class="large m-wrap" rows="3" placeholder=""></textarea>
+
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label">卖家名:</label>
+
+													<div class="controls">
+
+														<input id='ownernameD' type="text"  class="m-wrap medium" name="ownernameD" />
+
+														<!-- <span class="help-inline">单位/元</span> -->
 
 													</div>
 
@@ -1096,17 +1093,17 @@
 					'<td>'+obj.title+'</td>'+
 					//'<td class="hidden-480">'+obj.describes+'</td>'+
 					'<td>'+obj.price+'</td>'+
-					'<td>'+obj.logistic+'</td>'+
 					'<td>'+obj.category+'</td>'+
 					'<td>'+obj.brand+'</td>'+
 					'<td>'+obj.freight+'</td>'+
 					'<td>'+obj.exchange+'</td>'+
 					//'<td>'+obj.owner+'</td>'+
 					'<td>'+obj.amount+'</td>'+
+					'<td>'+obj.ownername+'</td>'+
 					//'<td><a href="#" cardId="'+obj.cardId+'" onclick="beSure()">delete</a></td>'+
-					'<td><button cardId="'+obj.cardid+'" owner="'+obj.owner+'" pictures="'+obj.pictures+'" main_img="'+obj.main_img+'" describes="'+obj.describes+'" class="detailsButton">详情</button></td>'+
+					'<td><button cardId="'+obj.cardid+'" owner="'+obj.owner+'" pictures="'+obj.pictures+'" main_img="'+obj.main_img+'" describes="'+obj.describes+'" exchange_desc="'+obj.exchange_desc+'" class="detailsButton">详情</button></td>'+
 					'<td><button cardId="'+obj.cardid+'" class="deleteButton">删除</button></td>'+
-					'<td><button cardId="'+obj.cardid+'" owner="'+obj.owner+'" pictures="'+obj.pictures+'" main_img="'+obj.main_img+'" describes="'+obj.describes+'" class="updateButton">修改</button></td>'+
+					'<td><button cardId="'+obj.cardid+'" owner="'+obj.owner+'" pictures="'+obj.pictures+'" main_img="'+obj.main_img+'" describes="'+obj.describes+'" exchange_desc="'+obj.exchange_desc+'" class="updateButton">修改</button></td>'+
 					'<td><button cardId="'+obj.cardid+'" class="queryComment">查看评论</button></td>'+
 					'</tr>';
 				return tr;
@@ -1183,7 +1180,13 @@
 				$('div#detail').attr('hidden',true);
 				$('div#update').attr('hidden',true);
 				$('div#query').attr('hidden',false);
+			});
+			$("button#updateBack").click(function(e){
+				$('div#detail').attr('hidden',true);
+				$('div#update').attr('hidden',true);
+				$('div#query').attr('hidden',false);
 			})
+			
 			function query(){
 				$.ajax({
 			   		type : 'POST',
@@ -1203,6 +1206,7 @@
 			   			$("button.detailsButton").click(function(e){
 			   				var cardid = $(e.target).attr("cardId");
 			   				var describes = $(e.target).attr("describes");
+			   				var exchange_desc = $(e.target).attr("exchange_desc");
 			   				var pictures = $(e.target).attr('pictures');
 			   				var main_img = $(e.target).attr('main_img');
 			   				var owner = $(e.target).attr("owner");
@@ -1211,13 +1215,14 @@
 		   					var title = $(tds[1]).text();
 		   					//var describes = $(tds[2]).text();
 		   					var price = $(tds[2]).text();
-		   					var logistic = $(tds[3]).text();
-		   					var category = $(tds[4]).text();
-		   					var brand = $(tds[5]).text();
-		   					var freight = $(tds[6]).text();
-		   					var exchange = $(tds[7]).text();
+		   					//var logistic = $(tds[3]).text();
+		   					var category = $(tds[3]).text();
+		   					var brand = $(tds[4]).text();
+		   					var freight = $(tds[5]).text();
+		   					var exchange = $(tds[6]).text();
 		   					//var owner = $(tds[]).text();
-		   					var amount = $(tds[8]).text();
+		   					var amount = $(tds[7]).text();
+		   					var ownername = $(tds[8]).text();
 			   				//detailAjax('detail',{cardid:cardid});
 			   				$('div#detail').attr('hidden',false);
 			   				$('div#update').attr('hidden',true);
@@ -1227,7 +1232,9 @@
 		   					$('input#priceD').attr({value:price,disabled:true});
 		   					$('input#amountD').attr({value:amount,disabled:true});
 		   					$('input#freightD').attr({value:freight,disabled:true});
+		   					$('input#ownernameD').attr({value:ownername,disabled:true});
 		   					$('#describesD').attr({value:describes,disabled:true});
+		   					$('#exchange_descD').attr({value:exchange_desc,disabled:true});
 		   					$('#exchangeD').remove();
 			   				$('#amountFlagD').after(createChange(exchange,"exchangeD"));
 			   				$('#exchangeD').find('input').attr("disabled",true);
@@ -1245,13 +1252,13 @@
 		   						}
 		   					};
 		   					$('#brandD').attr('disabled',true);
-		   					var options = $('#logisticD').find('option');
-		   					for (var i = 0; i < options.length; i++) {
-		   						if($(options[i]).text() == logistic){
-		   							$(options[i]).attr('selected',1);
-		   						}
-		   					};
-		   					$('#logisticD').attr('disabled',true);
+		   					// var options = $('#logisticD').find('option');
+		   					// for (var i = 0; i < options.length; i++) {
+		   					// 	if($(options[i]).text() == logistic){
+		   					// 		$(options[i]).attr('selected',1);
+		   					// 	}
+		   					// };
+		   					// $('#logisticD').attr('disabled',true);
 		   					var strs = pictures.split(',');
 		   					$('#cardImgD').empty();
 		   					if(strs[0] != ''){
@@ -1291,20 +1298,23 @@
 			   				if(confirm('是否需要修改卡信息?')){
 			   					var cardid = $(e.target).attr("cardId");
 				   				var describes = $(e.target).attr("describes");
+				   				var exchange_desc = $(e.target).attr("exchange_desc");
 				   				var pictures = $(e.target).attr('pictures');
+				   				var main_img = $(e.target).attr('main_img');
 				   				var owner = $(e.target).attr("owner");
 			   					var tr = $(e.target).parent().parent();
 			   					var tds = $(tr).find('td');
 			   					var title = $(tds[1]).text();
 			   					//var describes = $(tds[2]).text();
 			   					var price = $(tds[2]).text();
-			   					var logistic = $(tds[3]).text();
-			   					var category = $(tds[4]).text();
-			   					var brand = $(tds[5]).text();
-			   					var freight = $(tds[6]).text();
-			   					var exchange = $(tds[7]).text();
+			   					//var logistic = $(tds[3]).text();
+			   					var category = $(tds[3]).text();
+			   					var brand = $(tds[4]).text();
+			   					var freight = $(tds[5]).text();
+			   					var exchange = $(tds[6]).text();
 			   					//var owner = $(tds[]).text();
-			   					var amount = $(tds[8]).text();
+			   					var amount = $(tds[7]).text();
+			   					var ownername = $(tds[8]).text();
 
 			   					//var	 = $(tds[8]).text();
 			   					console.log(owner,' , ',amount);
@@ -1317,6 +1327,7 @@
 			   					$('input#amount').attr('value',amount);
 			   					$('input#freight').attr('value',freight);
 			   					$('#describes').attr('value',describes);
+			   					$('#exchange_desc').attr('value',exchange_desc);
 			   					$('#exchange').remove();
 			   					$('#amountFlag').after(createChange(exchange,"exchange"));
 
@@ -1332,12 +1343,6 @@
 			   							$(options[i]).attr('selected',1);
 			   						}
 			   					};
-			   					var options = $('#logistic').find('option');
-			   					for (var i = 0; i < options.length; i++) {
-			   						if($(options[i]).text() == logistic){
-			   							$(options[i]).attr('selected',1);
-			   						}
-			   					};
 			   					var strs = pictures.split(',');
 			   					console.log('strs: ',strs[0]);
 			   					//<img src="../0.jpg" height="100" width="100">
@@ -1350,12 +1355,6 @@
 			   					else{
 			   						$('#cardImg').append('<span class="help-inline">没有图片</span>');
 			   					}
-			   					
-			   					
-			   					
-			   					//updateAjax('update',{flag:'hahhahah'});
-			   					// var tds = tr.getElementsByTagName('td');
-			   					// console.log(tds.length);
 			   				}
 			   			})
 			   			App.init();

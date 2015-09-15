@@ -85,6 +85,7 @@ router.post('/starcardAdd',function(req, res, next){
     return res.render('card_manage/login.html');
   };
   var cid = req.session.starObj.userid; //用户id
+  var username = req.session.starObj.username;
   var form = new multiparty.Form();
   form.parse(req, function(err, fields, files){
     if(err){
@@ -92,23 +93,27 @@ router.post('/starcardAdd',function(req, res, next){
       res.json({error:'数据解析错误'});
       return;
     };
-    addInfo(fields, files, res, cid);
+    addInfo(fields, files, res, cid, username);
   })
 });
 
-function addInfo(fields, files, res, cid){
+function addInfo(fields, files, res, cid, username){
   var str = "";
   var mainStr = "";
   var uId = uuid.v1();
   var title = fields.title[0];
-  var price = fields.price[0];
-  var amount = fields.amount[0];
+  var price = parseInt(fields.price[0]);
+  var amount = parseInt(fields.amount[0]);
   var category = fields.category[0];
   var brand = fields.brand[0];
-  var logistic = fields.logistic[0];
+  //var logistic = fields.logistic[0];
   var freight = fields.freight[0];
   var exchange = fields.exchange[0];
   var describes = fields.describes[0];
+  var exchange_desc = fields.exchange_desc[0];
+  if(exchange_desc == ""){
+    exchange_desc = "无";
+  }
   var owner = cid;
   //存储图片，得到图片的路径信息
   var filePath = path.join(__dirname, '../public/imgs/card/');
@@ -154,8 +159,8 @@ function addInfo(fields, files, res, cid){
       console.log('图片信息添加成功');
       console.log(str,' %%%%%%% ',mainStr);
       //将路径和卡片信息存入数据库
-      var sql = 'insert into card(cardid, title, describes, price, logistic, category, brand, freight, exchange, owner, amount, pictures, main_img) values';
-      sql = sql + '("'+uId+'","'+title+'","'+describes+'","'+price+'","'+logistic+'","'+category+'","'+brand+'","'+freight+'","'+exchange+'","'+owner+'","'+amount+'","'+str+'","'+mainStr+'")';
+      var sql = 'insert into card(cardid, title, describes, price, exchange_desc, category, brand, exchange, owner, amount, pictures, main_img, ownername, freight) values';
+      sql = sql + '("'+uId+'","'+title+'","'+describes+'","'+price+'","'+exchange_desc+'","'+category+'","'+brand+'","'+exchange+'","'+owner+'","'+amount+'","'+str+'","'+mainStr+'","'+username+'","'+freight+'")';
       console.log(sql);
       Card.add(sql, function(err, user){
         if(err){
@@ -228,10 +233,11 @@ function updateInfo(fields, files, res){
   var amount = fields.amount[0];
   var category = fields.category[0];
   var brand = fields.brand[0];
-  var logistic = fields.logistic[0];
+  //var logistic = fields.logistic[0];
   var freight = fields.freight[0];
   var exchange = fields.exchange[0];
   var describes = fields.describes[0];
+  var exchange_desc = fields.exchange_desc[0];
   var owner = 0;
   //存储图片，得到图片的路径信息
   var filePath = path.join(__dirname, '../public/imgs/card/');
@@ -270,7 +276,7 @@ function updateInfo(fields, files, res){
         };
         console.log('图片信息添加成功');
         //将路径和卡片信息存入数据库
-        var sql = 'UPDATE card SET title="'+ title +'", describes="'+describes+'", price="'+price+'", logistic="'+logistic+'", category="'+category+'", brand="'+brand+'", freight="'+freight+'", exchange="'+exchange
+        var sql = 'UPDATE card SET title="'+ title +'", describes="'+describes+'", price="'+price+'", exchange_desc="'+exchange_desc+'", category="'+category+'", brand="'+brand+'", freight="'+freight+'", exchange="'+exchange
           +'",amount="'+amount+'",pictures="'+str+'" WHERE cardid = "'+uId+'"';
         console.log(sql);
         Card.update(sql, function(err, user){
@@ -288,7 +294,7 @@ function updateInfo(fields, files, res){
   }
   //如果不存在上传文件
   else{
-    var sql = 'UPDATE card SET title="'+ title +'", describes="'+describes+'", price="'+price+'", logistic="'+logistic+'", category="'+category+'", brand="'+brand+'", freight="'+freight+'", exchange="'+exchange
+    var sql = 'UPDATE card SET title="'+ title +'", describes="'+describes+'", price="'+price+'", exchange_desc="'+exchange_desc+'", category="'+category+'", brand="'+brand+'", freight="'+freight+'", exchange="'+exchange
           +'",amount="'+amount+'" WHERE cardid = "'+uId+'"';
     Card.update(sql, function(err, user){
       if(err){
