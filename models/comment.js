@@ -26,22 +26,22 @@ Comment.addComment = function(cardid, userid, commentto, content, username, user
         	}
 			var comment_id = results.insertId;
 			console.log('----------------', comment_id);
-			callback(err, results);
+			
 			if(comment_id == null || comment_id == '') return;
 
-			var sql = 'SELECT userid FROM comment WHERE commentid = ?'
-			console.log(sql);
+			var sql = 'SELECT userid FROM card_comment WHERE commentid = ?'
+			console.log(sql, commentto);
 			conn.query(sql, [commentto], function(err, rows){
 				if(err){
 					conn.release();
 					return callback(err);
 				}
-				if(rows.length == 0){
-					conn.release();
-					return callback('评论信息有错误!');
-				}
-				var to_userid = rows[0].userid;
 
+				var to_userid = '';
+				if(rows.length != 0)
+					to_userid = rows[0].userid;
+
+				callback(err, results);
 				//查询评论卡片的卖家
 				var sql = 'SELECT a.owner, a.title, a.describes, a.pictures From card a left join card_comment b on a.cardid = b.cardid where b.commentid = ?';
 				console.log(sql);

@@ -113,12 +113,10 @@ Address.modifyAddrById = function(userid, addrid, province, city, district, addr
 	mysql.getConnection(function(err, conn){
 		if(err)
 			return callback(err)
-
 		if(is_default == 0){//不设置为默认地址
 
 			var sql = 'UPDATE address SET province = ?, city = ?, district = ?, address = ?, postcode = ? , telephone = ?, consignee = ? WHERE addr_id = ?';
 			console.log('SQL: '+ sql);
-
 			conn.query(sql, [province, city, district, address, postcode, telephone, consignee, addrid], function(err, results){
 	            conn.release();
 	            return callback(err, results);

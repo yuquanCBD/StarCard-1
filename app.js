@@ -37,6 +37,8 @@ var message_route = require('./routes/message');        //消息路由
 var pingpp_route = require('./routes/pingpp');          //支付webhooks路由
 var userCenter_route = require('./routes/userCenter');  //用户中心路由
 
+var skip_route = require('./routes/skip'); //跳转路由
+
 var test_route = require('./routes/test');//测试路由
 
 var app = express();
@@ -105,6 +107,7 @@ app.use('/usercenter', userCenter_route);
 app.use('/webNews',webNews_route);
 app.use('/webAdv',webAdv_route);
 app.use('/webService',webService_route);
+app.use('/skip', skip_route);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

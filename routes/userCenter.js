@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../models/user')
+var User = require('../models/user');
+var Address = require('../models/address');
 var multiparty = require('multiparty');
 
 router.post('/identification', function (req, res, next) {
@@ -21,7 +22,7 @@ router.post('/identification', function (req, res, next) {
 })
 
 //通过id修改用户地址
-router.post('modifyAddrById', function(req, res, next){
+router.post('/modifyAddrById', function(req, res, next){
     var userid = req.body.userid;
     var addrid = req.body.addrid;
     var province = req.body.province;

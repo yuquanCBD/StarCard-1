@@ -127,7 +127,7 @@ router.post('/payOrder', function(req, res, next){
 router.post('/deliverOrder', function(req, res, next){
 	var orderid = req.body.orderid;
 	var logistic = req.body.logistic;
-	var logistic_no = req.body.logistic.no;
+	var logistic_no = req.body.logistic_no;
 	var logistic_code = req.body.logistic_code;
 
 	Order.deliverOrder(orderid, logistic, logistic_no, logistic_code, function(err, results){
