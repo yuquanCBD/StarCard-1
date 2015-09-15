@@ -1263,7 +1263,9 @@
 		   					$('#cardImgD').empty();
 		   					if(strs[0] != ''){
 		   						for(var i=0;i<strs.length;i++){
-		   						$('#cardImgD').append('<img src="../'+strs[i]+'" height="100" width="100">');
+		   							if(strs[i].indexOf("main") < 0)
+			   								continue;
+		   							$('#cardImgD').append('<img src="../'+strs[i]+'" height="100" width="100">');
 		   						};
 		   					}
 		   					else{
@@ -1349,7 +1351,9 @@
 			   					$('#cardImg').empty();
 			   					if(strs[0] != ''){
 			   						for(var i=0;i<strs.length;i++){
-			   						$('#cardImg').append('<img src="../'+strs[i]+'" height="100" width="100">');
+			   							if(strs[i].indexOf("main") < 0)
+			   								continue;
+			   							$('#cardImg').append('<img src="../'+strs[i]+'" height="100" width="100">');
 			   						};
 			   					}
 			   					else{

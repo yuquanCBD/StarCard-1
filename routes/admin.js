@@ -129,15 +129,17 @@ function addInfo(fields, files, res, cid, username){
         if(file.originalFilename.length == 0){
           break;
         }
+        var date = new Date();
+        var imgName = String(date.getTime());
         var types = file.originalFilename.split('.');
-        var p = "imgs/card/"+uId+'/'+i+'.'+String(types[types.length-1]);
+        var p = "imgs/card/"+uId+'/'+imgName+'.'+String(types[types.length-1]);
         if(str === ""){
           str += p;
         }
         else{
           str += (','+p);
         }
-        fs.renameSync(file.path, filePath+uId+'/'+i+'.'+String(types[types.length-1]));
+        fs.renameSync(file.path, filePath+uId+'/'+imgName+'.'+String(types[types.length-1]));
       };
       for (var i  in files.mainImgs) {
         if(i > 0) break; //最多1张
@@ -152,6 +154,12 @@ function addInfo(fields, files, res, cid, username){
         }
         else{
           mainStr += (','+p);
+        }
+        if(str === ""){
+          str += mainStr;
+        }
+        else{
+          str +=(','+mainStr);
         }
         fs.renameSync(file.path, filePath+uId+'/main.'+String(types[types.length-1]));
       };
@@ -250,10 +258,12 @@ function updateInfo(fields, files, res){
         var dirList = fs.readdirSync(filePath+uId);
         dirList.forEach(function(fileName){
           var splitPath = fileName.split('.');
-          //console.log("％％％％％％％％％％％％％％图片名称",strs[0],'  ,  ',strs[1] );
           if(splitPath[0] != "main"){
             fs.unlinkSync(filePath+uId+'/'+fileName);
-          }  
+          }
+          else{
+            str+="imgs/card/"+uId+'/'+fileName;
+          }
         });
         console.log('删除成功');
 
@@ -264,15 +274,17 @@ function updateInfo(fields, files, res){
           if(file.originalFilename.length == 0){
             break;
           }
+          var date = new Date();
+          var imgName = String(date.getTime());
           var types = file.originalFilename.split('.');
-          var p = "imgs/card/"+uId+'/'+i+'.'+String(types[types.length-1]);
+          var p = "imgs/card/"+uId+'/'+imgName+'.'+String(types[types.length-1]);
           if(str === ""){
             str += p;
           }
           else{
             str += (','+p);
           }
-          fs.renameSync(file.path, filePath+uId+'/'+i+'.'+String(types[types.length-1]));
+          fs.renameSync(file.path, filePath+uId+'/'+imgName+'.'+String(types[types.length-1]));
         };
         console.log('图片信息添加成功');
         //将路径和卡片信息存入数据库
