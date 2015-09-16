@@ -1263,7 +1263,7 @@
 		   					$('#cardImgD').empty();
 		   					if(strs[0] != ''){
 		   						for(var i=0;i<strs.length;i++){
-		   							if(strs[i].indexOf("main") < 0)
+		   							if(strs[i].indexOf("main") >= 0)
 			   								continue;
 		   							$('#cardImgD').append('<img src="../'+strs[i]+'" height="100" width="100">');
 		   						};
@@ -1351,7 +1351,7 @@
 			   					$('#cardImg').empty();
 			   					if(strs[0] != ''){
 			   						for(var i=0;i<strs.length;i++){
-			   							if(strs[i].indexOf("main") < 0)
+			   							if(strs[i].indexOf("main") >= 0)
 			   								continue;
 			   							$('#cardImg').append('<img src="../'+strs[i]+'" height="100" width="100">');
 			   						};
