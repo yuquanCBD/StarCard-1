@@ -51,13 +51,23 @@ Message.insertOrderMsg = function(userid, event_id, msg_type, title, description
 	mysql.getConnection(function(err, conn){
 		if(err)
 			callback(err);
-		console.log('--------------insertNewMsg', userid, event_id, msg_type, title, description, card_pic, cardid, order_buy_sell, order_status);
-		var sql = 'INSERT INTO message (userid, event_id, msg_type, title, description, card_pic, cardid, order_buy_sell, order_status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
-		conn.query(sql, [userid, event_id, msg_type, title, description, card_pic, cardid, order_buy_sell, order_status], function(err, results){
-			callback(err, results);
-			conn.release();
+		var sql = 'DELETE FROM message WHERE userid = ? AND event_id = ? AND msg_type = 2';//删除先前的所有订单消息
+		conn.query(sql, [userid, event_id], function(err, results){
+			if(err){
+				conn.release();
+				return callback(err);
+			}
+
+			console.log('--------------insertNewMsg', userid, event_id, msg_type, title, description, card_pic, cardid, order_buy_sell, order_status);
+			var sql = 'INSERT INTO message (userid, event_id, msg_type, title, description, card_pic, cardid, order_buy_sell, order_status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+
+			conn.query(sql, [userid, event_id, msg_type, title, description, card_pic, cardid, order_buy_sell, order_status], function(err, results){
+				callback(err, results);
+				conn.release();
+			});
 		});
+
 	});
 }
 

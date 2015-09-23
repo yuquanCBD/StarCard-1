@@ -479,10 +479,9 @@ Order.queryOrderList = function(userid, tag, usertype,callback){
 			return callback(err);
 		var sql = '';
 		if(usertype == 1)
-			sql = 'SELECT orderid, cardid, seller, buyer, logistic, logistic_no, logistic_code, status, card_price, logistic_price, addr_id, card_num, alipay_id, receive_time,  card_pic, card_name, card_desc, create_time, province, city, district, address, postcode, telephone, consignee FROM orders WHERE buyer = "'+userid+'" AND status = ' + tag; 
-
+			sql = 'SELECT orderid, cardid, seller, buyer, logistic, logistic_no, logistic_code, status, card_price, logistic_price, addr_id, card_num, alipay_id, receive_time,  card_pic, card_name, card_desc, create_time, province, city, district, address, postcode, telephone, consignee FROM orders WHERE buyer = "'+userid+'" AND status = ' + tag + 'ORDER BY update_time DESC'; 
 		else
-			sql = 'SELECT orderid, cardid, seller, buyer, logistic, logistic_no, logistic_code, status, card_price, logistic_price, addr_id, card_num, alipay_id, receive_time, card_pic, card_name, card_desc , create_time, province, city, district, address, postcode, telephone, consignee FROM orders WHERE seller = "'+userid+'" AND status = ' + tag; 
+			sql = 'SELECT orderid, cardid, seller, buyer, logistic, logistic_no, logistic_code, status, card_price, logistic_price, addr_id, card_num, alipay_id, receive_time, card_pic, card_name, card_desc , create_time, province, city, district, address, postcode, telephone, consignee FROM orders WHERE seller = "'+userid+'" AND status = ' + tag + 'ORDER BY update_time DESC';
 		console.log('SQL: '+ sql);
 		conn.query(sql, function(err, rows){
 			if(err)
