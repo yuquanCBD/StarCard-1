@@ -99,15 +99,17 @@ function updateInfo(fields, files, res){
           if(file.originalFilename.length == 0){
             break;
           }
+          var date = new Date();
+          var imgName = String(date.getTime());
           var types = file.originalFilename.split('.');
-          var p = "imgs/user/"+uId+'/'+i+'.'+String(types[types.length-1]);
+          var p = "imgs/user/"+uId+'/'+imgName+'.'+String(types[types.length-1]);
           if(str === ""){
             str += p;
           }
           else{
             str += (','+p);
           }
-          fs.renameSync(file.path, filePath+uId+'/'+i+'.'+String(types[types.length-1]));
+          fs.renameSync(file.path, filePath+uId+'/'+imgName+'.'+String(types[types.length-1]));
         };
         console.log('图片信息添加成功');
         //将路径和卡片信息存入数据库
@@ -151,8 +153,6 @@ function addInfo(fields, files, res){
   var email = fields.email[0];
   var md5 = crypto.createHash('md5');
 	password = md5.update(password).digest('base64');
-  //console.log("username:",username," password:",password," gender:",gender);
-  console.log("$$$$$$$$$$$$################@@@@@@@@@@@@@@@@@  ",files);
   //存储图片，得到图片的路径信息
   var filePath = path.join(__dirname, '../public/imgs/user/');
   fs.mkdir(filePath+uId, function(err){
@@ -167,15 +167,18 @@ function addInfo(fields, files, res){
         if(file.originalFilename.length == 0){
           break;
         }
+        var date = new Date();
+        var imgName = String(date.getTime());
+
         var types = file.originalFilename.split('.');
-        var p = "imgs/user/"+uId+'/'+i+'.'+String(types[types.length-1]);
+        var p = "imgs/user/"+uId+'/'+imgName+'.'+String(types[types.length-1]);
         if(str === ""){
           str += p;
         }
         else{
           str += (','+p);
         }
-        fs.renameSync(file.path, filePath+uId+'/'+i+'.'+String(types[types.length-1]));
+        fs.renameSync(file.path, filePath+uId+'/'+imgName+'.'+String(types[types.length-1]));
       };
       console.log('图片信息添加成功');
       console.log(str);
@@ -357,15 +360,17 @@ function addInfoM(fields, files, res){
         if(file.originalFilename.length == 0){
           break;
         }
+        var date = new Date();
+        var imgName = String(date.getTime());
         var types = file.originalFilename.split('.');
-        var p = "imgs/manager/"+uId+'/'+i+'.'+String(types[types.length-1]);
+        var p = "imgs/manager/"+uId+'/'+imgName+'.'+String(types[types.length-1]);
         if(str === ""){
           str += p;
         }
         else{
           str += (','+p);
         }
-        fs.renameSync(file.path, filePath+uId+'/'+i+'.'+String(types[types.length-1]));
+        fs.renameSync(file.path, filePath+uId+'/'+imgName+'.'+String(types[types.length-1]));
       };
       console.log('图片信息添加成功');
       console.log(str);
@@ -471,15 +476,17 @@ function MupdateInfo(fields, files, res){
           if(file.originalFilename.length == 0){
             break;
           }
+          var date = new Date();
+          var imgName = String(date.getTime());
           var types = file.originalFilename.split('.');
-          var p = "imgs/manager/"+uId+'/'+i+'.'+String(types[types.length-1]);
+          var p = "imgs/manager/"+uId+'/'+imgName+'.'+String(types[types.length-1]);
           if(str === ""){
             str += p;
           }
           else{
             str += (','+p);
           }
-          fs.renameSync(file.path, filePath+uId+'/'+i+'.'+String(types[types.length-1]));
+          fs.renameSync(file.path, filePath+uId+'/'+imgName+'.'+String(types[types.length-1]));
         };
         console.log('图片信息添加成功');
         //将路径和卡片信息存入数据库
