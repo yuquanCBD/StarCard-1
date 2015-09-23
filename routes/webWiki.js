@@ -336,7 +336,7 @@ router.post('/uncheck',function(req,res,next){
 router.post('/checkquery',function(req, res, next){
   //var sql = 'select * from wiki_pre';
   var sql = 'select a.id as id,a.wikiid as wikiid,a.describes as describes,b.wikiname as wikiname,b.english_name as english_name,b.category as category,b.brand as brand,b.price as price,b.contributor as contributor,a.status as status ';
-  sql += 'from wiki_pre as a inner join wiki as b on a.wikiid = b.wikiid';
+  sql += 'from wiki_pre as a inner join wiki as b on a.wikiid = b.wikiid order by a.create_time desc';
   User.exec(sql, function(err, r){
     if(err){
       console.log("获取审核表数据错误！");

@@ -97,15 +97,32 @@ router.post('/changeStatus',function(req, res, next){
     var card_name = req.body.card_name;
     var card_desc = req.body.card_desc;
     var scardid = req.body.scardid;
-
+    console.log(scardid);
   	if(status != -1 && status != 1)
   		  status = 0;
-  	
-    Exchange.changeStatus(id, status, refuseInfo, buserid, card_pic, card_name, card_desc, scardid, function(err, results){
+  	if(status == 0 || status == -1){
+      Exchange.changeStatus(id, status, refuseInfo, buserid, card_pic, card_name, card_desc, scardid, function(err, results){
+          if(err)
+              res.json({error : err});
+          res.json({success : '换卡申请处理成功'});
+      });
+    }
+    else{
+      Exchange.changeStatus(id, status, refuseInfo, buserid, card_pic, card_name, card_desc, scardid, function(err, results){
         if(err)
-            res.json({error : err});
-        res.json({success : '换卡申请处理成功'});
-    })
+            res.json({error:err});
+        //res.json({success : '换卡申请处理成功'});
+        console.log("交换卡片状态修改成功");
+        var sql = 'update card set status = -1 where cardid = "' + scardid +'"';
+        Card.update(sql, function(err,r){
+          if(err)
+            res.json({error:err});
+          console.log("卡片锁定成功");
+          res.json({success : 'success'});
+        });
+      }); 
+    }
+      
 
 })
 
