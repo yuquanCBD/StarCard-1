@@ -26,6 +26,11 @@ router.get('/login', function(req, res, next){
   res.render('card_manage/login.html');
 });
 router.get('/test', function(req, res, next){
+  // //var sql = "SELECT Max(a.salary+c.salary) FROM salary as a inner join employee as b inner join salary as c on a.id = b.id and b.spouse_id = c.id";
+  // var sql = "select a.name from employee as a inner join salary as b on a.spouse_id = b.id having Max(b.salary);"
+  // User.exec(sql, function(err,rows){
+  //   return res.json(rows);
+  // })
   res.render('test.html',{title:'测试程序'});
 });
 router.post('/login', function(req, res, next){
