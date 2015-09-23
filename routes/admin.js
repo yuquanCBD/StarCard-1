@@ -172,8 +172,8 @@ function addInfo(fields, files, res, cid, username){
       console.log('图片信息添加成功');
       console.log(str,' %%%%%%% ',mainStr);
       //将路径和卡片信息存入数据库
-      var sql = 'insert into card(cardid, title, describes, price, exchange_desc, category, brand, exchange, owner, amount, pictures, main_img, ownername, freight) values';
-      sql = sql + '("'+uId+'","'+title+'","'+describes+'","'+price+'","'+exchange_desc+'","'+category+'","'+brand+'","'+exchange+'","'+owner+'","'+amount+'","'+str+'","'+mainStr+'","'+username+'","'+freight+'")';
+      var sql = 'insert into card(cardid, title, describes, price, exchange_desc, category, brand, exchange, owner, amount, pictures, main_img, ownername, freight, is_official) values';
+      sql = sql + '("'+uId+'","'+title+'","'+describes+'","'+price+'","'+exchange_desc+'","'+category+'","'+brand+'","'+exchange+'","'+owner+'","'+amount+'","'+str+'","'+mainStr+'","'+username+'","'+freight+'" , 1)';
       console.log(sql);
       Card.add(sql, function(err, user){
         if(err){

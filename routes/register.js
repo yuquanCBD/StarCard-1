@@ -70,10 +70,10 @@ function checkInfo(fields, files, res, req){
 	console.log('输出用户昵称:');
 	console.log(fields.username[0]);
 
-	var when = new Date();
-	if(when.getTime() - req.session.when > 60000){
-		return res.json({error:'输入验证码超时'});
-	}
+	var now = new Date();
+	if(!req.session.when || (now.getTime()/1000 - req.session.when) > 300)
+		return res.json({error: '验证码过期'});
+
 	var username = fields.username[0];
 	User.checkUserByName(username, function(err, rows){
 		if(err){

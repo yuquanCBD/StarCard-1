@@ -4,6 +4,7 @@ var User = require('../models/user')
 var multiparty = require('multiparty');
 var ScoreRule = require('../models/score_rule');
 var Card = require('../models/card');
+var Manager = require('../models/manager');
 
 
 //积分查询
@@ -98,6 +99,16 @@ router.post('/findUserById', function(req, res, next){
             return res.json({error : err});
         return res.json(user);
     });
+});
+
+//查询admin的用户信息
+router.post('/findAdminById', function(req, res, next){
+	var userid = req.body.userid;
+	Manager.queryManagerInfoById(userid, function(err, user){
+		if(err)
+			return res.json({error :err});
+		return res.json(user);
+	})
 });
 
 //查询用户积分规则

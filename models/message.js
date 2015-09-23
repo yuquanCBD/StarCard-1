@@ -86,7 +86,7 @@ Message.queryUnreadMsgNum = function(userid, callback){
 			if (rows.length != 0)
 				callback(err, rows[0].num);
 			else
-				callback(err, null);
+				callback(err, 0);
 
 			conn.release();
 		});
