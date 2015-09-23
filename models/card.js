@@ -142,7 +142,7 @@ Card.searchByCond = function(userid, cond, category, brand, offset, capacity, or
 			callback(err);
 
 
-		var sql = 'SELECT cardid, title, pictures, describes, price, logistic, category, brand, freight, exchange, owner, ownername, amount, time, longitude, latitude, main_img FROM card  WHERE status = 0 ';
+		var sql = 'SELECT cardid, title, pictures, describes, price, logistic, category, brand, freight, exchange, owner, ownername, amount, time, longitude, latitude, main_img, is_official FROM card  WHERE status = 0 ';
         if (cond) 
             sql += ' AND (title like "%'+ cond +'%" OR brand like "%'+cond+'%") ';
 

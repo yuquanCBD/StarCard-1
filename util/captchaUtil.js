@@ -42,7 +42,7 @@ util.getMsgCap = function getMsgCap(mob){
 	*/
 
 	var contents = querystring.stringify({
-		apikey : '34d9b7049d09a099282b051f6c0f1677',
+		apikey : 'f662e57634358f04340592efa0fe4e91',
 		mobile : mob,
 		text : '【云片网】您的验证码是'+num
 	})

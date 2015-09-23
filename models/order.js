@@ -7,7 +7,7 @@ var pay 		= require('../pingpp/pay'); //ping＋＋支付接口
 var getui = require('../getui/getui');
 var crypto = require('crypto');
 
-var API_KEY = "sk_test_aHSGK00yjnf18Kmn5GePmrH4" // 这里填入你的 Test/Live Key
+var API_KEY = "sk_live_OiMo6gjwoPjWwCDjWFsl8k9H" // 这里填入你的 Test/Live Key
 var APP_ID = "app_TaHCa5ybnbHSXH44" // 这里填入你的应用 ID
 var CHANNEL = 'alipay'; // 选择渠道
 var pingpp = require('pingpp')(API_KEY);

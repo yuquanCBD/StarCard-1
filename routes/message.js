@@ -28,7 +28,7 @@ router.get('/queryUnreadMsgNum', function(req, res, next){
 	Message.queryUnreadMsgNum(userid, function(err, num){
 		if(err)
 			return res.json({error : err});
-		return res.json({number : num});//返回空或者数值
+		return res.json({number : num});
 	});
 });
 
