@@ -78,6 +78,7 @@ function updateInfo(fields, files, res){
   var telephone = fields.telephone[0];
   var score = fields.score[0];
   var IDCardNo = fields.IDCardNo[0];
+  var identificated = fields.identificated[0];
   //存储图片，得到图片的路径信息
   var filePath = path.join(__dirname, '../public/imgs/user/');
   //console.log(files.imgs[0]);
@@ -113,7 +114,7 @@ function updateInfo(fields, files, res){
         };
         console.log('图片信息添加成功');
         //将路径和卡片信息存入数据库
-        var sql = 'UPDATE user SET gender="'+ gender +'", email="'+email+'", telephone="'+telephone+'", score="'+score+'", IDCardNo="'+IDCardNo+'",portrait="'+str+'" WHERE userid = "'+uId+'"';
+        var sql = 'UPDATE user SET gender="'+ gender +'", email="'+email+'", telephone="'+telephone+'", score="'+score+'", IDCardNo="'+IDCardNo+'",portrait="'+str+'", identificated="'+identificated+'" WHERE userid = "'+uId+'"';
         console.log(sql);
         User.exec(sql, function(err, user){
           if(err){
@@ -130,7 +131,7 @@ function updateInfo(fields, files, res){
   }
   //如果不存在上传文件
   else{
-    var sql = 'UPDATE user SET gender="'+ gender +'", email="'+email+'", telephone="'+telephone+'", score="'+score+'", IDCardNo="'+IDCardNo+'" WHERE userid = "'+uId+'"';
+    var sql = 'UPDATE user SET gender="'+ gender +'", email="'+email+'", telephone="'+telephone+'", score="'+score+'", IDCardNo="'+IDCardNo+'",identificated="'+identificated+'" WHERE userid = "'+uId+'"';
     User.exec(sql, function(err, user){
       if(err){
         return res.json({error:"用户信息修改失败"});
@@ -183,8 +184,8 @@ function addInfo(fields, files, res){
       console.log('图片信息添加成功');
       console.log(str);
       //将路径和卡片信息存入数据库
-      var sql = 'insert into user(userid, username, password, IDCardNo, telephone, score, gender, email, portrait) values';
-      sql = sql + '("'+uId+'","'+username+'","'+password+'","'+IDCardNo+'","'+telephone+'","'+score+'","'+gender+'","'+email+'","'+str+'")';
+      var sql = 'insert into user(userid, username, password, IDCardNo, telephone, score, gender, email, portrait, identificated) values';
+      sql = sql + '("'+uId+'","'+username+'","'+password+'","'+IDCardNo+'","'+telephone+'","'+score+'","'+gender+'","'+email+'","'+str+'", 1)';
       console.log(sql);
       User.exec(sql, function(err, user){
         if(err){

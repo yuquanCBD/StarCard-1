@@ -251,6 +251,7 @@ function updateInfo(fields, files, res){
   var exchange = fields.exchange[0];
   var describes = fields.describes[0];
   var exchange_desc = fields.exchange_desc[0];
+  //var identificated = fields.identificated[0];
   var owner = 0;
   //存储图片，得到图片的路径信息
   var filePath = path.join(__dirname, '../public/imgs/card/');
