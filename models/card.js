@@ -230,7 +230,7 @@ Card.searchCardsByOwner = function(owner, callback){
         if (err) 
             callback(err);
         var sql = 'SELECT cardid, title, pictures, describes, price, logistic, category, brand, freight, exchange, owner, amount, '+
-		'time, longitude, latitude, user.username FROM card LEFT JOIN user ON owner = user.userid WHERE user.userid = ? ORDERY BY time DESC';
+		'time, longitude, latitude, user.username FROM card LEFT JOIN user ON owner = user.userid WHERE user.userid = ? ORDER BY time DESC';
 
         console.log(sql);
         conn.query(sql, [owner],function(err, rows){

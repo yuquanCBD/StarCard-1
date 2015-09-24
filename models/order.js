@@ -478,10 +478,18 @@ Order.queryOrderList = function(userid, tag, usertype,callback){
 		if(err)
 			return callback(err);
 		var sql = '';
-		if(usertype == 1)
-			sql = 'SELECT orderid, cardid, seller, buyer, logistic, logistic_no, logistic_code, status, card_price, logistic_price, addr_id, card_num, alipay_id, receive_time,  card_pic, card_name, card_desc, create_time, province, city, district, address, postcode, telephone, consignee FROM orders WHERE buyer = "'+userid+'" AND status = ' + tag + 'ORDER BY update_time DESC'; 
-		else
-			sql = 'SELECT orderid, cardid, seller, buyer, logistic, logistic_no, logistic_code, status, card_price, logistic_price, addr_id, card_num, alipay_id, receive_time, card_pic, card_name, card_desc , create_time, province, city, district, address, postcode, telephone, consignee FROM orders WHERE seller = "'+userid+'" AND status = ' + tag + 'ORDER BY update_time DESC';
+		if(usertype == 1){
+			if(tag == 3)
+				sql = 'SELECT orderid, cardid, seller, buyer, logistic, logistic_no, logistic_code, status, card_price, logistic_price, addr_id, card_num, alipay_id, receive_time,  card_pic, card_name, card_desc, create_time, province, city, district, address, postcode, telephone, consignee FROM orders WHERE buyer = "'+userid+'" AND (status = 3 OR status = -1) ORDER BY update_time DESC'; 
+			else
+				sql = 'SELECT orderid, cardid, seller, buyer, logistic, logistic_no, logistic_code, status, card_price, logistic_price, addr_id, card_num, alipay_id, receive_time,  card_pic, card_name, card_desc, create_time, province, city, district, address, postcode, telephone, consignee FROM orders WHERE buyer = "'+userid+'" AND status = ' + tag + ' ORDER BY update_time DESC'; 
+		}else{
+			if(tag == 3)
+				sql = 'SELECT orderid, cardid, seller, buyer, logistic, logistic_no, logistic_code, status, card_price, logistic_price, addr_id, card_num, alipay_id, receive_time, card_pic, card_name, card_desc , create_time, province, city, district, address, postcode, telephone, consignee FROM orders WHERE seller = "'+userid+'" AND (status = 3 OR status = -1) ORDER BY update_time DESC';
+			else
+				sql = 'SELECT orderid, cardid, seller, buyer, logistic, logistic_no, logistic_code, status, card_price, logistic_price, addr_id, card_num, alipay_id, receive_time, card_pic, card_name, card_desc , create_time, province, city, district, address, postcode, telephone, consignee FROM orders WHERE seller = "'+userid+'" AND status = ' + tag + ' ORDER BY update_time DESC';
+
+		}
 		console.log('SQL: '+ sql);
 		conn.query(sql, function(err, rows){
 			if(err)
@@ -571,16 +579,18 @@ Order.refund = function(orderid, callback){
 		if(err)
 			return callback(err);
 
-		var sql = 'SELECT status, charge_id, card_price FROM orders WHERE orderid = ?';
+		var sql = 'SELECT status, charge_id, card_price, buyer FROM orders WHERE orderid = ?';
 		conn.query(sql, [orderid], function(err, rows){
-			conn.release();
-			if(err)
+			if(err){
+				conn.release();
 				return callback(err);
+			}
 			
 			if(rows.length == 0)
 				return callback('订单信息为空');
 			
 			var status = rows[0].status;
+			var buyer = rows[0].buyer;
 			if(status != 1)//0:待付款 1:待发货
 				return callback('订单当前状态不能退款');
 			
@@ -591,9 +601,22 @@ Order.refund = function(orderid, callback){
 				charge_id,
 				{ amount: amount, description: "Refund Description" },
 				function(err, refund) {
+					if(err){
+							conn.release();
+							return callback(err);
+					}		
+									
 					console.log(charge_id, amount)
 					console.log(err, refund);
-					return callback(err, refund);
+					var charge_id = refund.charge;
+					var url = refund.failure_msg.split(' ')[1];
+					var sql = 'INSERT INTO refund(charge_id, url, userid, orderid) VALUES(?, ?, ?, ?)';
+					console.log(sql, charge_id, url, buyer, orderid);
+					conn.query(sql, [charge_id, url, buyer, orderid], function(err, results){
+						conn.release();
+						return callback(err, refund);
+					})
+
 				}
 			)
 		})
@@ -641,19 +664,30 @@ Order.refundSuccess = function(refund, callback){
 						conn.release();
 						return callback(err);
 					}
-					//生成对买家和卖家的消息
-					Message.insertOrderMsg(buyer, orderid, 2, card_name, card_desc, card_pic, cardid, BUYER_TAG, 3, function(err, results){if(err) console.log(err);});
-					Message.insertOrderMsg(seller, orderid, 2, card_name, card_desc, card_pic, cardid, SELLER_TAG, 3, function(err, results){if(err) console.log(err);});
-					
-					/*个推消息*/
-					var sql = 'SELECT device_token FROM user WHERE userid = ?';
-					conn.query(sql, [seller], function(err, rows){
-						conn.release();
-						if(rows.length == 0) return;
-						var device_token = rows[0].device_token;
-						getui.push('交易消息', '买家申请退款成功', device_token);
+
+					var sql = 'UPDATE refund SET status = 1 WHERE charge_id = ?';//设置退款申请表的状态为退款通过
+					conn.query(sql, [charge_id], function(err, results){
+						if(err){
+							conn.release();
+							return callback(err);
+						}
+						//生成对买家和卖家的消息
+						Message.insertOrderMsg(buyer, orderid, 2, card_name, card_desc, card_pic, cardid, BUYER_TAG, 3, function(err, results){if(err) console.log(err);});
+						Message.insertOrderMsg(seller, orderid, 2, card_name, card_desc, card_pic, cardid, SELLER_TAG, 3, function(err, results){if(err) console.log(err);});
+						
+						/*个推消息*/
+						var sql = 'SELECT device_token FROM user WHERE userid = ?';
+						conn.query(sql, [seller], function(err, rows){
+							conn.release();
+							if(rows.length == 0) return;
+							var device_token = rows[0].device_token;
+							getui.push('交易消息', '买家申请退款成功', device_token);
+						})
+						/*个推消息*/
+
 					})
-					/*个推消息*/
+
+
 				})
 
 			})
