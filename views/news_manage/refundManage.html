@@ -22,36 +22,33 @@
 
 	<!-- BEGIN GLOBAL MANDATORY STYLES -->
 
-	<link href="/media/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+	<link href="media/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 
-	<link href="/media/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+	<link href="media/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
 
-	<link href="/media/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+	<link href="media/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 
-	<link href="/media/css/style-metro.css" rel="stylesheet" type="text/css"/>
+	<link href="media/css/style-metro.css" rel="stylesheet" type="text/css"/>
 
-	<link href="/media/css/style.css" rel="stylesheet" type="text/css"/>
+	<link href="media/css/style.css" rel="stylesheet" type="text/css"/>
 
-	<link href="/media/css/style-responsive.css" rel="stylesheet" type="text/css"/>
+	<link href="media/css/style-responsive.css" rel="stylesheet" type="text/css"/>
 
-	<link href="/media/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
+	<link href="media/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
 
-	<link href="/media/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+	<link href="media/css/uniform.default.css" rel="stylesheet" type="text/css"/>
 
 	<!-- END GLOBAL MANDATORY STYLES -->
 
 	<!-- BEGIN PAGE LEVEL STYLES -->
 
-	<link rel="stylesheet" type="text/css" href="/media/css/select2_metro.css" />
+	<link rel="stylesheet" type="text/css" href="media/css/select2_metro.css" />
 
-	<link rel="stylesheet" href="/media/css/DT_bootstrap.css" />
+	<link rel="stylesheet" href="media/css/DT_bootstrap.css" />
 
 	<!-- END PAGE LEVEL STYLES -->
 
-	<link rel="shortcut icon" href="/media/image/favicon.ico" />
-	<link rel="stylesheet" href="/kindeditor/themes/default/default.css" />
-    <script charset="utf-8" src="/kindeditor/kindeditor-min.js"></script>
-    <script charset="utf-8" src="/kindeditor/lang/zh_CN.js"></script>
+	<link rel="shortcut icon" href="media/image/favicon.ico" />
 
 </head>
 
@@ -75,7 +72,7 @@
 
 				<a class="brand" href="query">
 
-				<img src="/media/image/logo.png" alt="logo" />
+				<img src="media/image/logo.png" alt="logo" />
 
 				</a>
 
@@ -85,7 +82,7 @@
 
 				<a href="javascript:;" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
 
-				<img src="/media/image/menu-toggler.png" alt="" />
+				<img src="media/image/menu-toggler.png" alt="" />
 
 				</a>          
 
@@ -115,8 +112,6 @@
 		<div class="page-sidebar nav-collapse collapse">
 
 			<!-- BEGIN SIDEBAR MENU -->        
-
-			
 			<ul class="page-sidebar-menu">
 				<li class="">
 
@@ -176,7 +171,7 @@
 					</a>
 
 					<ul class="sub-menu">
-						<li class="">
+						<li>
 
 							<a href="/webUser/query">人员查询、删除、修改</a>
 
@@ -197,7 +192,7 @@
 					</ul>
 
 				</li>
-				<li class="">
+				<li class="active">
 
 					<a href="javascript:;">
 
@@ -221,7 +216,7 @@
 						<li>
 							<a href="/webOrder/commonquery">普通用户订单管理</a>
 						</li>
-						<li>
+						<li class="active">
 							<a href="/webOrder/getrefund">退款申请管理</a>
 						</li>
 
@@ -259,7 +254,7 @@
 
 				</li>
 
-				<li class="active">
+				<li class="">
 
 					<a href="javascript:;">
 
@@ -277,7 +272,7 @@
 						<li class="">
 							<a href="/kindeditor/nodejs/newsAdd.html">新闻增加</a>
 						</li>
-						<li class="active">
+						<li>
 							<a href="/kindeditor/nodejs/newsManage.html">新闻查询、删除、修改</a>
 						</li>
 					</ul>
@@ -290,9 +285,6 @@
 						<i class="icon-table"></i> 
 
 						<span class="title">消息推送</span>
-
-						<!-- <span class="selected"></span> -->
-
 						<span class="arrow open"></span>
 
 					</a>
@@ -325,7 +317,7 @@
 						<li class="">
 							<a href="/kindeditor/nodejs/advAdd.html">广告增加</a>
 						</li>
-						<li class="">
+						<li>
 							<a href="/kindeditor/nodejs/advManage.html">广告查询、删除、修改</a>
 						</li>
 					</ul>
@@ -355,6 +347,7 @@
 					</ul>
 
 				</li>
+
 
 			</ul>
 			<!-- END SIDEBAR MENU -->
@@ -444,11 +437,13 @@
 
 										<tr>
 											<th>序号</th>
-											<th class="hidden-480">标题</th>
-											<th class="hidden-480">来源</th>
-											<th class="hidden-480">发表时间</th>
-											<th class="hidden-480">删除</th>
-											<th class="hidden-480">修改</th>
+											<th class="hidden-480">订单号</th>
+											<th class="hidden-480">买家id</th>
+											<th class="hidden-480">申请时间</th>
+											<th class="hidden-480">退款状态</th>
+											<th class="hidden-480">点击退款</th>
+											<th class="hidden-480">删除记录</th>
+											
 										</tr>
 
 									</thead>
@@ -476,146 +471,6 @@
 				<!-- END PAGE CONTENT-->
 				<!-- ************************************************************** -->
 				<!-- BEGIN PAGE CONTENT-->
-
-				<div id='update' class="row-fluid" hidden=true>
-
-					<div class="span12">
-
-						<!-- BEGIN SAMPLE FORM PORTLET-->   
-
-						<div class="portlet box blue tabbable">
-
-							<div class="portlet-title">
-
-								<div class="caption">
-
-									<i class="icon-reorder"></i>
-
-									<span class="hidden-480">修改卡片信息列表</span>
-
-								</div>
-
-							</div>
-
-							<div class="portlet-body form">
-
-								<div class="tabbable portlet-tabs">
-
-									<ul class="nav nav-tabs">
-
-										<li><a href="">信息修改</a></li>
-									</ul>
-
-									<div class="tab-content">
-
-										<div class="tab-pane active" id="portlet_tab1">
-
-											<!-- BEGIN FORM-->
-											<form action="/webNews/update" enctype="multipart/form-data" method="post" class="form-horizontal">
-												<div hidden class="control-group">
-
-													<label class="control-label" >news_id:</label>
-
-													<div class="controls">
-
-														<input id="news_id" type="text" class="m-wrap meduium" name="news_id" />
-
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label" >标题:</label>
-
-													<div class="controls">
-
-														<input id="title" type="text" class="m-wrap meduium" name="title" />
-
-													</div>
-
-												</div>
-
-												<div class="control-group">
-
-													<label class="control-label">新闻来源:</label>
-
-													<div class="controls">
-
-														<input id="source" type="text"  class="m-wrap medium" name="source" />
-														
-
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label">新闻描述:</label>
-
-													<div class="controls">
-
-														<textarea id="describes" name="describes" class="large m-wrap" rows="5"></textarea>
-
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label">新闻主图:</label>
-
-													<div id="newsImg" class="controls">
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label">新闻主图更改:</label>
-
-													<div class="controls">
-														<input class="medium m-wrap" type="file" name="imgs" multiple="multiple">
-														<span class="help-inline">(不更换主图不要上传)</span>
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label">新闻正文:</label>
-
-													<div class="controls">
-
-														<textarea id="editor" name="content" style="width:700px;height:400px;">
-        													
-    													</textarea>
-
-													</div>
-
-												</div>
-
-												<div class="form-actions">
-
-													<button id='newsUpdate' type="submit" class="btn blue"><i class="icon-ok"></i> 新闻信息修改</button>
-
-													<!-- <button type="button" class="btn">取消</button> -->
-												</div>
-
-											</form>
-
-											<!-- END FORM-->  
-
-										</div>
-
-									</div>
-
-								</div>
-
-							</div>
-
-						</div>
-
-						<!-- END SAMPLE FORM PORTLET-->
-
-					</div>
-
-				</div>
 
 				<!-- END PAGE CONTENT-->         
 
@@ -660,15 +515,15 @@
 
 	<!-- BEGIN CORE PLUGINS -->
 
-	<script src="/media/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+	<script src="media/js/jquery-1.10.1.min.js" type="text/javascript"></script>
 
-	<script src="/media/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+	<script src="media/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
 
 	<!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
 
-	<script src="/media/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>      
+	<script src="media/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>      
 
-	<script src="/media/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="media/js/bootstrap.min.js" type="text/javascript"></script>
 
 	<!--[if lt IE 9]>
 
@@ -678,39 +533,43 @@
 
 	<![endif]-->   
 
-	<script src="/media/js/jquery.slimscroll.min.js" type="text/javascript"></script>
+	<script src="media/js/jquery.slimscroll.min.js" type="text/javascript"></script>
 
-	<script src="/media/js/jquery.blockui.min.js" type="text/javascript"></script>  
+	<script src="media/js/jquery.blockui.min.js" type="text/javascript"></script>  
 
-	<script src="/media/js/jquery.cookie.min.js" type="text/javascript"></script>
+	<script src="media/js/jquery.cookie.min.js" type="text/javascript"></script>
 
-	<script src="/media/js/jquery.uniform.min.js" type="text/javascript" ></script>
+	<script src="media/js/jquery.uniform.min.js" type="text/javascript" ></script>
 
 	<!-- END CORE PLUGINS -->
 
 	<!-- BEGIN PAGE LEVEL PLUGINS -->
 
-	<script type="text/javascript" src="/media/js/select2.min.js"></script>
+	<script type="text/javascript" src="media/js/select2.min.js"></script>
 
-	<script type="text/javascript" src="/media/js/jquery.dataTables.js"></script>
+	<script type="text/javascript" src="media/js/jquery.dataTables.js"></script>
 
-	<script type="text/javascript" src="/media/js/DT_bootstrap.js"></script>
+	<script type="text/javascript" src="media/js/DT_bootstrap.js"></script>
 
 	<!-- END PAGE LEVEL PLUGINS -->
 
 	<!-- BEGIN PAGE LEVEL SCRIPTS -->
 
-	<script src="/media/js/app.js"></script>
+	<script src="media/js/app.js"></script>
 
-	<script src="/media/js/table-managed.js"></script>     
+	<script src="media/js/table-managed.js"></script>     
 
 	<script>
-		var options = {
-	          uploadJson: '/webNews/uploadImg'
-	      };
-	    var editor = KindEditor.ready(function(K) {
-	          window.editor = K.create('#editor', options);
-	      });
+		/*
+		<th class="hidden-480">username</th>
+		<th class="hidden-480">IDCardNo</th>
+		<th class="hidden-480">telephone</th>
+		<th class="hidden-480">email</th>
+		<th class="hidden-480">score</th>
+		<th class="hidden-480">gender</th>
+		index  username  gender  email  telephone  score  IDCardNo  
+		*/
+
 		jQuery(document).ready(function() {     
 			function createTR(obj,index){
 				var date = new Date(obj.create_time);
@@ -724,37 +583,50 @@
 				var tr = '<tr class="odd gradeX">'+
 					//'<td><input type="checkbox" class="checkboxes" value="1" name="checks"/></td>'+
 					'<td>'+index+'</td>'+
-					'<td>'+obj.title+'</td>'+
-					'<td>'+obj.source+'</td>'+
-					'<td>'+str+'</td>'+
-					'<td><button news_id="'+obj.news_id+'" class="deleteButton">删除</button></td>'+
-					"<td><button news_id='"+obj.news_id+"' index='"+index+"' class='updateButton'>修改</button></td></tr>";
+					'<td>'+obj.orderid+'</td>'+
+					'<td>'+obj.userid+'</td>'+
+					'<td>'+str+'</td>';
+				if(obj.status == 0){
+					tr += '<td>退款未处理</td>';
+				}else if(obj.status == 1){
+					tr += '<td>退款已处理</td>';
+				}else{
+					tr += '<td>状态错误</td>';
+				};
+				tr +='<td><a href="'+obj.url+'" >点击退款</a></td><td><button refund_id="'+obj.id+'" class="deleteButton">删除</button></td></tr>';
 				return tr;
 			};
-			function postAjax(url,data){
-				console.log(url);
+			function PostAjax(url, obj){
 				$.ajax({
 			   		type : 'POST',
 			   		url : url,
-			   		data:data,
+			   		data : obj,
 			   		dataType : 'json',
 			   		cache : false,
 			   		success : function(data){
-			   			var evalData = eval(data);
-			   			if(evalData.error !== undefined){
-			   				window.location.href='/404.html';
-			   			}else
-							location.reload();
+			   			location.reload();
 			   		},
 			   		error : function(){
-			   			alert("删除错误");
+			   			console.log('数据库操作失败');
 			   		}
+		   		}); 
+			};
+			function updateAjax(url, obj){
+				console.log(url);
+				console.log(obj);
+				$.ajax({
+			   		type : 'POST',
+			   		url : url,
+			   		data : obj,
+			   		dataType : 'json',
+			   		cache : false,
 		   		});
 			}
 			function query(){
 				$.ajax({
 			   		type : 'GET',
-			   		url : '/webNews/getlist',
+			   		url : '/webOrder/refund',
+			   		//data : {pageIndex : 0, pageSize : 20},
 			   		dataType : 'json',
 			   		cache : false,
 			   		success : function(data){
@@ -766,45 +638,11 @@
 			   			};
 			   			$("button.deleteButton").click(function(e){
 			   				if(confirm('是否需要删除?')){
-			   					var cid = $(e.target).attr('news_id');
-			   					console.log(cid);
-			   					postAjax('/webNews/delete',{news_id:cid});
+			   					var cid = $(e.target).attr('refund_id');
+			   					PostAjax('/webOrder/refunddel',{id:cid});
 			   				}
 			   			});
-			   			/*index  username  gender  email  telephone  score  IDCardNo*/
-			   			$("button.updateButton").click(function(e){
-			   				if(confirm('是否需要修改卡信息?')){
-			   					$('div#update').attr('hidden',false);
-			   					$('div#query').attr('hidden',true);
-			   					var index = $(e.target).attr('index');
-			   					var obj = eva[Number(index) - 1];
-			   					var date = new Date(obj.create_time);
-				   				var year = date.getFullYear();
-				   				var month = date.getMonth()+1;
-				   				var day = date.getDate();
-				   				var hour = date.getHours();
-				   				var minute = date.getMinutes();
-				   				var second = date.getSeconds();
-				   				var str = year+"-"+month+"-"+day+"   "+hour+":"+minute+":"+second;
-			   					$('input#news_id').attr('value',obj.news_id);
-			   					$('input#title').attr('value',obj.title);
-			   					$('#describes').attr('value',obj.describes);
-			   					$('input#source').attr('value',obj.source);
-			   					var pictures = obj.main_picture;
-			   					var strs = pictures.split(',');
-			   					$("#newsImg").empty();
-			   					if(strs[0] != ''){
-			   						for(var i=0;i<strs.length;i++){
-			   						$('#newsImg').append('<img src="../../'+strs[i]+'" height="100" width="100">');
-			   						};
-			   					}
-			   					else{
-			   						$('#newsImg').append('<span class="help-inline">没有图片</span>');
-			   					}
-			   					//$('#editor').attr('value',obj.content);
-			   					editor.html(obj.content);
-			   				}
-			   			})
+			   			
 			   			App.init();
 
 			   			TableManaged.init();
@@ -815,29 +653,11 @@
 		   		});    
 			}
 		 	query();
-		 	$('#newsUpdate').click(function(e){
-		 		KindEditor.sync('#editor');
-		   		var title = $("input#title").val();
-		   		var source = $("input#source").val();
-		   		var editor = $("#editor").val();
-		   		//console.log(title,'   ',source,'    ',editor);
-		   		if(!title || !source || !editor){
-		   			alert("请完整输入信息");
-		   			return false;
-		   		}
-				if(confirm('是否确认修改信息?')){
-					KindEditor.sync('#editor');
-					return true;
-				}
-				else{
-					//console.log('点击');
-					$('div#update').attr('hidden',true);
-					$('div#query').attr('hidden',false);
-
-					return false;
-				}
-				
-			});
+		 	$("#comeBack").click(function(e){
+		 		$('div#detail').attr('hidden',true);
+			   				//$('div#update').attr('hidden',true);
+		   		$('div#query').attr('hidden',false);
+		 	})
 
 		});
 

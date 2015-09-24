@@ -216,6 +216,9 @@
 						<li>
 							<a href="/webOrder/commonquery">普通用户订单管理</a>
 						</li>
+						<li>
+							<a href="/webOrder/getrefund">退款申请管理</a>
+						</li>
 
 					</ul>
 
@@ -451,7 +454,7 @@
 										<tr>
 											<!-- cardid seller buyer status card_price logistic_price ordertype  -->
 											<!--列表中未展示 logistic  logistic_no alipay_id   card_num message  addr_id receive_time-->
-											<th class="hidden-480">序号</th>
+											<th class="hidden-480">勾选</th>
 											<th class="hidden-480">订单号</th>
 											<th class="hidden-480">卖家手机号</th>
 											<th class="hidden-480">买家手机号</th>
@@ -1037,7 +1040,7 @@
 
 		jQuery(document).ready(function() {  
 			var statusQuery = <%= status %>; 
-			console.log("=====",statusQuery);  
+			//console.log("=====",statusQuery);  
 			function createTR(obj,index){
 				var date = new Date(obj.create_time);
    				var year = date.getFullYear();
@@ -1113,14 +1116,11 @@
 			   			location.reload();
 			   		},
 			   		error : function(){
-			   			console.log('删除信息失败');
+			   			alert("数据库操作失败，请重试！");
 			   		}
 		   		}); 
 			};
 			function getTeleAjax(url, obj, tr){
-				console.log("=====begin:");
-				console.log(url);
-				console.log(obj);
 				$.ajax({
 			   		type : 'POST',
 			   		url : url,
@@ -1128,11 +1128,7 @@
 			   		dataType : 'json',
 			   		cache : false,
 			   		success: function(data){
-			   			console.log("后台获取手机号");
-			   			console.log(data);
 			   			var tds = $(tr).find("td");
-			   			console.log($(tds[0]).text());
-			   			console.log($(tds[1]).text());
 			   			$(tds[2]).html(data.sellerTele);
 			   			//$(tds[2]).attr("html",data.sellerTele);
 			   			$(tds[3]).html(data.buyerTele);
@@ -1140,7 +1136,7 @@
 			   			//$(td).attr("value",data[0].telephone);
 			   		},
 			   		error : function(){
-			   			alert('获取手机号码失败！');
+			   			console.log("获取手机号码失败!");
 			   		}
 		   		});
 			};
@@ -1290,7 +1286,7 @@
 						   		cache : false,
 						   		success : function(data){
 						   			var eva = eval(data);
-						   			console.log("eva的data:",eva.addr.length);
+						   			//console.log("eva的data:",eva.addr.length);
 						   			if(eva.addr.length <1){
 						   				$("input#addr_idD").attr("value","买家未添加地址信息");
 						   			}
@@ -1308,7 +1304,7 @@
 			   			$("button.deleteButton").click(function(e){
 			   				if(confirm('是否需要删除?')){
 			   					var cid = $(e.target).attr('orderid');
-			   					console.log(cid);
+			   					//console.log(cid);
 			   					PostAjax('/webOrder/delete',{orderid:cid});
 			   				}
 			   			});
