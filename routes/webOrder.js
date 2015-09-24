@@ -313,7 +313,45 @@ router.post('/paid',function(req, res, next){
 			return res.json({error : err});
 	 	return res.json({success:"success"});
 	})
-})
+});
+
+
+
+
+/*****************************退款管理html存放在views/news_manage**********************************/
+
+router.get('/getrefund',function(req, res, next){
+	var obj = req.session.starObj;
+	if(obj === undefined){
+		return res.render("card_manage/login.html");
+	}
+	return res.render("news_manage/refundManage.html");
+});
+
+
+router.get('/refund',function(req, res, next){
+	var sql = 'select * from refund order by create_time DESC';
+	Order.exec(sql, function(err, rows){
+		if(err)
+			return res.json({error:"error"});
+		return res.json(rows);
+	});
+});
+
+router.post('/refunddel', function(req, res, next){
+	var id = req.body.id;
+	var sql = 'delete from refund where id="'+id+'"';
+	Order.exec(sql, function(err, rows){
+		if(err)
+			return res.json({error:"error"});
+		return res.json(rows);
+	})
+});
+
+
+
+
+
 
 
 module.exports = router;

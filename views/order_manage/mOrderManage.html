@@ -216,6 +216,9 @@
 						<li>
 							<a href="/webOrder/commonquery">普通用户订单管理</a>
 						</li>
+						<li>
+							<a href="/webOrder/getrefund">退款申请管理</a>
+						</li>
 
 					</ul>
 
@@ -1038,7 +1041,7 @@
 
 		jQuery(document).ready(function() {  
 			var statusQuery = <%= status %>; 
-			console.log("=====",statusQuery);  
+			//console.log("=====",statusQuery);  
 			function createTR(obj,index){
 				var date = new Date(obj.create_time);
    				var year = date.getFullYear();
@@ -1109,14 +1112,15 @@
 			   			location.reload();
 			   		},
 			   		error : function(){
-			   			console.log('删除信息失败');
+			   			// console.log('删除信息失败');
+			   			alert("数据库操作错误，请重试！");
 			   		}
 		   		}); 
 			};
 			function getTeleAjax(url, obj, tr){
-				console.log("=====begin:");
-				console.log(url);
-				console.log(obj);
+				// console.log("=====begin:");
+				// console.log(url);
+				// console.log(obj);
 				$.ajax({
 			   		type : 'POST',
 			   		url : url,
@@ -1124,11 +1128,11 @@
 			   		dataType : 'json',
 			   		cache : false,
 			   		success: function(data){
-			   			console.log("后台获取手机号");
-			   			console.log(data);
+			   			// console.log("后台获取手机号");
+			   			// console.log(data);
 			   			var tds = $(tr).find("td");
-			   			console.log($(tds[0]).text());
-			   			console.log($(tds[1]).text());
+			   			// console.log($(tds[0]).text());
+			   			// console.log($(tds[1]).text());
 			   			$(tds[2]).html(data.sellerTele);
 			   			//$(tds[2]).attr("html",data.sellerTele);
 			   			$(tds[3]).html(data.buyerTele);
@@ -1136,7 +1140,7 @@
 			   			//$(td).attr("value",data[0].telephone);
 			   		},
 			   		error : function(){
-			   			alert('获取手机号码失败！');
+			   			console.log("获取手机号码失败!");
 			   		}
 		   		});
 			};
@@ -1212,7 +1216,7 @@
 			   		success : function(data){
 			   			var eva = eval(data);
 			   			$('tbody').empty();
-			   			console.log(eva);
+			   			//console.log(eva);
 			   			for (var i = 0; i < eva.length; i++) {
 			   				var obj = eva[i];
 							csv+=" \r\n"+obj.orderid+','+obj.buyer+','+obj.seller+','+getStatus(obj.status)+','+obj.card_price+','+obj.logistic_price+','+obj.card_num+','+getCreateTime(obj.create_time)+','+getOrderType(obj.ordertype)+','+obj.logistic+','+obj.logistic_no+','+obj.alipay_id+','+obj.paid_tag+','+changeM(obj.message);
@@ -1286,7 +1290,7 @@
 						   		cache : false,
 						   		success : function(data){
 						   			var eva = eval(data);
-						   			console.log("eva的data:",eva.addr.length);
+						   			//console.log("eva的data:",eva.addr.length);
 						   			if(eva.addr.length <1){
 						   				$("input#addr_idD").attr("value","买家未添加地址信息");
 						   			}
@@ -1304,7 +1308,7 @@
 			   			$("button.deleteButton").click(function(e){
 			   				if(confirm('是否需要删除?')){
 			   					var cid = $(e.target).attr('orderid');
-			   					console.log(cid);
+			   					//console.log(cid);
 			   					PostAjax('/webOrder/delete',{orderid:cid});
 			   				}
 			   			});
@@ -1425,7 +1429,7 @@
 			$("button#batchPay").click(function(e){
 				//var tbody = $(tbody);
 				var trs = $("tbody").find("tr");
-				console.log("tr的数量:",trs.length);
+				//console.log("tr的数量:",trs.length);
 				var arr = [];
 				//var str ='';
 				for (var i = 0; i < trs.length; i++) {

@@ -218,6 +218,9 @@
 						<li>
 							<a href="/webOrder/commonquery">普通用户订单管理</a>
 						</li>
+						<li>
+							<a href="/webOrder/getrefund">退款申请管理</a>
+						</li>
 
 					</ul>
 
@@ -445,6 +448,7 @@
 											<th class="hidden-480">手机</th>
 											<th class="hidden-480">积分</th>
 											<th class="hidden-480">身份信息</th>
+											<th class="hidden-480">认证</th>
 											<th class="hidden-480">删除</th>
 											<th class="hidden-480">修改</th>
 											<th class="hidden-480">禁言</th>
@@ -587,6 +591,23 @@
 														<input id='IDCardNo' type="text" class="m-wrap medium" name="IDCardNo" />
 
 														<span class="help-inline">(身份证最后一位为x的输入后五位的前四位)</span>
+
+													</div>
+
+												</div>
+												
+
+												<div class="control-group">
+
+													<label class="control-label">认证:</label>
+
+													<div class="controls">
+
+														<select id='identificated' class="small m-wrap"  name="identificated">
+															<option value="0">未认证</option>
+															<option value="1">认证通过</option>
+															<option value="2">认证未通过</option>
+														</select>
 
 													</div>
 
@@ -776,16 +797,34 @@
 					'<td>'+obj.email+'</td>'+
 					'<td>'+obj.telephone+'</td>'+
 					'<td>'+obj.score+'</td>'+
-					'<td>'+obj.IDCardNo+'</td>'+
+					'<td>'+obj.IDCardNo+'</td>';
 					//'<td><a href="#" cardId="'+obj.cardId+'" onclick="beSure()">delete</a></td>'+
-					'<td><button userId="'+obj.userid+'" class="deleteButton">删除</button></td>'+
-					'<td><button userId="'+obj.userid+'" pictures="'+obj.portrait+'" class="updateButton">修改</button></td>';
-				if(obj.shutup == 0){
-					tr += '<td><button userId="'+obj.userid+'" class="shutup">禁言</button></td>'+'<td><button disabled userId="'+obj.userid+'" class="talk">解除禁言</button></td></tr>';
+				if(obj.identificated == 0){
+					tr+="<td>未认证</td>";
+				}
+				else if(obj.identificated == 1){
+					tr+="<td>认证通过</td>";
+				}else if(obj.identificated == 2){
+					tr+="<td>认证未通过</td>";
 				}
 				else{
-					tr += '<td><button disabled userId="'+obj.userid+'" class="shutup">禁言</button></td>'+'<td><button userId="'+obj.userid+'" class="talk">解除禁言</button></td></tr>';
+					tr+="<td></td>";
 				}
+				tr += '<td><button userId="'+obj.userid+'" class="deleteButton">删除</button></td>'+
+					'<td><button userId="'+obj.userid+'" pictures="'+obj.portrait+'" identificated="'+obj.identificated+'" class="updateButton">修改</button></td>';
+				if(obj.shutup == 0){
+					tr += '<td><button userId="'+obj.userid+'" class="shutup">禁言</button></td>'+'<td><button disabled userId="'+obj.userid+'" class="talk">解除</button></td></tr>';
+				}
+				else{
+					tr += '<td><button disabled userId="'+obj.userid+'" class="shutup">禁言</button></td>'+'<td><button userId="'+obj.userid+'" class="talk">解除</button></td></tr>';
+				}
+				// if(obj.identificated == 0){
+				// 	tr += '<td><button userId="'+obj.userid+'" class="identificatedTrue">通过</button></td>'+'<td><button disabled userId="'+obj.userid+'" class="identificatedFalse">不通过</button></td></tr>';
+				// }
+				// else{
+				// 	tr += '<td><button disabled userId="'+obj.userid+'" class="identificatedTrue">通过</button></td>'+'<td><button userId="'+obj.userid+'" class="identificatedFalse">不通过</button></td></tr>';
+				// }
+
 				return tr;
 			};
 			
@@ -852,6 +891,7 @@
 			   					$('div#update').attr('hidden',false);
 			   					$('div#query').attr('hidden',true);
 			   					var userid = $(e.target).attr('userId');
+			   					var identificated = $(e.target).attr("identificated");
 			   					var pictures = $(e.target).attr('pictures');
 			   					var tr = $(e.target).parent().parent();
 			   					var tds = $(tr).find('td');
@@ -884,6 +924,12 @@
 			   					else{
 			   						$(options[0]).attr("selected",1);
 			   					};
+			   					var options = $('#identificated').find('option');
+			   					for(var i =0;i<options.length;i++){
+			   						if($(options[i]).attr("value") == identificated){
+			   							$(options[i]).attr("selected",1);
+			   						}
+			   					}
 
 			   					var strs = pictures.split(',');
 			   					console.log('strs: ',strs[0]);

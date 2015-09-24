@@ -113,11 +113,11 @@ router.post('/changeStatus',function(req, res, next){
             res.json({error:err});
         //res.json({success : '换卡申请处理成功'});
         console.log("交换卡片状态修改成功");
-        var sql = 'update card set status = -1 where cardid = "' + scardid +'"';
+        var sql = 'update card set amount = amount-1 where cardid = "' + scardid +'"';
         Card.update(sql, function(err,r){
           if(err)
             res.json({error:err});
-          console.log("卡片锁定成功");
+          console.log("卡片数量减一成功");
           res.json({success : 'success'});
         });
       }); 
