@@ -76,17 +76,16 @@ util.getMsgCap = function getMsgCap(mob){
 util.sendIdenResult = function(tele, tag){
 	var msg = '';
 	if(tag == 1)
-		msg = '认证成功';
+		msg = '成功';
 	else if(tag == 2)
-		msg = '认证失败';
+		msg = '失败';
 
 	if(msg == '') return;
 
-	var content = utf8.encode('您的验证码是：' + msg + '。请不要把验证码泄露给其他人。');
 	var contents = querystring.stringify({
 		apikey : 'f662e57634358f04340592efa0fe4e91',
 		mobile : tele,
-		text : '【云片网】您的验证码是'+msg
+		text : '【球星卡】您提交的身份认证'+msg
 	})
 
 
