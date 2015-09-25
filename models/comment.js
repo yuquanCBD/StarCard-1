@@ -53,8 +53,8 @@ Comment.addComment = function(cardid, userid, commentto, content, username, user
 					var title = rows[0].title;
 					var describes = rows[0].describes;
 					var pictures = rows[0].pictures;
-					//生成卖家的一条消息 
-					if(to_userid != null && to_userid != '')
+					//生成对被回复人的一条消息 
+					if(to_userid != null && to_userid != '' && to_userid != seller)
 						Message.insertNewMsg(to_userid, comment_id, 1, title, describes, pictures, cardid, function(err, results){ if(err) console.log(err);})
 					Message.insertNewMsg(seller, comment_id, 1, title, describes, pictures, cardid, function(err, results){ if(err) console.log(err);}); // 生成对卖家的一条信息
 					/*个推消息*/

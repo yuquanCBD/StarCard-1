@@ -285,7 +285,7 @@ User.queryCollect = function(userid, offset, capacity, callback){
 			callback(err);
 
 		var sql = 'SELECT a.cardid, a.title, a.pictures, a.describes, a.price, a.logistic, a.category, a.brand, '+
-				'a.freight, a.exchange, a.owner, a.amount, a.time, a.longitude, a.latitude FROM card a '+
+				'a.freight, a.exchange, a.owner, a.amount, a.time, a.longitude, a.latitude, a.is_official FROM card a '+
 				'LEFT JOIN collect b ON a.cardid = b.cardid where b.userid = "'+ userid +'"';
 
        	offset = parseInt(offset) * parseInt(capacity);
@@ -476,8 +476,22 @@ User.findUserById = function(userid, callback){
 
 		var sql = 'SELECT userid, username, email, create_time, telephone, IDCardNo, score, gender, portrait, sell_cnt, buy_cnt, identificated, shutup FROM user WHERE userid = ?';
 		conn.query(sql, [userid], function(err, rows){
-			conn.release();
-			callback(err, rows[0]);
+			if(err){
+				conn.release();
+				return callback(err);
+			}
+			if(rows != null && rows.length != 0){
+				conn.release();
+				return callback(err, rows[0]);
+			}
+
+			var sql = 'SELECT * FROM manager WHERE userid = ?';
+
+			conn.query(sql, [userid], function(err, rows){
+				conn.release();
+				return callback(err, rows[0]);
+
+			})
 		});
 
 	});
@@ -508,8 +522,9 @@ User.identification = function(userid, files, callback){
 	        var file = files.imgs[i];
 	        if(file.originalFilename.length == 0) break; //没有上传图片
 	        
+            var imgName = String(date.getTime());
 	        var types = file.originalFilename.split('.');
-	        var p = "imgs/identification/"+userid+'/'+i+'.'+String(types[types.length-1]);
+	        var p = "imgs/identification/"+userid+'/'+imgName+'.'+String(types[types.length-1]);
 	        if(str === ""){
 	          str += p;
 	        }
@@ -524,9 +539,8 @@ User.identification = function(userid, files, callback){
 			if(err)
 				return callback(err);
 
-			var sql = 'UPDATE user SET identificated = 1 WHERE userid = ?';
-			console.log(sql, userid);
-			conn.query(sql, [userid], function(err, results){
+			var sql = 'UPDATE user SET id_pics = ? WHERE userid = ?';
+			conn.query(sql, [str, userid], function(err, results){
 				conn.release();
 				callback(err, results);
 			});

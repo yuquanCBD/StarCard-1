@@ -129,8 +129,8 @@ function saveImg(id, files, res){
 }
 function vertifyM(req, res, next){
 	console.log('短信验证码: ', req.session.msg, req.body.messageCaptcha);
-	// if(req.session.msg != req.body.messageCaptcha)	
-	// 	return res.json({error:'短信验证码错误'});
+	if(req.session.msg != req.body.messageCaptcha)	
+		return res.json({error:'短信验证码错误'});
 	res.json({success:'验证成功！'});
 }
 

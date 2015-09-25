@@ -73,4 +73,43 @@ util.getMsgCap = function getMsgCap(mob){
 	return num;
 }
 
+util.sendIdenResult = function(tele, tag){
+	var msg = '';
+	if(tag == 1)
+		msg = '认证成功';
+	else if(tag == 2)
+		msg = '认证失败';
+
+	if(msg == '') return;
+
+	var content = utf8.encode('您的验证码是：' + msg + '。请不要把验证码泄露给其他人。');
+	var contents = querystring.stringify({
+		apikey : 'f662e57634358f04340592efa0fe4e91',
+		mobile : tele,
+		text : '【云片网】您的验证码是'+msg
+	})
+
+
+	var URL = 'http://yunpian.com/v1/sms/send.json';
+	var obj =  url.parse(URL);
+	//console.log(obj);
+	var options = {
+		hostname: obj.hostname,
+		path: obj.path,
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			'Content-Length' : contents.length
+		}
+	};
+	var req = http.request(options, function(res) {
+		res.setEncoding('utf8');
+		res.on('data', function (data) {
+		console.log(data);
+		});
+	});
+	req.write(contents);
+	req.end();
+}
+
 module.exports = util;

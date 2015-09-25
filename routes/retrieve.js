@@ -44,8 +44,8 @@ router.post('/verifyMsg', function(req, res, next){
 	if(!req.session.last || (now.getTime()/1000 - req.session.last) > 300)
 		return res.json({error: '验证码过期'});
 	//测试先不验证短信验证码
-	// if(req.body.msg != req.session.msg)
-	// 	return res.json({error: '验证码错误'});
+	if(req.body.msg != req.session.msg)
+		return res.json({error: '验证码错误'});
 	res.json({success: '验证码校验成功'});
 })
 

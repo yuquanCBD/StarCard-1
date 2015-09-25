@@ -27,7 +27,7 @@ function Order(orderid, seller, buyer, receive_time){
 
 
 //确认订单，待付款
-Order.checkOrder = function(cardid, cardnum, seller, buyer, card_price, logistic_price, addr_id, card_pic, card_name, card_desc, callback){
+Order.checkOrder = function(cardid, cardnum, seller, buyer, card_price, logistic_price, addr_id, card_pic, card_name, card_desc, seller_tele, buyer_tele, callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
 			return callback(err);
@@ -82,10 +82,10 @@ Order.checkOrder = function(cardid, cardnum, seller, buyer, card_price, logistic
 
 					/*insert into orders*/
 					var orderid = crypto.randomBytes(12).toString('hex');//生成24位orderid
-					var sql = 'INSERT INTO orders (orderid, cardid, card_num, seller, buyer, card_price, logistic_price, addr_id, card_pic, card_name, card_desc, province, city, district, address, postcode, telephone, consignee) '+
-					'VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';//下单sql
+					var sql = 'INSERT INTO orders (orderid, cardid, card_num, seller, buyer, card_price, logistic_price, addr_id, card_pic, card_name, card_desc, province, city, district, address, postcode, telephone, consignee, seller_tele, buyer_tele) '+
+					'VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';//下单sql
 					console.log(sql);
-					conn.query(sql, [orderid, cardid, cardnum, seller, buyer, card_price, logistic_price, addr_id, card_pic, card_name, card_desc, province, city, district, address, postcode, telephone, consignee], function(err, results){
+					conn.query(sql, [orderid, cardid, cardnum, seller, buyer, card_price, logistic_price, addr_id, card_pic, card_name, card_desc, province, city, district, address, postcode, telephone, consignee, seller_tele, buyer_tele], function(err, results){
 						if(err){
 							conn.release();
 							return callback(err);

@@ -102,8 +102,10 @@ router.post('/checkOrder', function(req, res, next){
 	var card_name = req.body.card_name;
 	var card_desc = req.body.card_desc;
 	var card_max_num = req.body.card_max_num; //出售卡片最大数量
+	var seller_tele = req.body.seller_tele;
+	var buyer_tele  = req.body.buyer_tele;
 
-	Order.checkOrder(cardid, cardnum, seller, buyer, card_price, logistic_price, addrid, card_pic, card_name, card_desc, function(err, orderid){
+	Order.checkOrder(cardid, cardnum, seller, buyer, card_price, logistic_price, addrid, card_pic, card_name, card_desc, seller_tele, buyer_tele, function(err, orderid){
 		if(err)
 			return res.json({error : err});
 
