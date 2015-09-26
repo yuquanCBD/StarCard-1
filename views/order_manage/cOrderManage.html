@@ -631,7 +631,7 @@
 													</div>
 
 												</div>
-												<div class="control-group">
+												<!-- <div class="control-group">
 
 													<label class="control-label">卡片数量:</label>
 
@@ -642,7 +642,7 @@
 
 													</div>
 
-												</div>
+												</div> -->
 												<div class="control-group">
 
 													<label class="control-label">消息:</label>
@@ -653,7 +653,7 @@
 													</div>
 
 												</div>
-												<div class="control-group">
+												<div id="orderStatus" class="control-group">
 
 													<label class="control-label">订单状态:</label>
 
@@ -671,9 +671,20 @@
 													</div>
 
 												</div>
+												<div id="oldstatusDiv" class="control-group">
+
+													<label class="control-label" >订单原状态:</label>
+
+													<div class="controls">
+
+														<input id='oldstatus' type="text" class="m-wrap meduium" name="oldstatus" />
+													</div>
+
+												</div>
 												<div class="form-actions">
 
 													<button id="updateSubmit" type="submit" class="btn blue"><i class="icon-ok"></i> 订单信息修改</button>
+													<button id="updateBack" type="button" style="margin-left:5%"  class="blue btn">取消</button>
 													<!-- <button type="button" class="btn">取消</button> -->
 
 												</div>
@@ -1058,8 +1069,8 @@
 				else{
 					tr += '<td>'+obj.orderid+'</td>';
 				}
-				tr +='<td>'+''+'</td>'+
-					'<td>'+''+'</td>';
+				tr +='<td>'+obj.seller_tele+'</td>'+
+					'<td>'+obj.buyer_tele+'</td>';
 					//'<td>'+obj.logistic+'</td>';
 				if(obj.status == 0){
 					tr += '<td>待付款</td>';
@@ -1203,7 +1214,7 @@
 		   		});
 			};
 			function query(){
-				var csv = "卡片id,买家id,买家id,订单状态,卡片总价,物流价格,卡片数量,交易时间,订单类型,物流,运单号,支付宝订单编号,是否打款,留言";
+				var csv = "卡片id,买家id,卖家id,买家手机,卖家手机,订单状态,卡片总价,物流价格,卡片数量,交易时间,订单类型,物流,运单号,支付宝订单编号,是否打款,留言";
 				$.ajax({
 			   		type : 'POST',
 			   		url : '/webOrder/queryByStatusC',
@@ -1215,21 +1226,16 @@
 			   			$('tbody').empty();
 			   			for (var i = 0; i < eva.length; i++) {
 			   				var obj = eva[i];
-							csv+=" \r\n"+obj.orderid+','+obj.buyer+','+obj.seller+','+getStatus(obj.status)+','+obj.card_price+','+obj.logistic_price+','+obj.card_num+','+getCreateTime(obj.create_time)+','+getOrderType(obj.ordertype)+','+obj.logistic+','+obj.logistic_no+','+obj.alipay_id+','+obj.paid_tag+','+changeM(obj.message);
+							csv+=" \r\n"+obj.orderid+','+obj.buyer+','+obj.seller+','+obj.buyer_tele+','+obj.seller_tele+','+getStatus(obj.status)+','+obj.card_price+','+obj.logistic_price+','+obj.card_num+','+getCreateTime(obj.create_time)+','+getOrderType(obj.ordertype)+','+obj.logistic+','+obj.logistic_no+','+obj.alipay_id+','+obj.paid_tag+','+changeM(obj.message);
 			  				var tr = createTR(eva[i],i+1);
 			   				$('tbody').append(tr);
 			   			};
 			   			$("#content_csv").attr("value",csv);
-			   			eva.forEach(function(obj, index){
-			   				var trs = $("tbody").find("tr");
-				   			// console.log(trs.length);
-				   			// var resultTr;
-				   			// for (var i = 0; i < trs.length; i++) {
-				   			// 	var tr = trs[i];
-				   			// 	tds = $(tr).find("td");
-				   			// };
-			   				getTeleAjax('/webOrder/tele',{seller:obj.seller, buyer:obj.buyer},trs[index]);
-			   			});
+
+			   			// eva.forEach(function(obj, index){
+			   			// 	var trs = $("tbody").find("tr");
+			   			// 	getTeleAjax('/webOrder/tele',{seller:obj.seller, buyer:obj.buyer},trs[index]);
+			   			// });
 			   			$("button.detailButton").click(function(e){
 			   				$('div#update').attr('hidden',true);
 			   				$('div#query').attr('hidden',true);
@@ -1367,16 +1373,26 @@
 				   				var options = $('#status').find('option');
 			   					if(status == "待付款"){
 			   						$(options[0]).attr("selected",1);
+			   						$('input#oldstatus').attr("value",0);
 			   					}
 			   					else if(status == "待发货"){
 			   						$(options[1]).attr("selected",1);
+			   						$('input#oldstatus').attr("value",1);
 			   					}
 			   					else if(status == "待收货"){
 			   						$(options[2]).attr("selected",1);
+			   						$('input#oldstatus').attr("value",2);
+			   					}
+			   					else if(status == "交易完成"){
+			   						$(options[3]).attr("selected",1);
+			   						$('input#oldstatus').attr("value",3);
 			   					}
 			   					else{
 			   						$(options[3]).attr("selected",1);
-			   					};
+			   						$("div#orderStatus").attr("hidden",true);
+			   						$('input#oldstatus').attr("value",-1);
+			   					}
+			   					$('div#oldstatusDiv').attr("hidden",true);
 			   					
 			   				}
 			   			})
@@ -1394,8 +1410,8 @@
 		 		//card_price,logistic_price,card_num
 		 		var card_price = $("input#card_price").attr("value");
 		 		var logistic_price = $("input#logistic_price").attr("value");
-		 		var card_num = $("input#card_num").attr("value");
-		 		if(!card_num || !card_price || !logistic_price){
+		 		//var card_num = $("input#card_num").attr("value");
+		 		if(!card_price || !logistic_price){
 		 			alert("请输入完整信息");
 		 			return false;
 		 		}
@@ -1418,6 +1434,12 @@
 				});
 			});
 			$("button#backButton").click(function(e){
+				$('div#update').attr('hidden',true);
+				$('div#detail').attr('hidden',true);
+			   	$('div#query').attr('hidden',false);
+				
+			});
+			$("button#updateBack").click(function(e){
 				$('div#update').attr('hidden',true);
 				$('div#detail').attr('hidden',true);
 			   	$('div#query').attr('hidden',false);

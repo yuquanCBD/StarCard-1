@@ -596,6 +596,14 @@
 
 												</div>
 												
+												<div class="control-group">
+
+													<label class="control-label">用户身份证:</label>
+
+													<div id="idImg" class="controls">
+													</div>
+
+												</div>
 
 												<div class="control-group">
 
@@ -635,11 +643,6 @@
 													<label class="control-label">用户头像:</label>
 
 													<div id="userImg" class="controls">
-														<!-- <input class="medium m-wrap" type="file" name="imgs" multiple="multiple">
-														<span class="help-inline">最多三张</span> -->
-														<!-- <img src="../0.jpg" height="100" width="100">
-														<img src="../0.jpg" height="100" width="100">
-														<img src="../1.jpg" height="100" width="100"> -->
 													</div>
 
 												</div>
@@ -811,7 +814,7 @@
 					tr+="<td></td>";
 				}
 				tr += '<td><button userId="'+obj.userid+'" class="deleteButton">删除</button></td>'+
-					'<td><button userId="'+obj.userid+'" pictures="'+obj.portrait+'" identificated="'+obj.identificated+'" class="updateButton">修改</button></td>';
+					'<td><button userId="'+obj.userid+'" pictures="'+obj.portrait+'" idPics="'+obj.id_pics+'" identificated="'+obj.identificated+'" class="updateButton">修改</button></td>';
 				if(obj.shutup == 0){
 					tr += '<td><button userId="'+obj.userid+'" class="shutup">禁言</button></td>'+'<td><button disabled userId="'+obj.userid+'" class="talk">解除</button></td></tr>';
 				}
@@ -893,7 +896,9 @@
 			   					var userid = $(e.target).attr('userId');
 			   					var identificated = $(e.target).attr("identificated");
 			   					var pictures = $(e.target).attr('pictures');
+			   					var idPics = $(e.target).attr("idPics");
 			   					var tr = $(e.target).parent().parent();
+
 			   					var tds = $(tr).find('td');
 			   					//console.log($(tds[1]).text());
 			   					var username = $(tds[2]).text();
@@ -943,8 +948,16 @@
 			   					else{
 			   						$('#userImg').append('<span class="help-inline">没有图片</span>');
 			   					}
-			   				
-			   					
+			   					var strs = idPics.split(",");
+			   					$("#idImg").empty();
+			   					if(strs[0] != ''){
+			   						for(var i=0;i<strs.length;i++){
+			   						$('#idImg').append('<img src="../'+strs[i]+'" height="100" width="100">');
+			   						};
+			   					}
+			   					else{
+			   						$('#idImg').append('<span class="help-inline">没有图片</span>');
+			   					}
 			   					//updateAjax('update',{flag:'hahhahah'});
 			   					// var tds = tr.getElementsByTagName('td');
 			   					// console.log(tds.length);

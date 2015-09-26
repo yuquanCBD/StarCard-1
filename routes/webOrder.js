@@ -205,17 +205,32 @@ router.post('/update', function(req, res, next){
 	var status = req.body.status;
 	var card_price = req.body.card_price;
 	var logistic_price = req.body.logistic_price;
-	var card_num = req.body.card_num;
+	var oldstatus = req.body.oldstatus;
 	var logistic = req.body.logistic == "无" ? "" : req.body.logistic;
 	var logistic_no = req.body.logistic_no;
-	var sql = 'update orders set message="'+message+'", status="'+status+'", logistic="'+logistic+'", logistic_no="'+logistic_no+'", card_num="'+card_num+'", card_price="'+card_price+'", logistic_price="'+logistic_price+'" where orderid="'+orderid+'"';
-	console.log("=====================================================update sql==========",sql);
+	var sql1 = 'update orders set message="'+message+'", status="'+status+'", logistic="'+logistic+'", logistic_no="'+logistic_no+'", card_price="'+card_price+'", logistic_price="'+logistic_price+'" where orderid="'+orderid+'"';
+	var sql2 = 'update orders set message="'+message+'", logistic="'+logistic+'", logistic_no="'+logistic_no+'", card_price="'+card_price+'", logistic_price="'+logistic_price+'" where orderid="'+orderid+'"';
+
+	//如果原状态为－1，则不会改变状态字段
+	var sql = oldstatus == -1 ? sql2 : sql1;
 	Order.exec(sql, function(err, r){
-		if(err){
-			return res.json({error:"数据库发生错误"});
-		}
-		return res.render('order_manage/orderManage.html',{title:"订单查询",status:4});
-	})
+				if(err){
+					return res.json({error:"数据库发生错误"});
+				}
+				return res.render('order_manage/orderManage.html',{title:"订单查询",status:4});
+			});
+	// if(status != -1 || (status == -1 && oldstatus == -1)){ //新状态不是交易关闭，或者两个状态都是交易关闭，不需要进行卡片数量的处理
+	// 	Order.exec(sql, function(err, r){
+	// 			if(err){
+	// 				return res.json({error:"数据库发生错误"});
+	// 			}
+	// 			return res.render('order_manage/orderManage.html',{title:"订单查询",status:4});
+	// 		});
+	// }
+	// else if(oldstatus != -1 && status == -1){ //之前不是交易关闭，现在是交易关闭，需要把卡片数量加回去
+	// 	Order.exec()
+	// }
+	
 });
 router.post('/gettele',function(req, res, next){
 	var buyer = req.body.buyer;

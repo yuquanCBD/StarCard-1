@@ -213,7 +213,7 @@ router.post('/query', function(req, res, next){
   });         
 });
 router.post('/commonquery', function(req, res, next){
-  var sqlTest = "select * from card inner join user on card.owner = user.userid"
+  var sqlTest = "select * from card inner join user on card.owner = user.userid group by card.time DESC"
   User.exec(sqlTest , function(err, rows){
     if(err){
       return res.json({error: err});
@@ -223,7 +223,7 @@ router.post('/commonquery', function(req, res, next){
 });
 //
 router.post('/managerquery',function(req, res, next){
-  var sqlTest = "select * from card inner join manager on card.owner = manager.userid"
+  var sqlTest = "select * from card inner join manager on card.owner = manager.userid group by card.time DESC"
   User.exec(sqlTest, function(err, rows){
     if(err){
       console.log("==============================:",err)

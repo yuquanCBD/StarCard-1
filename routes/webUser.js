@@ -4,6 +4,7 @@
 var express = require('express');
 var uuid = require('node-uuid');
 var User = require('../models/user.js');
+var Util = require('../util/captchaUtil.js');
 var multiparty = require('multiparty');
 var path = require('path');
 var fs = require('fs');
@@ -115,11 +116,13 @@ function updateInfo(fields, files, res){
         console.log('图片信息添加成功');
         //将路径和卡片信息存入数据库
         var sql = 'UPDATE user SET gender="'+ gender +'", email="'+email+'", telephone="'+telephone+'", score="'+score+'", IDCardNo="'+IDCardNo+'",portrait="'+str+'", identificated="'+identificated+'" WHERE userid = "'+uId+'"';
+
         console.log(sql);
         User.exec(sql, function(err, user){
           if(err){
             return res.json({error:"用户信息修改失败"});
           }
+          Util.sendIdenResult(telephone,identificated);
           return res.render('card_manage/userManage.html');
         });
         //*******************
@@ -136,6 +139,7 @@ function updateInfo(fields, files, res){
       if(err){
         return res.json({error:"用户信息修改失败"});
       }
+      Util.sendIdenResult(telephone,identificated);
       return res.render('card_manage/userManage.html');
     });
         
