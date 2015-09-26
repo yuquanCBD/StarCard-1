@@ -118,12 +118,33 @@ function updateInfo(fields, files, res){
         var sql = 'UPDATE user SET gender="'+ gender +'", email="'+email+'", telephone="'+telephone+'", score="'+score+'", IDCardNo="'+IDCardNo+'",portrait="'+str+'", identificated="'+identificated+'" WHERE userid = "'+uId+'"';
 
         console.log(sql);
-        User.exec(sql, function(err, user){
+        // User.exec(sql, function(err, user){
+        //   if(err){
+        //     return res.json({error:"用户信息修改失败"});
+        //   }
+
+        //   Util.sendIdenResult(telephone,identificated);
+        //   return res.render('card_manage/userManage.html');
+        // });
+
+
+        var sql1 = 'select * from user where userid="'+uId+'" and identificated="'+identificated+'"';
+        User.exec(sql1, function(err, rows){
           if(err){
             return res.json({error:"用户信息修改失败"});
           }
-          Util.sendIdenResult(telephone,identificated);
-          return res.render('card_manage/userManage.html');
+          if(rows.length <= 0) //认证状态已经被修改
+          {
+            console.log("发短信啦啦啦啦啦啦啦");
+            Util.sendIdenResult(telephone,identificated);
+          }
+          User.exec(sql, function(err){
+            if(err){
+              return res.json({error:"用户信息修改失败"});
+            }
+            //Util.sendIdenResult(telephone,identificated);
+            return res.render('card_manage/userManage.html');
+            })
         });
         //*******************
      }else{ 
@@ -135,12 +156,31 @@ function updateInfo(fields, files, res){
   //如果不存在上传文件
   else{
     var sql = 'UPDATE user SET gender="'+ gender +'", email="'+email+'", telephone="'+telephone+'", score="'+score+'", IDCardNo="'+IDCardNo+'",identificated="'+identificated+'" WHERE userid = "'+uId+'"';
-    User.exec(sql, function(err, user){
+    // User.exec(sql, function(err, user){
+    //   if(err){
+    //     return res.json({error:"用户信息修改失败"});
+    //   }
+    //   Util.sendIdenResult(telephone,identificated);
+    //   return res.render('card_manage/userManage.html');
+    // });
+
+    var sql1 = 'select * from user where userid="'+uId+'" and identificated="'+identificated+'"';
+    User.exec(sql1, function(err, rows){
       if(err){
         return res.json({error:"用户信息修改失败"});
       }
-      Util.sendIdenResult(telephone,identificated);
-      return res.render('card_manage/userManage.html');
+      if(rows.length <= 0) //认证状态已经被修改
+      {
+        console.log("发短信啦啦啦啦啦啦啦");
+        Util.sendIdenResult(telephone,identificated);
+      }
+      User.exec(sql, function(err){
+        if(err){
+          return res.json({error:"用户信息修改失败"});
+        }
+        //Util.sendIdenResult(telephone,identificated);
+        return res.render('card_manage/userManage.html');
+        })
     });
         
   }
