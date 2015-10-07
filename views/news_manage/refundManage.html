@@ -588,12 +588,15 @@
 					'<td>'+str+'</td>';
 				if(obj.status == 0){
 					tr += '<td>退款未处理</td>';
+					tr +='<td><a href="'+obj.url+'" target="_blank" >点击退款</a></td>';
 				}else if(obj.status == 1){
 					tr += '<td>退款已处理</td>';
+					tr +='<td><a href="'+obj.url+'" target="_blank" onclick="return false" >点击退款</a></td>';
 				}else{
 					tr += '<td>状态错误</td>';
+					tr +='<td><a href="'+obj.url+'" target="_blank" >点击退款</a></td>';
 				};
-				tr +='<td><a href="'+obj.url+'" >点击退款</a></td><td><button refund_id="'+obj.id+'" class="deleteButton">删除</button></td></tr>';
+				tr += '<td><button refund_id="'+obj.id+'" class="deleteButton">删除</button></td></tr>';
 				return tr;
 			};
 			function PostAjax(url, obj){
