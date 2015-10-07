@@ -162,7 +162,7 @@ News.disclaimer = function(callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
 			return callback(err);
-		var sql = 'SELECT content FROM disclaimer';
+		var sql = 'SELECT id,content FROM disclaimer';
 		conn.query(sql, function(err, rows){
 			conn.release();
 			if(err)
@@ -170,10 +170,23 @@ News.disclaimer = function(callback){
 			if(rows == null || rows.length == 0)
 				return callback('数据库为空');
 
-			return callback(err,rows[0].content);
+			return callback(err,rows[0].content,rows[0].id);
         });
 
 	});
+}
+News.updateClaimer = function(id,content,callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			return callback(err);
+		var sql = 'update disclaimer set content="'+content+'" where id="'+id+'"';
+		conn.query(sql, function(err, rows){
+			conn.release();
+			if(err)
+				return callback(err);
+			return callback(err,rows);
+		})
+	})
 }
 
 

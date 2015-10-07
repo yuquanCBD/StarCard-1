@@ -12,7 +12,7 @@
 
 	<meta charset="utf-8" />
 
-	<title>球星卡信息添加</title>
+	<title>免责声明修改</title>
 
 	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
@@ -73,6 +73,9 @@
 				<!-- BEGIN RESPONSIVE MENU TOGGLER -->
 
 				<a href="/query" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
+
+				<img src="media/image/menu-toggler.png" alt="" />
+
 				</a>          
 
 				<!-- END RESPONSIVE MENU TOGGLER -->  
@@ -95,10 +98,12 @@
 
 		<div class="page-sidebar nav-collapse collapse">
 
-			<!-- BEGIN SIDEBAR MENU -->     
+			<!-- BEGIN SIDEBAR MENU -->        
 
+			
+			
 			<ul class="page-sidebar-menu">
-				<li class="active">
+				<li class="">
 
 					<a href="javascript:;">
 
@@ -128,7 +133,7 @@
 
 						</li>
 
-						<li class="active">
+						<li class="">
 
 							<a href="/admin/starcardAdd">
 
@@ -238,6 +243,7 @@
 					</ul>
 
 				</li>
+
 				<li class="">
 
 					<a href="javascript:;">
@@ -253,7 +259,7 @@
 					</a>
 
 					<ul class="sub-menu">
-						<li>
+						<li class="">
 							<a href="/kindeditor/nodejs/newsAdd.html">新闻增加</a>
 						</li>
 						<li>
@@ -304,7 +310,7 @@
 						<li class="">
 							<a href="/kindeditor/nodejs/advAdd.html">广告增加</a>
 						</li>
-						<li class="">
+						<li>
 							<a href="/kindeditor/nodejs/advManage.html">广告查询、删除、修改</a>
 						</li>
 					</ul>
@@ -334,7 +340,7 @@
 					</ul>
 
 				</li>
-				<li>
+				<li class="active">
 					<a href="javascript:;">
 
 						<i class="icon-table"></i> 
@@ -348,13 +354,14 @@
 					</a>
 
 					<ul class="sub-menu">
-						<li class="">
+						<li class="active">
 							<a href="/webNews/getclaim">声明编辑</a>
 						</li>
 					</ul>
 				</li>
 
-			</ul>   
+			</ul>
+
 			<!-- END SIDEBAR MENU -->
 
 		</div>
@@ -400,7 +407,7 @@
 						
 						<h3 class="page-title">
 
-							球星卡信息添加
+							免责信息修改
 						</h3>
 
 					</div>
@@ -425,7 +432,7 @@
 
 									<i class="icon-reorder"></i>
 
-									<span class="hidden-480">信息添加</span>
+									<span class="hidden-480">信息修改</span>
 
 								</div>
 
@@ -437,7 +444,7 @@
 
 									<ul class="nav nav-tabs">
 
-										<li><a href="starcardAdd" data-toggle="tab">信息添加</a></li>
+										<li><a href="">信息修改</a></li>
 
 									</ul>
 
@@ -447,205 +454,45 @@
 
 											<!-- BEGIN FORM-->
 
-											<form action="/admin/starcardAdd" enctype="multipart/form-data" method="post" class="form-horizontal">
+											<form action="/webNews/updateClaim" method="post" class="form-horizontal">
 
-												<div class="control-group">
+												<div hidden class="control-group">
 
-													<label class="control-label" >卡片名称</label>
-
-													<div class="controls">
-
-														<input id="title" type="text" class="m-wrap meduium" name="title" />
-
-														<!-- <span class="help-inline">Some hint here</span> -->
-
-													</div>
-
-												</div>
-
-												<div class="control-group">
-
-													<label class="control-label">价格</label>
+													<label class="control-label" >id:</label>
 
 													<div class="controls">
 
-														<input id="price" type="text"  class="m-wrap medium" name="price" />
-														<span class="help-inline">单位/元</span>
-														<!-- <span class="help-inline">Some hint here</span> -->
-
-													</div>
-
-												</div>
-
-												<div class="control-group">
-
-													<label class="control-label">卡片数量</label>
-
-													<div class="controls">
-
-														<input id="amount" type="text" class="m-wrap medium" name="amount" />
-
-														<span class="help-inline">单位/个</span>
-
+														<input id="id" type="text" class="m-wrap meduium" name="id" value=<%= id%> />
 													</div>
 
 												</div>
 												<div class="control-group">
 
-													<label class="control-label">卡片类别</label>
+													<label class="control-label">免责声明</label>
 
 													<div class="controls">
 
-														<select class="small m-wrap" tabindex="1" name="category">
-
-															<option value="足球卡">足球卡</option>
-
-															<option value="篮球卡">篮球卡</option>
-
-															<option value="其他卡">其他卡</option>
-
-															<!-- <option value="Category 4">Category 4</option> -->
-
-														</select>
+														<textarea id="content" name="content" class="large m-wrap" rows="10"><%= content%></textarea>
 
 													</div>
 
 												</div>
 
-												
-												<div class="control-group">
-
-													<label class="control-label">品牌</label>
-
-													<div class="controls">
-
-														<select class="small m-wrap" tabindex="1" name="brand">
-
-															<option value="Topps">Topps</option>
-
-															<option value="Panini">Panini</option>
-
-															<option value="Futera">Futera</option>
-
-															<option value="其他品牌">其他品牌</option>
-
-														</select>
-
-													</div>
-
-												</div>
-												<!-- <div class="control-group">
-
-													<label class="control-label">物流</label>
-
-													<div class="controls">
-
-														<select class="small m-wrap" tabindex="1" name="logistic">
-
-															<option value="顺丰">顺丰</option>
-
-															<option value="圆通">圆通</option>
-
-															<option value="中通">中通</option>
-
-															<option value="天天">天天</option>
-
-														</select>
-
-													</div>
-
-												</div> -->
-												<div class="control-group">
-
-													<label class="control-label">物流价格</label>
-
-													<div class="controls">
-
-														<input id="freight" type="text"  class="m-wrap medium" name="freight" />
-
-														<span class="help-inline">单位/元</span>
-
-													</div>
-
-												</div>
-
-												<div class="control-group">
-
-													<label class="control-label">是否支持换卡</label>
-
-													<div class="controls">
-
-														<label class="radio">
-
-														<input type="radio" name="exchange" value="1" />
-
-														支持
-
-														</label>
-
-														<label class="radio">
-
-														<input type="radio" name="exchange" value="0" checked />
-
-														不支持
-
-														</label>  
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label">换卡描述</label>
-
-													<div class="controls">
-
-														<textarea id="exchange_desc" name="exchange_desc" class="large m-wrap" rows="3" placeholder="少于100字"></textarea>
-														<span class="help-inline">(不支持换卡可不填)</span>
-													</div>
-													
-												</div>
-												<div class="control-group">
-
-													<label class="control-label">卡片描述</label>
-
-													<div class="controls">
-
-														<textarea id="describes" name="describes" class="large m-wrap" rows="3" placeholder="少于200字"></textarea>
-
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label">主图上传</label>
-
-													<div class="controls">
-														<input class="medium m-wrap" type="file" name="mainImgs" multiple="multiple">
-														<span class="help-inline">最多1张</span>
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label">副图上传</label>
-
-													<div class="controls">
-														<input class="medium m-wrap" type="file" name="imgs" multiple="multiple">
-														<span class="help-inline">最多3张</span>
-													</div>
-
-												</div>
 
 												<div class="form-actions">
 
-													<button id='cardAdd' type="submit" class="btn blue"><i class="icon-ok"></i> 添加</button>
+													<button id='messageAdd' type="submit" class="btn blue"><i class="icon-ok"></i>修改声明</button>
+
 
 													<!-- <button type="button" class="btn">取消</button> -->
-
 												</div>
 
-											</form> 
+											</form>
+
+											<!-- END FORM-->  
+
 										</div>
+
 									</div>
 
 								</div>
@@ -733,21 +580,16 @@
 	<script src="media/js/app.js"></script>     
 
 	<script>
-
+		
 		jQuery(document).ready(function() {   
-
-		   // initiate layout and plugins
-		   $('#cardAdd').click(function(e){
-		   		var title = $("input#title").attr("value");
-		   		var price = $("input#price").attr("value");
-		   		var amount = $("input#amount").attr("value");
-		   		var freight = $("input#freight").attr("value");
-		   		var describes = $("#describes").val();
-		   		if(!title || !price || !amount || !describes || !freight){
-		   			alert("请完整输入信息");
+		   $('#messageAdd').click(function(e){
+		   		var id = $("input#id").val();
+		   		var content = $("#content").val();
+		   		if(!content){
+		   			alert(" 请将内容填写完整!");
 		   			return false;
 		   		}
-		   		if(confirm('是否需要添加？')){
+		   		if(confirm('是否需要修改免责声明？')){
 		   			return true;
 		   		}
 		   		else{
