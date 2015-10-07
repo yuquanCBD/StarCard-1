@@ -521,7 +521,7 @@ User.identification = function(userid, files, callback){
 	        if(i > 1) break; //最多2张
 	        var file = files.imgs[i];
 	        if(file.originalFilename.length == 0) break; //没有上传图片
-	        
+	        var date = new Date();
             var imgName = String(date.getTime());
 	        var types = file.originalFilename.split('.');
 	        var p = "imgs/identification/"+userid+'/'+imgName+'.'+String(types[types.length-1]);
@@ -531,7 +531,7 @@ User.identification = function(userid, files, callback){
 	        else{
 	          str += (','+p);
 	        }
-	        fs.renameSync(file.path, filePath+userid+'/'+i+'.'+String(types[types.length-1]));
+	        fs.renameSync(file.path, filePath+userid+'/'+imgName+'.'+String(types[types.length-1]));
     	}//for end
     	console.log('身份证照片上传成功');
 
@@ -614,6 +614,21 @@ User.cancleWikiCollect = function(userid, wikiid, callback){
 		console.log('SQL: '+ sql);
 		conn.query(sql, [userid, wikiid], function(err, results){
 			callback(err, results);
+			conn.release();
+		})
+	})
+}
+
+//查询用户是否已认证
+User.is_identited = function(userid, callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			callback(err);
+		var sql = 'SELECT identificated FROM user WHERE userid = ?';
+
+		console.log('SQL: '+ sql);
+		conn.query(sql, [userid], function(err, rows){
+			callback(err, rows);
 			conn.release();
 		})
 	})

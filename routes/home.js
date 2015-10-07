@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Card = require('../models/card');
 var User = require('../models/user');
+var News = require('../models/news');
 
 //根据卡片类别和品牌, 排序条件(1, 默认; 2.最近发布；3.离我最近)返回卡片列表
 router.get('/showList', function(req, res, next) {
@@ -54,6 +55,15 @@ router.post('/showTradeInfo', function(req, res, next){
         return res.json({in_num : in_num, out_num : out_num, username : username})
     });
 });
+
+//查询免责声明
+router.get('/disclaimer', function(req, res, next){
+    News.disclaimer(function(err, content){
+        if(err)
+            return res.json({error : err});
+        return res.json({disclaimer : content});
+    })
+})
 
 
 

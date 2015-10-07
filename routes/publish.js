@@ -68,14 +68,31 @@ router.get('/getcard', function(req, res, next){
 		return res.json(r);
 	});
 });
+
+router.post('/', function(req, res, next){
+    var userid = req.session.user.userid;
+    User.is_identited(userid, function(err, rows){
+        if(err)
+            return res.json({error : err});
+        if(rows == null || rows.length == 0)
+            return res.json({error : '请重新登录'});
+        var id = rows[0].identificated;
+        if(id == 0)
+            return res.json({error : '用户未认证'});
+        next();
+    })
+})
 router.post('/', function(req, res, next){
 	//存储卡片照片，依据cardid在public/imgs/card目录下创建同名目录，图片存储在此目录中
 	//TODO
 	var form = new multiparty.Form();
 	form.parse(req, function(err, fields, files){
-		addInfo(fields, files, res);
+		  addInfo(fields, files, res);
+
 	});
 });
+
+
 //删除卡片数据库信息以及图片文件夹信息
 router.post('/delete', function(req, res, next){
 	var filePath = path.join(__dirname, '../public/imgs/card/');
@@ -206,6 +223,9 @@ function addInfo(fields, files, res){
   var ownername = fields.ownername[0];
   var card_no = fields.card_no[0];
   var exchange_desc = fields.exchange_desc[0];
+
+
+
   //存储图片，得到图片的路径信息
   var filePath = path.join(__dirname, '../public/imgs/card/');
   fs.mkdir(filePath+uId, function(err){

@@ -157,4 +157,24 @@ News.deleteMessage = function(message_id, callback){
 
 	});
 }
+
+News.disclaimer = function(callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			return callback(err);
+		var sql = 'SELECT content FROM disclaimer';
+		conn.query(sql, function(err, rows){
+			conn.release();
+			if(err)
+				return callback(err);
+			if(rows == null || rows.length == 0)
+				return callback('数据库为空');
+
+			return callback(err,rows[0].content);
+        });
+
+	});
+}
+
+
 module.exports = News;
