@@ -338,6 +338,25 @@
 					</ul>
 
 				</li>
+				<li>
+					<a href="javascript:;">
+
+						<i class="icon-table"></i> 
+
+						<span class="title">免责声明</span>
+
+						<!-- <span class="selected"></span> -->
+
+						<span class="arrow open"></span>
+
+					</a>
+
+					<ul class="sub-menu">
+						<li class="">
+							<a href="/webNews/getclaim">声明编辑</a>
+						</li>
+					</ul>
+				</li>
 
 
 			</ul>
@@ -590,7 +609,7 @@
 													<label class="control-label">图片上传</label>
 
 													<div class="controls">
-														<input class="medium m-wrap" type="file" name="imgs" multiple="multiple">
+														<input id="imgs" class="medium m-wrap" type="file" name="imgs" multiple="multiple">
 														<!-- <span class="help-inline">最多三张</span> -->
 													</div>
 
@@ -701,6 +720,8 @@
 
 		   // initiate layout and plugins
 		   $('#cardAdd').click(function(e){
+		   		var imgValue = $("input#imgs").attr("value");
+		   		//alert(imgValue);
 		   		var wikiname = $("input#wikiname").attr("value");
 				var english_name = $("input#english_name").attr("value");
 				var series = $("input#series").attr("value");
@@ -708,10 +729,15 @@
 				var rarity = $("input#rarity").attr("value");
 				var price = $("input#price").attr("value");
 				var describes = $("#describes").attr("value");
-				if(!wikiname || !english_name || !series || !series_number || !rarity || !price || !describes){
-					alert("请完整输入信息");
-					 return false;
+				if(!imgValue){
+					alert("请上传百科图片");
+					return false;
 				}
+				if(!wikiname || !english_name || !series || !series_number || !rarity || !price){
+					alert("请完整输入信息");
+					return false;
+				}
+
 		   		if(confirm('是否需要添加？')){
 		   			return true;
 		   		}

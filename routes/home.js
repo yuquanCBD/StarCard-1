@@ -56,14 +56,16 @@ router.post('/showTradeInfo', function(req, res, next){
     });
 });
 
+
+
 //查询免责声明
 router.get('/disclaimer', function(req, res, next){
-    News.disclaimer(function(err, content){
+    News.disclaimer(function(err, content, id){
         if(err)
             return res.json({error : err});
         return res.json({disclaimer : content});
     })
-})
+});
 
 
 

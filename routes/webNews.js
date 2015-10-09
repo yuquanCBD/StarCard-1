@@ -287,19 +287,6 @@ router.post('/update', function(req, res, next){
    })
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*    ----------- 消息推送 -------------   */
 router.get("/message", function(req, res, next){
 	if(req.session.starObj === undefined){
@@ -356,6 +343,30 @@ router.post('/deletemessage', function(req, res, next){
 		}
 		return res.json({success:"success"});
 	})
+});
+/***********************免责声明*********************/
+//获取免责声明页面
+router.get('/getclaim',function(req,res,next){
+    var obj = req.session.starObj;
+    if(obj === undefined){
+        return res.render("card_manage/login.html");
+    }
+    News.disclaimer(function(err, content, id){
+        if(err){
+          return res.render('../public/404.html');
+        }
+        return res.render("news_manage/disclaimer.html",{id:id,content:content});
+        //console.log(content);
+    });    
+});
+router.post('/updateClaim',function(req,res,next){
+  var id = req.body.id;
+  var content = req.body.content;
+  console.log(id,'   内容:',content);
+  //return res.render("news_manage/disclaimer.html",{id:id,content:content});
+  News.updateClaimer(id, content, function(err){
+    return res.render("news_manage/disclaimer.html",{id:id,content:content});
+  });
 });
 
 module.exports = router;
