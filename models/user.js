@@ -559,7 +559,7 @@ User.queryWikiCollect = function(userid, offset, capacity, callback){
 			callback(err);
 
 		var sql = 'SELECT a.wikiid, a.wikiname, a.english_name, a.category, a.manufacturer, a.series, a.serial_number, a.rarity,'
-				+'a.describes, a.price, a.contributor, a.picture, a.brand, a.islock FROM wiki a '
+				+'a.describes, a.price, a.contributor, a.picture, a.brand, a.islock, a.team FROM wiki a '
 				+'LEFT JOIN wiki_collect b ON a.wikiid = b.wikiid where b.userid = ? ';
 
        	offset = parseInt(offset) * parseInt(capacity);
