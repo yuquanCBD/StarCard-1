@@ -15,7 +15,7 @@ router.post('/queryList', function(req, res, next){
     var offset = req.body.offset;
     var capacity = req.body.capacity;
     var userid = req.session.user.userid;
-
+    // var userid = 'c96d3c40-431d-11e5-8410-8f36328e32cc';
 
     Wiki.queryByCond(userid, cond, brand, category, offset, capacity, function(err, rows){
         if (err)

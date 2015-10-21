@@ -18,15 +18,15 @@ function Wiki(wiki){
 
 Wiki.queryByCond = function(userid, cond, brand, category, offset, capacity,callback){
     mysql.getConnection(function(err, conn){
-        if (err) 
+        if (err)  
             callback(err);
         var flag1 = false;
         var flag2 = false;
-
-        //var sql = 'SELECT wikiid, wikiname, english_name, category, manufacturer, series, serial_number, rarity, describes, price, contributor, picture, brand, islock FROM wiki ';
-        var sql = 'SELECT * from wiki ';
+        var sql = 'SELECT wikiid, wikiname, english_name, category, manufacturer, series, serial_number, rarity, describes, price, contributor, picture, brand, islock, team FROM wiki ';
         if (cond) {
-            sql += ' WHERE (wikiname like "%'+ cond +'%" OR serial_number like "%' +cond+ '%" OR brand like "%'+cond+'%") ';
+            sql += ' WHERE (wikiname like "%'+ cond +'%" OR serial_number like "%' +cond+ '%" OR brand like "%'+cond
+                    +'%" OR english_name like "%'+ cond +'%" OR series like "%'+ cond+ '%" OR rarity like "%'+ cond
+                    +'%" OR team like "%'+ cond+'%") ';
             flag1 = true;
         }
         if (brand) {
