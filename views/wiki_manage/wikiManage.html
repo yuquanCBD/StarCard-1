@@ -513,7 +513,7 @@
 
 									<i class="icon-reorder"></i>
 
-									<span class="hidden-480">信息添加</span>
+									<span class="hidden-480">信息修改</span>
 
 								</div>
 
@@ -525,7 +525,7 @@
 
 									<ul class="nav nav-tabs">
 
-										<li><a href="starcardAdd" data-toggle="tab">信息添加</a></li>
+										<li><a href="starcardAdd" data-toggle="tab">信息修改</a></li>
 
 									</ul>
 
@@ -671,6 +671,18 @@
 
 												<div class="control-group">
 
+													<label class="control-label">球队</label>
+
+													<div class="controls">
+
+														<input id="team" type="text"  class="m-wrap medium" name="team" />
+
+													</div>
+
+												</div>
+
+												<div class="control-group">
+
 													<label class="control-label">百科描述</label>
 
 													<div class="controls">
@@ -681,6 +693,7 @@
 
 												</div>
 												
+
 												<div class="control-group">
 
 													<label class="control-label">百科图片</label>
@@ -872,6 +885,17 @@
 													</div>
 
 												</div>
+												<div class="control-group">
+
+													<label class="control-label">球队</label>
+
+													<div class="controls">
+
+														<input disabled id="teamD" type="text"  class="m-wrap medium" name="ream" />
+
+													</div>
+
+												</div>
 												<!-- <div class="control-group">
 
 													<label class="control-label" >百科描述:</label>
@@ -1037,14 +1061,14 @@
 					'<td>'+obj.islock+'</td>';
 
 				if(obj.islock == 0){
-					tr += '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="detailButton">详情</button></td>'+
+					tr += '<td><button wikiid="'+obj.wikiid+'" team="'+obj.team+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="detailButton">详情</button></td>'+
 						  '<td><button wikiid="'+obj.wikiid+'" class="deleteButton">删除</button></td>'+
-						  '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="updateButton">修改</button></td></tr>';
+						  '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" team="'+obj.team+'" class="updateButton">修改</button></td></tr>';
 				}	
 				else{
-					tr += '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="detailButton">详情</button></td>'+
+					tr += '<td><button wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" team="'+obj.team+'" class="detailButton">详情</button></td>'+
 						  '<td><button disabled wikiid="'+obj.wikiid+'" class="deleteButton">删除</button></td>'+
-						  '<td><button disabled wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" class="updateButton">修改</button></td></tr>';
+						  '<td><button disabled wikiid="'+obj.wikiid+'" english_name="'+obj.english_name+'" series="'+obj.series+'" serial_number="'+obj.serial_number+'" rarity="'+obj.rarity+'" describes="'+obj.describes+'" picture="'+obj.picture+'" team="'+obj.team+'" class="updateButton">修改</button></td></tr>';
 				}
 				return tr;
 			};
@@ -1104,6 +1128,7 @@
 			   				var describes = tar.attr("describes");
 			   				console.log(describes);
 			   				var picture = tar.attr("picture");
+			   				var team = tar.attr("team");
 			   				var wikiname = $(tds[1]).text();
 			   				var category = $(tds[2]).text();
 			   				var brand = $(tds[3]).text();
@@ -1122,6 +1147,7 @@
 			   				$("input#brandD").attr({value:brand});
 			   				//$("input#manufacturerD").attr({value:manufacturer});
 			   				$("input#priceD").attr({value:price});
+			   				$("input#teamD").attr({value:team});
 			   				$("input#contributorD").attr({value:contributor});
 			   				$("input#islockD").attr({value:islock});
 			   				var strs = picture.split(',');
@@ -1182,6 +1208,7 @@
 				   				var rarity = tar.attr("rarity");
 				   				var describes = tar.attr("describes");
 				   				var picture = tar.attr("picture");
+				   				var team = tar.attr("team");
 				   				var wikiname = $(tds[1]).text();
 				   				var category = $(tds[2]).text();
 				   				var brand = $(tds[3]).text();
@@ -1198,6 +1225,7 @@
 				   				$('input#rarity').attr("value",rarity);
 				   				$('#describes').attr("value",describes);
 				   				$('input#price').attr("value",price);
+				   				$('input#team').attr("value",team);
 				   				var options = $('#category').find('option');
 			   					for (var i = 0; i < options.length; i++) {
 			   						if($(options[i]).text() == category){
@@ -1239,11 +1267,12 @@
 		 		var wikiname = $("input#wikiname").attr("value");
 				var english_name = $("input#english_name").attr("value");
 				var series = $("input#series").attr("value");
-				var series_number = $("input#series_number").attr("value");
+				var series_number = $("input#serial_number").attr("value");
 				var rarity = $("input#rarity").attr("value");
 				var price = $("input#price").attr("value");
 				var describes = $("#describes").attr("value");
-				if(!wikiname || !english_name || !series || !series_number || !rarity || !price || !describes){
+				var team = $("input#team").attr("value");
+				if(!wikiname || !english_name || !series || !series_number || !rarity || !price || !team){
 					alert("请完整输入信息");
 					 return false;
 				}

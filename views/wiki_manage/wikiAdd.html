@@ -576,6 +576,17 @@
 												</div>
 												<div class="control-group">
 
+													<label class="control-label">球队</label>
+
+													<div class="controls">
+
+														<input id="team" type="text"  class="m-wrap medium" name="team" />
+
+													</div>
+
+												</div>
+												<div class="control-group">
+
 													<label class="control-label">信息锁定:</label>
 
 													<div class="controls">
@@ -729,11 +740,12 @@
 				var rarity = $("input#rarity").attr("value");
 				var price = $("input#price").attr("value");
 				var describes = $("#describes").attr("value");
+				var team = $('input#team').attr("value");
 				if(!imgValue){
 					alert("请上传百科图片");
 					return false;
 				}
-				if(!wikiname || !english_name || !series || !series_number || !rarity || !price){
+				if(!wikiname || !english_name || !series || !series_number || !rarity || !price || !team){
 					alert("请完整输入信息");
 					return false;
 				}

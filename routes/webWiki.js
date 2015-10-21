@@ -48,18 +48,19 @@ router.post('/add',function(req, res, next){
 	    var brand = fields.brand[0];
 	    var sqlCheck = 'select * from wiki where wikiname="'+wikiname+'" and category="'+category+'" and brand="'+brand+'"';
 	    console.log("===========",sqlCheck);
-	    User.exec(sqlCheck, function(err, r){
-	    	if(err){
-	    		return res.render('wiki_manage/wikiAdd.html',{title:"数据库错误，请稍候重试!"});
-	    	}
-	    	else if(r.length > 0){
-	    		var str = "百科中文名:"+wikiname+', 品牌:'+brand+', 类别:'+category+"已经存在,请查看百科信息!"
-	    		return res.render('wiki_manage/wikiAdd.html',{title:str});
-	    	}
-	    	else{
-	    		addInfo(fields, files, res, req);
-	    	}
-	    });
+      addInfo(fields, files, res, req);
+	    // User.exec(sqlCheck, function(err, r){
+	    // 	if(err){
+	    // 		return res.render('wiki_manage/wikiAdd.html',{title:"数据库错误，请稍候重试!"});
+	    // 	}
+	    // 	else if(r.length > 0){
+	    // 		var str = "百科中文名:"+wikiname+', 品牌:'+brand+', 类别:'+category+"已经存在,请查看百科信息!"
+	    // 		return res.render('wiki_manage/wikiAdd.html',{title:str});
+	    // 	}
+	    // 	else{
+	    // 		addInfo(fields, files, res, req);
+	    // 	}
+	    // });
 	});
 });
 
@@ -77,6 +78,7 @@ function addInfo(fields, files, res, req){
   var describes = fields.describes[0];
   var price = fields.price[0];
   var brand = fields.brand[0];
+  var team = fields.team[0];
   var islock = fields.islock[0];
   var contributor = req.session.username;
 
@@ -109,8 +111,8 @@ function addInfo(fields, files, res, req){
       console.log('图片信息添加成功');
       console.log(str);
       //将路径和卡片信息存入数据库
-      var sql = 'insert into wiki(wikiid, wikiname, english_name, category, series, serial_number, rarity, describes, price, contributor, picture, brand, islock) values(';
-      sql = sql + '"'+uId+'","'+wikiname+'","'+english_name+'","'+category+'","'+series+'","'+serial_number+'","'+rarity+'","'+describes+'","'+price+'","'+contributor+'","'+str+'","'+brand+'","'+islock+'")';
+      var sql = 'insert into wiki(wikiid, wikiname, english_name, category, series, serial_number, rarity, describes, price, contributor, picture, brand, islock, team) values(';
+      sql = sql + '"'+uId+'","'+wikiname+'","'+english_name+'","'+category+'","'+series+'","'+serial_number+'","'+rarity+'","'+describes+'","'+price+'","'+contributor+'","'+str+'","'+brand+'","'+islock+'","'+team+'")';
       console.log(sql);
       User.exec(sql, function(err, r){
         if(err){
@@ -143,7 +145,7 @@ router.get('/query',function(req, res, next){
 	return res.render('wiki_manage/wikiManage.html');
 });
 router.post('/query',function(req, res, next){
-	var sql = 'select * from wiki';
+	var sql = 'select * from wiki order by time desc';
 	User.exec(sql, function(err, r){
 		if(err){
 			return res.json({error:err});
@@ -223,6 +225,7 @@ function updateInfo(fields, files, res){
   var describes = fields.describes[0];
   var price = fields.price[0];
   var brand = fields.brand[0];
+  var team = fields.team[0];
   //存储图片，得到图片的路径信息
   var filePath = path.join(__dirname, '../public/imgs/wiki/');
 
@@ -258,7 +261,7 @@ function updateInfo(fields, files, res){
         };
         console.log('图片信息添加成功');
         //将路径和卡片信息存入数据库
-        var sql = 'UPDATE wiki SET wikiname="'+ wikiname +'", english_name="'+english_name+'", category="'+category+'", brand="'+brand+'",picture="'+str+'",series="'+series+'",serial_number="'+serial_number+'",rarity="'+rarity+'",price="'+price+'",describes="'+describes+'" WHERE wikiid = "'+uId+'"';
+        var sql = 'UPDATE wiki SET wikiname="'+ wikiname +'", english_name="'+english_name+'", category="'+category+'", brand="'+brand+'",picture="'+str+'",series="'+series+'",serial_number="'+serial_number+'",rarity="'+rarity+'",price="'+price+'",describes="'+describes+'",team="'+team+'" WHERE wikiid = "'+uId+'"';
         console.log(sql);
         User.exec(sql, function(err, user){
           if(err){
@@ -276,7 +279,7 @@ function updateInfo(fields, files, res){
   //如果不存在上传文件
   else{
     //var sql = 'UPDATE user SET gender="'+ gender +'", email="'+email+'", telephone="'+telephone+'", score="'+score+'", IDCardNo="'+IDCardNo+'" WHERE userid = "'+uId+'"';
-    var sql = 'UPDATE wiki SET wikiname="'+ wikiname +'", english_name="'+english_name+'", category="'+category+'", brand="'+brand+'",series="'+series+'",serial_number="'+serial_number+'",rarity="'+rarity+'",price="'+price+'",describes="'+describes+'" WHERE wikiid = "'+uId+'"';
+    var sql = 'UPDATE wiki SET wikiname="'+ wikiname +'", english_name="'+english_name+'", category="'+category+'", brand="'+brand+'",series="'+series+'",serial_number="'+serial_number+'",rarity="'+rarity+'",price="'+price+'",describes="'+describes+'",team="'+team+'" WHERE wikiid = "'+uId+'"';
     User.exec(sql, function(err, user){
       if(err){
         return res.json({error:"用户信息修改失败"});
