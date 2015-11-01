@@ -679,7 +679,7 @@
 												<div class="form-actions">
 
 													<button id="updateSubmit" type="submit" class="btn blue"><i class="icon-ok"></i> 用户信息修改</button>
-													<!-- <button type="button" class="btn">取消</button> -->
+													<button id="updateBack" type="button" style="margin-left:5%" class="btn blue">返回</button>
 
 												</div>
 
@@ -1020,6 +1020,11 @@
 					if(this.checked)
 						alert($(this).val());
 				});
+			});
+			$("button#updateBack").click(function(e){
+				//$('div#detail').attr('hidden',true);
+				$('div#update').attr('hidden',true);
+				$('div#query').attr('hidden',false);
 			});
 
 		});
