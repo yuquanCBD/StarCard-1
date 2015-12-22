@@ -151,8 +151,20 @@ router.post('/list',function(req, res, next){
     //console.log(rows);
     return res.json(rows);
   });
-})
-
+});
+//更新广告顺序
+router.post('/seq',function(req, res, next){
+  var advid = req.body.advid;
+  var seq = req.body.seq;
+  var sql = 'update adv set seq='+seq+' where adv_id="'+advid+'"';
+  console.log(sql);
+  Adv.exec(sql,function(err, r){
+    if(err)
+      res.json({error:"数据库操作错误"});
+    else
+      res.json({success:"success"});
+  });
+});
 
 //删除广告信息,并删除
 router.get('/delete', function(req, res, next){

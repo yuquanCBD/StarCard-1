@@ -27,7 +27,7 @@ Adv.getlist = function(callback){
 	mysql.getConnection(function(err, conn){
 		if(err)
 			return callback(err);
-		var sql = 'select * from adv order by create_time desc';
+		var sql = 'select * from adv order by seq';
 		conn.query(sql, function(err, results){
 			if(err)
 				return callback(err);
@@ -89,6 +89,17 @@ Adv.updateWithoutImg = function(obj, callback){
         });
 
 	});
+};
+Adv.exec = function(sql, callback){
+	mysql.getConnection(function(err, conn){
+		if(err)
+			return callback(err);
+
+		conn.query(sql, function(err, res){
+			conn.release();
+			callback(err, res);
+		})
+	})
 };
 
 

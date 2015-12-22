@@ -141,7 +141,26 @@ router.get('/query',function(req, res, next){
   }
 	var username = req.session.username;
 	var password = req.session.password;
-
+  //********************************
+  // var filePath = path.join(__dirname, '../public/imgs/wiki/');
+  // var sql = 'select wikiid from wiki';
+  // User.exec(sql, function(err, r){
+  //   if(err){
+  //     return;
+  //   }
+  //   else{
+  //     console.log("wikiid的数据展示:",r);
+  //     for(var i=0;i<r.length;++i){
+  //       var wikiid = r[i].wikiid;
+  //       console.log("每一个wikiid:",wikiid);
+  //       if(!fs.existsSync(filePath+wikiid)){
+  //         fs.mkdirSync(filePath+wikiid);
+  //         console.log(wikiid,'文件夹创建成功！');
+  //       }
+  //     }
+  //   }
+  // });
+  //********************************
 	return res.render('wiki_manage/wikiManage.html');
 });
 router.post('/query',function(req, res, next){
@@ -151,11 +170,24 @@ router.post('/query',function(req, res, next){
 			return res.json({error:err});
 		}
 		else{
-			console.log(r);
 			return res.json(r);
 		}
 	})
 });
+router.get('/queryone',function(req,res,next){
+  var wikiid = req.query.wikiid;
+  return res.render('wiki_manage/wikiModify.html',{wikiid:wikiid});
+});
+router.post('/queryByID',function(req,res,next){
+  var wikiid = req.body.wikiid;
+  var sql = 'select * from wiki where wikiid="'+wikiid+'"';
+  User.exec(sql, function(err, r){
+    if(err)
+      return res.json({error:err});
+    else
+      return res.json(r);
+  });
+})
 router.post('/setlock',function(req, res, next){
 	var wikiid = req.body.wikiid;
 	var islock = req.body.lock;

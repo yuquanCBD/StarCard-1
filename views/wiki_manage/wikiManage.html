@@ -1194,7 +1194,11 @@
 			   			});
 			   			$("button.updateButton").click(function(e){
 			   				if(confirm('是否需要修改信息?')){
-			   					
+			   					var tar = $(e.target);
+			   					var wikiid = tar.attr("wikiid");
+			   					var newUrl = "/webWiki/queryone?wikiid="+wikiid;
+			   					window.open(newUrl);
+			   					return;
 			   					$('div#query').attr('hidden',true);
 			   					$('div#detail').attr('hidden',true);
 			   					$('div#update').attr('hidden',false);

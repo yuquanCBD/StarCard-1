@@ -12,7 +12,7 @@
 
 	<meta charset="utf-8" />
 
-	<title>信息查询</title>
+	<title><%= wikiid %></title>
 
 	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
@@ -22,36 +22,33 @@
 
 	<!-- BEGIN GLOBAL MANDATORY STYLES -->
 
-	<link href="/media/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+	<link href="media/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 
-	<link href="/media/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+	<link href="media/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
 
-	<link href="/media/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+	<link href="media/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 
-	<link href="/media/css/style-metro.css" rel="stylesheet" type="text/css"/>
+	<link href="media/css/style-metro.css" rel="stylesheet" type="text/css"/>
 
-	<link href="/media/css/style.css" rel="stylesheet" type="text/css"/>
+	<link href="media/css/style.css" rel="stylesheet" type="text/css"/>
 
-	<link href="/media/css/style-responsive.css" rel="stylesheet" type="text/css"/>
+	<link href="media/css/style-responsive.css" rel="stylesheet" type="text/css"/>
 
-	<link href="/media/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
+	<link href="media/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
 
-	<link href="/media/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+	<link href="media/css/uniform.default.css" rel="stylesheet" type="text/css"/>
 
 	<!-- END GLOBAL MANDATORY STYLES -->
 
 	<!-- BEGIN PAGE LEVEL STYLES -->
 
-	<link rel="stylesheet" type="text/css" href="/media/css/select2_metro.css" />
+	<link rel="stylesheet" type="text/css" href="media/css/select2_metro.css" />
 
-	<link rel="stylesheet" href="/media/css/DT_bootstrap.css" />
+	<link rel="stylesheet" href="media/css/DT_bootstrap.css" />
 
 	<!-- END PAGE LEVEL STYLES -->
 
-	<link rel="shortcut icon" href="/media/image/favicon.ico" />
-	<link rel="stylesheet" href="/kindeditor/themes/default/default.css" />
-    <script charset="utf-8" src="/kindeditor/kindeditor.js"></script>
-    <script charset="utf-8" src="/kindeditor/lang/zh_CN.js"></script>
+	<link rel="shortcut icon" href="media/image/favicon.ico" />
 
 </head>
 
@@ -75,7 +72,7 @@
 
 				<a class="brand" href="query">
 
-				<img src="/media/image/logo.png" alt="logo" />
+				<img src="media/image/logo.png" alt="logo" />
 
 				</a>
 
@@ -85,7 +82,7 @@
 
 				<a href="javascript:;" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
 
-				<img src="/media/image/menu-toggler.png" alt="" />
+				<img src="media/image/menu-toggler.png" alt="" />
 
 				</a>          
 
@@ -116,7 +113,6 @@
 
 			<!-- BEGIN SIDEBAR MENU -->        
 
-			
 			<ul class="page-sidebar-menu">
 				<li class="">
 
@@ -176,7 +172,7 @@
 					</a>
 
 					<ul class="sub-menu">
-						<li class="">
+						<li>
 
 							<a href="/webUser/query">人员查询、删除、修改</a>
 
@@ -228,7 +224,7 @@
 					</ul>
 
 				</li>
-				<li class="">
+				<li class="active">
 
 					<a href="javascript:;">
 
@@ -246,7 +242,7 @@
 						<li>
 							<a href="/webWiki/add">百科增加</a>
 						</li>
-						<li>
+						<li class="active">
 							<a href="/webWiki/query">百科查询、删除、修改</a>
 						</li>
 						<li>
@@ -258,7 +254,6 @@
 					</ul>
 
 				</li>
-
 				<li class="">
 
 					<a href="javascript:;">
@@ -274,10 +269,10 @@
 					</a>
 
 					<ul class="sub-menu">
-						<li class="">
+						<li>
 							<a href="/kindeditor/nodejs/newsAdd.html">新闻增加</a>
 						</li>
-						<li class="">
+						<li>
 							<a href="/kindeditor/nodejs/newsManage.html">新闻查询、删除、修改</a>
 						</li>
 					</ul>
@@ -307,7 +302,7 @@
 					</ul>
 
 				</li>
-				<li class="active">
+				<li class="">
 
 					<a href="javascript:;">
 
@@ -325,7 +320,7 @@
 						<li class="">
 							<a href="/kindeditor/nodejs/advAdd.html">广告增加</a>
 						</li>
-						<li class="active">
+						<li class="">
 							<a href="/kindeditor/nodejs/advManage.html">广告查询、删除、修改</a>
 						</li>
 					</ul>
@@ -374,6 +369,7 @@
 						</li>
 					</ul>
 				</li>
+
 
 			</ul>
 			<!-- END SIDEBAR MENU -->
@@ -432,71 +428,10 @@
 				</div>
 
 				<!-- END PAGE HEADER-->
-
-				<!-- BEGIN PAGE CONTENT-->
-
-				<div id="query" class="row-fluid">
-
-					<div class="span6 responsive" style="width:100%" data-tablet="span12 fix-offset" data-desktop="span6">
-
-						<!-- BEGIN EXAMPLE TABLE PORTLET-->
-
-						<div class="portlet grey">
-
-							<div class="portlet-title">
-
-								<div class="caption"><i class="icon-user"></i>信息查询结果</div>
-
-								<div class="actions">
-
-									<!-- <a href="/admin/query" class="btn blue"> 查询球星卡信息</a> -->
-
-								</div>
-
-							</div>
-
-							<div  class="portlet-body">
-
-								<table class="table table-striped table-bordered table-hover" id="sample_2">
-
-									<thead>
-
-										<tr>
-											<th>序号</th>
-											<th class="hidden-480">标题</th>
-											<th class="hidden-480">时间</th>
-											<th class="hidden-480">删除</th>
-											<th class="hidden-480">修改</th>
-											<th class="hidden-480">顺序</th>
-										</tr>
-
-									</thead>
-
-									<tbody>
-
-									</tbody>
-
-								</table>
-								
-							</div>
-
-						</div>
-
-						<!-- END EXAMPLE TABLE PORTLET-->
-
-					</div>
-
-					
-
-				</div>
-
-				
-
-				<!-- END PAGE CONTENT-->
 				<!-- ************************************************************** -->
 				<!-- BEGIN PAGE CONTENT-->
 
-				<div id='update' class="row-fluid" hidden=true>
+				<div id="update" class="row-fluid">
 
 					<div class="span12">
 
@@ -510,7 +445,7 @@
 
 									<i class="icon-reorder"></i>
 
-									<span class="hidden-480">修改卡片信息列表</span>
+									<span class="hidden-480">信息修改</span>
 
 								</div>
 
@@ -522,7 +457,8 @@
 
 									<ul class="nav nav-tabs">
 
-										<li><a href="">信息修改</a></li>
+										<li><a href="starcardAdd" data-toggle="tab">信息修改</a></li>
+
 									</ul>
 
 									<div class="tab-content">
@@ -530,69 +466,192 @@
 										<div class="tab-pane active" id="portlet_tab1">
 
 											<!-- BEGIN FORM-->
-											<form action="/webAdv/update" enctype="multipart/form-data" method="post" class="form-horizontal">
-												<div hidden class="control-group">
 
-													<label class="control-label" >adv_id:</label>
+											<form action="/webWiki/update" enctype="multipart/form-data" method="post" class="form-horizontal">
+
+												
+												<div class="control-group">
+
+													<label class="control-label" >百科id:</label>
 
 													<div class="controls">
 
-														<input id="adv_id" type="text" class="m-wrap meduium" name="adv_id" />
+														<input id="wikiid"  type="text" class="m-wrap meduium" name="wikiid" value=<%= wikiid %> />
+
+														<!-- <span class="help-inline">Some hint here</span> -->
 
 													</div>
 
 												</div>
 												<div class="control-group">
 
-													<label class="control-label" >标题:</label>
+													<label class="control-label" >百科中文名称:</label>
 
 													<div class="controls">
 
-														<input id="title" type="text" class="m-wrap meduium" name="title" />
+														<input id="wikiname" type="text" class="m-wrap meduium" name="wikiname" />
 
+														<!-- <span class="help-inline">Some hint here</span> -->
+
+													</div>
+
+												</div>
+												<div class="control-group">
+
+													<label class="control-label" >百科英文名称:</label>
+
+													<div class="controls">
+
+														<input id="english_name" type="text" class="m-wrap meduium" name="english_name" />
 													</div>
 
 												</div>
 
 												<div class="control-group">
 
-													<label class="control-label">缩略图:</label>
-
-													<div id="advImg" class="controls">
-													</div>
-
-												</div>
-												<div class="control-group">
-
-													<label class="control-label">缩略图更改:</label>
+													<label class="control-label">卡片类别:</label>
 
 													<div class="controls">
-														<input class="medium m-wrap" type="file" name="imgs" multiple="multiple">
-														<span class="help-inline">(不更换缩略图不要上传,最多一张,宽比长10:6)</span>
-														
+
+														<select id="category" class="small m-wrap" tabindex="1" name="category">
+
+															<option value="足球卡">足球卡</option>
+
+															<option value="篮球卡">篮球卡</option>
+
+															<option value="其他卡">其他卡</option>
+
+															<!-- <option value="Category 4">Category 4</option> -->
+
+														</select>
+
 													</div>
 
 												</div>
 												
 												<div class="control-group">
 
-													<label class="control-label">广告正文:</label>
+													<label class="control-label">品牌:</label>
 
 													<div class="controls">
-														<span class="help-inline">(视频比例300*200)</span>
-														<textarea id="editor" name="content" style="width:700px;height:400px;">
-        													
-    													</textarea>
 
+														<select id="brand" class="small m-wrap" tabindex="1" name="brand">
+
+															<option value="Topps">Topps</option>
+
+															<option value="Panini">Panini</option>
+
+															<option value="Futera">Futera</option>
+
+															<option value="其他品牌">其他品牌</option>
+
+														</select>
+
+													</div>
+
+												</div>
+
+												<div class="control-group">
+
+													<label class="control-label">系列:</label>
+
+													<div class="controls">
+
+														<input id="series" type="text"  class="m-wrap medium" name="series" />
+													</div>
+
+												</div>
+
+												<div class="control-group">
+
+													<label class="control-label">系列编号:</label>
+
+													<div class="controls">
+
+														<input id="serial_number" type="text" class="m-wrap medium" name="serial_number" />
+
+														<span class="help-inline">(只接受数字)</span>
+
+													</div>
+
+												</div>
+				
+												<div class="control-group">
+
+													<label class="control-label">稀有度:</label>
+
+													<div class="controls">
+
+														<input id="rarity" type="text"  class="m-wrap large" name="rarity" />
+													</div>
+
+												</div>
+									
+												<div class="control-group">
+
+													<label class="control-label">价格</label>
+
+													<div class="controls">
+
+														<input id="price" type="text"  class="m-wrap medium" name="price" />
+
+														<span class="help-inline">单位/元</span>
+
+													</div>
+
+												</div>
+
+												<div class="control-group">
+
+													<label class="control-label">球队</label>
+
+													<div class="controls">
+
+														<input id="team" type="text"  class="m-wrap medium" name="team" />
+
+													</div>
+
+												</div>
+
+												<div class="control-group">
+
+													<label class="control-label">百科描述</label>
+
+													<div class="controls">
+
+														<textarea id="describes" name="describes" class="large m-wrap" rows="3" placeholder=""></textarea>
+
+													</div>
+
+												</div>
+												
+
+												<div class="control-group">
+
+													<label class="control-label">百科图片</label>
+
+													<div id="img" class="controls">
+													</div>
+
+												</div>
+
+												<div class="control-group">
+
+													<label class="control-label">图片上传</label>
+
+													<div class="controls">
+														<input class="medium m-wrap" type="file" name="imgs" multiple="multiple">
+														<span class="help-inline">(不修改图片就不上传)</span>
 													</div>
 
 												</div>
 
 												<div class="form-actions">
 
-													<button id='advUpdate' type="submit" class="btn blue"><i class="icon-ok"></i> 广告信息修改</button>
+													<button id='updateSubmit' type="submit" class="btn blue"><i class="icon-ok"></i> 百科信息修改</button>
+													<!-- <button id="updateBack" type="button" style="margin-left:5%" class="btn blue">返回</button> -->
+													
 
-													<!-- <button type="button" class="btn">取消</button> -->
 												</div>
 
 											</form>
@@ -600,7 +659,6 @@
 											<!-- END FORM-->  
 
 										</div>
-
 									</div>
 
 								</div>
@@ -615,8 +673,7 @@
 
 				</div>
 
-				<!-- END PAGE CONTENT-->         
-
+				<!-- END PAGE CONTENT-->                  
 				<!-- ************************************************************** -->
 			</div>
 
@@ -658,15 +715,15 @@
 
 	<!-- BEGIN CORE PLUGINS -->
 
-	<script src="/media/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+	<script src="media/js/jquery-1.10.1.min.js" type="text/javascript"></script>
 
-	<script src="/media/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+	<script src="media/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
 
 	<!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
 
-	<script src="/media/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>      
+	<script src="media/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>      
 
-	<script src="/media/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="media/js/bootstrap.min.js" type="text/javascript"></script>
 
 	<!--[if lt IE 9]>
 
@@ -676,81 +733,39 @@
 
 	<![endif]-->   
 
-	<script src="/media/js/jquery.slimscroll.min.js" type="text/javascript"></script>
+	<script src="media/js/jquery.slimscroll.min.js" type="text/javascript"></script>
 
-	<script src="/media/js/jquery.blockui.min.js" type="text/javascript"></script>  
+	<script src="media/js/jquery.blockui.min.js" type="text/javascript"></script>  
 
-	<script src="/media/js/jquery.cookie.min.js" type="text/javascript"></script>
+	<script src="media/js/jquery.cookie.min.js" type="text/javascript"></script>
 
-	<script src="/media/js/jquery.uniform.min.js" type="text/javascript" ></script>
+	<script src="media/js/jquery.uniform.min.js" type="text/javascript" ></script>
 
 	<!-- END CORE PLUGINS -->
 
 	<!-- BEGIN PAGE LEVEL PLUGINS -->
 
-	<script type="text/javascript" src="/media/js/select2.min.js"></script>
+	<script type="text/javascript" src="media/js/select2.min.js"></script>
 
-	<script type="text/javascript" src="/media/js/jquery.dataTables.js"></script>
+	<script type="text/javascript" src="media/js/jquery.dataTables.js"></script>
 
-	<script type="text/javascript" src="/media/js/DT_bootstrap.js"></script>
+	<script type="text/javascript" src="media/js/DT_bootstrap.js"></script>
 
 	<!-- END PAGE LEVEL PLUGINS -->
 
 	<!-- BEGIN PAGE LEVEL SCRIPTS -->
 
-	<script src="/media/js/app.js"></script>
+	<script src="media/js/app.js"></script>
 
-	<script src="/media/js/table-managed.js"></script>     
+	<script src="media/js/table-managed.js"></script>     
 
 	<script>
-		var options = {
-	          uploadJson: '/webNews/uploadImg'
-	      };
-	    var editor = KindEditor.ready(function(K) {
-	          window.editor = K.create('#editor', options);
-	      });
-		jQuery(document).ready(function() {     
-			function createTR(obj,index){
-				var date = new Date(obj.create_time);
-   				var year = date.getFullYear();
-   				var month = date.getMonth()+1;
-   				var day = date.getDate();
-   				var hour = date.getHours();
-   				var minute = date.getMinutes();
-   				var second = date.getSeconds();
-   				var str = year+"-"+month+"-"+day+"   "+hour+":"+minute+":"+second;
-				var tr = '<tr class="odd gradeX">'+
-					//'<td><input type="checkbox" class="checkboxes" value="1" name="checks"/></td>'+
-					'<td>'+index+'</td>'+
-					'<td>'+obj.title+'</td>'+
-					'<td>'+str+'</td>'+
-					'<td><button adv_id="'+obj.adv_id+'" class="deleteButton">删除</button></td>'+
-					"<td><button adv_id='"+obj.adv_id+"' index='"+index+"' class='updateButton'>修改</button></td>"+
-					'<td><input type="text" style="width:70px" class="seqInfo" advid="'+obj.adv_id+'" value="'+obj.seq+'"></td>'
-					'</tr>';
-					;
-				return tr;
-			};
-			function getAjax(url){
-				console.log(url);
-				$.ajax({
-			   		type : 'GET',
-			   		url : url,
-			   		dataType : 'json',
-			   		cache : false,
-			   		success : function(data){
-			   			var evalData = eval(data);
-			   			if(evalData.error !== undefined){
-			   				window.location.href='/404.html';
-			   			}else
-							location.reload();
-			   		},
-			   		error : function(){
-			   			alert("删除错误");
-			   		}
-		   		});
-			}
-			function setSeqAjax(url, obj){
+		// <!--列表中未展示 english_name series  serial_number rarity describes picture -->
+		// 列表中  <wikiname category brand manufacturer price contributor islock>
+		jQuery(document).ready(function() { 
+			var wikiid = $('#wikiid').val();
+			console.log(wikiid);   
+			function PostAjax(url, obj){
 				$.ajax({
 			   		type : 'POST',
 			   		url : url,
@@ -758,65 +773,70 @@
 			   		dataType : 'json',
 			   		cache : false,
 			   		success : function(data){
-			   			console.log("保存成功");
+			   			console.log('信息锁定',data);
+			   			location.reload();
 			   		},
 			   		error : function(){
-			   			alert("序列信息添加失败");
+			   			console.log('删除信息失败');
 			   		}
-		   		});
+		   		}); 
 			};
+			function updateAjax(url, obj){
+				console.log(url);
+				console.log(obj);
+				$.ajax({
+			   		type : 'POST',
+			   		url : url,
+			   		data : obj,
+			   		dataType : 'json',
+			   		cache : false,
+		   		});
+			}
 			function query(){
 				$.ajax({
 			   		type : 'POST',
-			   		url : '/webAdv/list',
+			   		url : '/webWiki/queryByID',
+			   		data : {wikiid:wikiid},
 			   		dataType : 'json',
 			   		cache : false,
 			   		success : function(data){
 			   			var eva = eval(data);
-			   			$('tbody').empty();
-			   			for (var i = 0; i < eva.length; i++) {
-			  				var tr = createTR(eva[i],i+1);
-			   				$('tbody').append(tr);
-			   			};
-			   			$("button.deleteButton").click(function(e){
-			   				if(confirm('是否需要删除?')){
-			   					var cid = $(e.target).attr('adv_id');
-			   					console.log(cid);
-			   					getAjax('/webAdv/delete?adv_id='+cid);
-			   				}
-			   			});
-			   			//当input输入完毕就执行数据库的添加
-			   			$("input.seqInfo").blur(function(){
-							var advid = $(this).attr("advid");
-							var seq = $(this).attr("value");
-							setSeqAjax("/webAdv/seq", {advid:advid,seq:seq});
-						});
-			   			/*index  username  gender  email  telephone  score  IDCardNo*/
-			   			$("button.updateButton").click(function(e){
-			   				if(confirm('是否需要修改信息?')){
-			   					$('div#update').attr('hidden',false);
-			   					$('div#query').attr('hidden',true);
-			   					var index = $(e.target).attr('index');
-			   					var obj = eva[Number(index) - 1];
-				   				
-			   					$('input#adv_id').attr('value',obj.adv_id);
-			   					$('input#title').attr('value',obj.title);
-			   					var pictures = obj.main_picture;
-			   					var strs = pictures.split(',');
-			   					$("#advImg").empty();
-			   					if(strs[0] != ''){
-			   						for(var i=0;i<strs.length;i++){
-			   						$('#advImg').append('<img src="../../'+strs[i]+'" height="100" width="100">');
-			   						};
-			   					}
-			   					else{
-			   						$('#userImg').append('<span class="help-inline">没有图片</span>');
-			   					}
-			   					//$('input#source').attr('value',obj.source);
-			   					//$('#editor').attr('value',obj.content);
-			   					editor.html(obj.content);
-			   				}
-			   			})
+			   			console.log(eva);
+			   			var d = eva[0];
+			   			$('input#wikiid').attr({disabled:true});
+			   			$('input#wikiname').attr("value",d.wikiname);
+		   				$('input#english_name').attr("value",d.english_name);
+		   				$('input#series').attr("value",d.series);
+		   				$('input#serial_number').attr("value",d.serial_number);
+		   				$('input#rarity').attr("value",d.rarity);
+		   				$('#describes').attr("value",d.describes);
+		   				$('input#price').attr("value",d.price);
+		   				$('input#team').attr("value",d.team);
+		   				var options = $('#category').find('option');
+	   					for (var i = 0; i < options.length; i++) {
+	   						if($(options[i]).text() == d.category){
+	   							$(options[i]).attr('selected',1);
+	   						}
+	   					};
+	   					var options = $('#brand').find('option');
+	   					for (var i = 0; i < options.length; i++) {
+	   						if($(options[i]).text() == d.brand){
+	   							$(options[i]).attr('selected',1);
+	   						}
+	   					};
+	   					var picture = d.picture;
+	   					var strs = picture.split(',');
+	   					console.log('strs: ',strs[0]);
+	   					//<img src="../0.jpg" height="100" width="100">
+	   					$('#img').empty();
+	   					if(strs[0] != ''){
+	   						for(var i=0;i<strs.length;i++){
+	   						$('#img').append('<img src="../'+strs[i]+'" height="100" width="100">');
+	   						};
+	   					}
+	   					else{
+	   						$('#img').append('<span class="help-inline">没有图片</span>');
+	   					}
 			   			App.init();
 
 			   			TableManaged.init();
@@ -827,28 +847,34 @@
 		   		});    
 			}
 		 	query();
-		 	$('#advUpdate').click(function(e){
-		 		KindEditor.sync('#editor');
-		   		var title = $("input#title").val();
-		   		var editor = $("#editor").val();
-		   		if(!title || !editor){
-		   			alert("请完整输入标题和新闻正文!");
-		   			return false;
-		   		}
+		 	$('#updateSubmit').click(function(e){
+		 		var wikiname = $("input#wikiname").attr("value");
+				var english_name = $("input#english_name").attr("value");
+				var series = $("input#series").attr("value");
+				var series_number = $("input#serial_number").attr("value");
+				var rarity = $("input#rarity").attr("value");
+				var price = $("input#price").attr("value");
+				var describes = $("#describes").attr("value");
+				var team = $("input#team").attr("value");
+				if(!wikiname || !english_name || !series || !series_number || !rarity || !price || !team){
+					alert("请完整输入信息");
+					 return false;
+				}
 				if(confirm('是否确认修改信息?')){
-					KindEditor.sync('#editor');
+					$('input#wikiid').removeAttr('disabled');
 					return true;
 				}
 				else{
-					//console.log('点击');
-					$('div#update').attr('hidden',true);
-					$('div#query').attr('hidden',false);
-
 					return false;
 				}
 				
 			});
-
+		 	$("#detailBtn").click(function(){
+				$('#checks').each(function(){
+					if(this.checked)
+						alert($(this).val());
+				});
+			});
 		});
 
 	</script>
